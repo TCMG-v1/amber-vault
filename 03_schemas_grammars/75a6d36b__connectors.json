@@ -1,0 +1,59 @@
+{
+  "$schema": "https://vaulteddelta.xx/schema/connector.v1.json",
+  "universe": "the-sealed-channel",
+  "edition": 1,
+
+  "axiom": "A chain is valid iff every edge has port-type parity and polarity is satisfied.",
+
+  "edge_types": [
+    { "id": "BUS-POWER",  "carries": "POWER",  "polarity": "strict",  "color": "#3a8dff", "max_capsules": 5 },
+    { "id": "BUS-DATA",   "carries": "DATA",   "polarity": "neutral", "color": "#4be08a", "max_capsules": 8 },
+    { "id": "BUS-SIGNAL", "carries": "SIGNAL", "polarity": "neutral", "color": "#ff9f3a", "max_capsules": 6 },
+    { "id": "BUS-TIME",   "carries": "TIME",   "polarity": "strict",  "color": "#c8c8d4", "max_capsules": 1 },
+    { "id": "BUS-GROUND", "carries": "GROUND", "polarity": "neutral", "color": "#222226", "max_capsules": 99 }
+  ],
+
+  "rules": [
+    { "id": "R1-PARITY",       "law": "edge.carries must equal source.port and sink.port" },
+    { "id": "R2-POLARITY",     "law": "if edge.polarity == strict, source.+ -> sink.- only" },
+    { "id": "R3-LINEARITY",    "law": "no capsule may be both source and sink of the same edge" },
+    { "id": "R4-ATTRACTOR",    "law": "any chain containing NAV-08 resolves at NAV-08; NAV-08 has no DATA out" },
+    { "id": "R5-CLOSURE",      "law": "a chain is COMPLETE iff it ends at NAV-08 (sealed) or NAV-09 (null) or NAV-18 (grounded)" },
+    { "id": "R6-FAIRNESS",     "law": "no capsule may be used twice in the same chain unless it is a CONDUIT (NAV-17)" },
+    { "id": "R7-CRC",          "law": "every COMPLETE chain has a deterministic SHA-256 derived from the ordered (id, port) pairs; this is the chain's address" }
+  ],
+
+  "compatibility_matrix_doc": "matrix[from_role][to_role] = allowed edge types. Computed from capsules.json roles. See chains.json for canonical examples.",
+
+  "canonical_chains": {
+    "CHAIN-A": {
+      "title": "POWER UP TO MEMORY",
+      "path": [
+        { "capsule": "NAV-10", "out": "POWER" },
+        { "capsule": "NAV-11", "in": "POWER", "out": "TIME" },
+        { "capsule": "NAV-12", "in": "DATA",  "out": "DATA" }
+      ],
+      "complete": true,
+      "ends_at": "NAV-12",
+      "edition": "founding"
+    },
+    "CHAIN-B": {
+      "title": "SIGNAL THROUGH GATE",
+      "path": [
+        { "capsule": "NAV-13", "out": "SIGNAL" },
+        { "capsule": "NAV-15", "in": "SIGNAL","out": "SIGNAL" },
+        { "capsule": "NAV-16", "in": "DATA",  "out": "DATA" }
+      ],
+      "complete": true,
+      "ends_at": "NAV-16",
+      "edition": "founding"
+    },
+    "CHAIN-OMEGA": {
+      "title": "THE SEALED CHANNEL",
+      "path": "ALL_CAPSULES_RING",
+      "ends_at": "NAV-08",
+      "is_master_chain": true,
+      "lore": "Every capsule, in order, closing on the fixed point. The cover of the universe."
+    }
+  }
+}

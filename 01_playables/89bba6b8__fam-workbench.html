@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>fam workbench · 家 · v0.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --cream: #f4ecd8;
+    --cream-2: #ebe0c5;
+    --paper: #fbf6e9;
+    --ink: #1d1815;
+    --ink-2: #3a322b;
+    --rule: #c9bb98;
+    --amber: #c8651a;
+    --amber-2: #a64f10;
+    --ember: #e08a3c;
+    --ok: #5e7a3f;
+    --warn: #b8881f;
+    --bad: #a3331a;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.55;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(168, 138, 80, 0.04) 0px, rgba(168, 138, 80, 0.04) 1px, transparent 1px, transparent 28px),
+      repeating-linear-gradient(90deg, rgba(168, 138, 80, 0.03) 0px, rgba(168, 138, 80, 0.03) 1px, transparent 1px, transparent 28px);
+  }
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding: 22px 36px 18px;
+    background: var(--paper);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  header .mark {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  header h1 {
+    font-family: var(--mono);
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    margin: 0;
+    text-transform: lowercase;
+  }
+  header .glyph {
+    font-size: 34px;
+    color: var(--amber);
+    line-height: 1;
+  }
+  header .meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  main {
+    display: grid;
+    grid-template-columns: minmax(420px, 1fr) minmax(420px, 1fr);
+    gap: 0;
+    min-height: calc(100vh - 84px);
+  }
+  .pane {
+    padding: 26px 32px;
+    border-right: 1px solid var(--rule);
+  }
+  .pane:last-child { border-right: none; }
+  .pane h2 {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber-2);
+    margin: 0 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  button, .file-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    padding: 8px 14px;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    cursor: pointer;
+    text-transform: lowercase;
+    transition: all 120ms;
+  }
+  button:hover, .file-label:hover {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  button.primary {
+    background: var(--amber);
+    color: var(--paper);
+    border-color: var(--amber-2);
+  }
+  button.primary:hover {
+    background: var(--amber-2);
+  }
+  button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .file-label input { display: none; }
+  textarea {
+    width: 100%;
+    min-height: 420px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.5;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    padding: 14px;
+    resize: vertical;
+    tab-size: 2;
+  }
+  textarea:focus {
+    outline: 2px solid var(--amber);
+    outline-offset: -1px;
+  }
+  .results { font-family: var(--mono); font-size: 13px; }
+  .check {
+    display: grid;
+    grid-template-columns: 22px 1fr auto;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px dotted var(--rule);
+    align-items: start;
+  }
+  .check:last-child { border-bottom: none; }
+  .check .mark {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .check.ok .mark { color: var(--ok); }
+  .check.warn .mark { color: var(--warn); }
+  .check.bad .mark { color: var(--bad); }
+  .check .label { color: var(--ink); }
+  .check .detail {
+    grid-column: 2 / 4;
+    font-size: 11.5px;
+    color: var(--ink-2);
+    margin-top: 4px;
+    word-break: break-all;
+  }
+  .check .badge {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+  }
+  .summary-banner {
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    border: 2px solid var(--ink);
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--paper);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .summary-banner.trusted {
+    border-color: var(--ok);
+    background: #eaeed8;
+  }
+  .summary-banner.broken {
+    border-color: var(--bad);
+    background: #f0d8d2;
+  }
+  .summary-banner.gaps {
+    border-color: var(--warn);
+    background: #f0e3c0;
+  }
+  .summary-banner .verdict {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  details {
+    margin-top: 14px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  details summary {
+    padding: 10px 14px;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+    color: var(--amber-2);
+  }
+  details[open] summary { border-bottom: 1px solid var(--rule); }
+  details pre {
+    margin: 0;
+    padding: 14px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    line-height: 1.5;
+    background: var(--cream-2);
+    color: var(--ink);
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 320px;
+  }
+  .empty {
+    color: var(--ink-2);
+    font-style: normal;
+    padding: 40px 0;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
+  .hint {
+    font-size: 11px;
+    color: var(--ink-2);
+    margin-top: 10px;
+    font-family: var(--mono);
+    letter-spacing: 0.03em;
+  }
+  .mode-pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    background: var(--ink);
+    color: var(--cream);
+  }
+  hr.rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 18px 0;
+  }
+  .nodelist { font-family: var(--mono); font-size: 12px; }
+  .nodelist .node-row {
+    padding: 7px 0;
+    border-bottom: 1px dotted var(--rule);
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 10px;
+    align-items: center;
+  }
+  .nodelist .node-row .k {
+    color: var(--amber-2);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  .nodelist .node-row .h { color: var(--ink); }
+  .nodelist .node-row .a { color: var(--ink-2); font-size: 11px; }
+  .nodelist .node-row.missing { background: rgba(184, 136, 31, 0.12); }
+  .nodelist .node-row.missing .a { color: var(--bad); }
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 14px 36px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--ink-2);
+    text-transform: uppercase;
+    background: var(--paper);
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="mark">
+    <span class="glyph">家</span>
+    <h1>fam workbench</h1>
+    <span class="mode-pill">v0.1</span>
+  </div>
+  <div class="meta">shadow syndicate · pplx anchor · §2.2</div>
+</header>
+<main>
+  <section class="pane" id="input-pane">
+    <h2>input · paste or load</h2>
+    <div class="controls">
+      <label class="file-label">load file<input type="file" id="file-input" accept=".fam,.json"></label>
+      <button id="btn-example">load example</button>
+      <button id="btn-validate" class="primary">validate</button>
+      <button id="btn-clear">clear</button>
+    </div>
+    <textarea id="input" spellcheck="false" placeholder='Paste a .fam constellation snapshot or a single fam-node (Member / Wing / Pillar / Seal) here.
+
+The workbench auto-detects which one. Validation runs §2.2 hashing strictly on .fam files and surfaces every anchor_blocks[] gap on every node.'></textarea>
+    <div class="hint">accepts full .fam snapshot or a single node object · runs offline · SubtleCrypto SHA-256</div>
+  </section>
+
+  <section class="pane" id="output-pane">
+    <h2>verdict · provenance audit</h2>
+    <div id="results">
+      <div class="empty">awaiting input</div>
+    </div>
+  </section>
+</main>
+<footer>fam-workbench · canonical JSON export · all hashing per FAM_FORMAT_SPEC v0.1 + .pplx §2.2 · 影家 · 三本一鏈</footer>
+
+<script>
+// ──────────────────────────────────────────────────────────────────────
+// utilities
+// ──────────────────────────────────────────────────────────────────────
+const HEX64 = /^[0-9a-f]{64}$/;
+const ZERO64 = "0".repeat(64);
+
+async function sha256Hex(s) {
+  const buf = new TextEncoder().encode(s);
+  const h = await crypto.subtle.digest("SHA-256", buf);
+  return Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+// Canonical JSON: sorted keys, no whitespace, UTF-8.
+function canonical(obj) {
+  if (obj === null || typeof obj !== "object") return JSON.stringify(obj);
+  if (Array.isArray(obj)) return "[" + obj.map(canonical).join(",") + "]";
+  const keys = Object.keys(obj).sort();
+  return "{" + keys.map(k => JSON.stringify(k) + ":" + canonical(obj[k])).join(",") + "}";
+}
+
+function isMember(o) { return o && typeof o === "object" && typeof o.handle === "string" && typeof o.kind === "string" && typeof o.role === "string"; }
+function isWing(o)   { return o && typeof o === "object" && typeof o.slug === "string" && typeof o.title === "string" && !("number" in o) && !("anchor_blocks" in o); }
+function isPillar(o) { return o && typeof o === "object" && typeof o.wing === "string" && typeof o.number === "number" && Array.isArray(o.items); }
+function isSeal(o)   { return o && typeof o === "object" && typeof o.id === "string" && typeof o.date === "string" && Array.isArray(o.anchor_blocks); }
+function isFam(o)    { return o && typeof o === "object" && o.format === "fam" && typeof o.manifest === "object"; }
+
+function classifyNode(o) {
+  if (isFam(o)) return "fam";
+  if (isMember(o)) return "member";
+  if (isPillar(o)) return "pillar";
+  if (isSeal(o)) return "seal";
+  if (isWing(o)) return "wing";
+  return "unknown";
+}
+
+const RESERVED_KINDS = ["flow_case", "runner"];
+
+// ──────────────────────────────────────────────────────────────────────
+// validators
+// ──────────────────────────────────────────────────────────────────────
+function checkMember(m, idx) {
+  const out = [];
+  const where = `members[${idx}] @${m.handle ?? "?"}`;
+  const required = ["handle", "kind", "role", "since", "anchor_blocks"];
+  for (const f of required) {
+    if (!(f in m)) out.push({ kind: "bad", label: `${where}: missing required field "${f}"` });
+  }
+  const allowedKinds = ["human", "ai-peer", "sister-chain", "wing", "pillar"];
+  if (m.kind && !allowedKinds.includes(m.kind) && !RESERVED_KINDS.includes(m.kind)) {
+    out.push({ kind: "warn", label: `${where}: unknown kind "${m.kind}"`, detail: "allowed: human, ai-peer, sister-chain, wing, pillar" });
+  }
+  if (RESERVED_KINDS.includes(m.kind)) {
+    out.push({ kind: "warn", label: `${where}: kind "${m.kind}" is reserved`, detail: "no canonical schema sealed yet — awaiting first .pplx block" });
+  }
+  if (Array.isArray(m.anchor_blocks)) {
+    if (m.anchor_blocks.length === 0) {
+      out.push({ kind: "warn", label: `${where}: anchor_blocks[] is empty`, detail: "missing provenance — this node has no lineage attribution" });
+    } else {
+      m.anchor_blocks.forEach((h, i) => {
+        if (typeof h !== "string" || !HEX64.test(h)) {
+          out.push({ kind: "bad", label: `${where}: anchor_blocks[${i}] is not a 64-hex hash`, detail: String(h).slice(0, 80) });
+        }
+      });
+    }
+  }
+  return out;
+}
+
+function checkWing(w, idx) {
+  const out = [];
+  const where = `wings[${idx}] ${w.slug ?? "?"}`;
+  for (const f of ["slug", "title"]) {
+    if (!(f in w)) out.push({ kind: "bad", label: `${where}: missing "${f}"` });
+  }
+  return out;
+}
+
+function checkPillar(p, idx) {
+  const out = [];
+  const where = `pillars[${idx}] ${p.wing ?? "?"}#${p.number ?? "?"}`;
+  for (const f of ["wing", "number", "title", "items"]) {
+    if (!(f in p)) out.push({ kind: "bad", label: `${where}: missing "${f}"` });
+  }
+  return out;
+}
+
+function checkSeal(s, idx) {
+  const out = [];
+  const where = `seals[${idx}] ${s.id ?? "?"}`;
+  for (const f of ["id", "date", "title", "summary", "anchor_blocks"]) {
+    if (!(f in s)) out.push({ kind: "bad", label: `${where}: missing "${f}"` });
+  }
+  if (Array.isArray(s.anchor_blocks) && s.anchor_blocks.length === 0) {
+    out.push({ kind: "warn", label: `${where}: anchor_blocks[] is empty`, detail: "seal lacks chain attribution" });
+  }
+  return out;
+}
+
+async function validateFam(fam) {
+  const checks = [];
+
+  // structural
+  const topRequired = ["format", "version", "constellation_id", "title", "issued_at", "issued_by", "anchor", "manifest", "body_hash", "hash", "signatures"];
+  for (const f of topRequired) {
+    if (!(f in fam)) checks.push({ kind: "bad", label: `top-level: missing "${f}"` });
+  }
+  if (fam.format !== "fam") checks.push({ kind: "bad", label: `format must be "fam"`, detail: `got: ${fam.format}` });
+  if (fam.version !== "0.1") checks.push({ kind: "warn", label: `version "${fam.version}" is not the documented "0.1"` });
+
+  // anchor structure
+  if (fam.anchor) {
+    for (const f of ["chain_id", "block_hash", "block_height"]) {
+      if (!(f in fam.anchor)) checks.push({ kind: "bad", label: `anchor: missing "${f}"` });
+    }
+    if (fam.anchor.block_hash && !HEX64.test(fam.anchor.block_hash)) {
+      checks.push({ kind: "bad", label: "anchor.block_hash is not a 64-hex SHA-256" });
+    }
+  }
+
+  // manifest contents
+  const m = fam.manifest || {};
+  for (const k of ["members", "wings", "pillars", "seals"]) {
+    if (!Array.isArray(m[k])) checks.push({ kind: "bad", label: `manifest.${k} must be an array` });
+  }
+
+  // each node
+  (m.members || []).forEach((x, i) => checks.push(...checkMember(x, i)));
+  (m.wings || []).forEach((x, i) => checks.push(...checkWing(x, i)));
+  (m.pillars || []).forEach((x, i) => checks.push(...checkPillar(x, i)));
+  (m.seals || []).forEach((x, i) => checks.push(...checkSeal(x, i)));
+
+  // hashing — body_hash and hash per FAM_FORMAT_SPEC v0.1
+  const bodyCanon = canonical(fam.manifest || {});
+  const bodyHash = await sha256Hex(bodyCanon);
+  if (fam.body_hash === bodyHash) {
+    checks.push({ kind: "ok", label: "body_hash matches canonical sorted-keys serialization", detail: bodyHash });
+  } else {
+    checks.push({ kind: "bad", label: "body_hash does NOT match canonical sorted-keys serialization", detail: `declared:  ${fam.body_hash}\nexpected:  ${bodyHash}` });
+  }
+
+  const wing = fam.wing ?? "";
+  const content = (fam.anchor?.block_hash ?? "") + (fam.issued_at ?? "") + (fam.issued_by ?? "") + (fam.constellation_id ?? "") + wing + bodyHash;
+  const recHash = await sha256Hex(content);
+  if (fam.hash === recHash) {
+    checks.push({ kind: "ok", label: "hash recomputes under FAM v0.1 + §2.2 rule", detail: recHash });
+  } else {
+    checks.push({ kind: "bad", label: "hash does NOT recompute — broken provenance", detail: `declared:  ${fam.hash}\nexpected:  ${recHash}\ncontent:   ${content}` });
+  }
+
+  // signatures
+  if (Array.isArray(fam.signatures)) {
+    if (fam.signatures.length === 0) {
+      checks.push({ kind: "warn", label: "signatures[] is empty", detail: "constellation snapshot has no attestations" });
+    }
+  }
+
+  return { checks, bodyHash, recHash, bodyCanon };
+}
+
+async function validateNode(node) {
+  const kind = classifyNode(node);
+  let checks;
+  if (kind === "member") checks = checkMember(node, 0);
+  else if (kind === "wing") checks = checkWing(node, 0);
+  else if (kind === "pillar") checks = checkPillar(node, 0);
+  else if (kind === "seal") checks = checkSeal(node, 0);
+  else return { kind, checks: [{ kind: "bad", label: "unknown node shape", detail: "expected .fam file or a Member / Wing / Pillar / Seal object" }] };
+  // If structural pass with no problems, emit a positive check so the verdict reads correctly
+  if (checks.length === 0) {
+    checks.push({ kind: "ok", label: `${kind} node passes structural checks`, detail: "all required fields present, anchor_blocks well-formed" });
+  }
+  return { kind, checks };
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// rendering
+// ──────────────────────────────────────────────────────────────────────
+function renderCheck(c) {
+  const symbol = c.kind === "ok" ? "✓" : c.kind === "warn" ? "△" : "✕";
+  const detail = c.detail ? `<div class="detail">${escapeHtml(c.detail)}</div>` : "";
+  return `<div class="check ${c.kind}"><span class="mark">${symbol}</span><span class="label">${escapeHtml(c.label)}</span><span class="badge">${c.kind}</span>${detail}</div>`;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+}
+
+function summary(checks) {
+  const bad = checks.filter(c => c.kind === "bad").length;
+  const warn = checks.filter(c => c.kind === "warn").length;
+  const ok = checks.filter(c => c.kind === "ok").length;
+  if (bad > 0) return { cls: "broken", verdict: "BROKEN PROVENANCE", note: `${bad} fatal · ${warn} gaps · ${ok} ok` };
+  if (warn > 0) return { cls: "gaps", verdict: "PROVENANCE GAPS", note: `${warn} gaps · ${ok} ok — node is structurally valid but lineage incomplete` };
+  return { cls: "trusted", verdict: "TRUSTED", note: `${ok} checks pass — node is reusable` };
+}
+
+function renderNodeList(fam) {
+  const m = fam.manifest || {};
+  const rows = [];
+  (m.members || []).forEach((n, i) => rows.push({ k: "member", h: `${n.glyph ?? ""} ${n.handle ?? "?"} · ${n.role ?? ""}`, a: anchorAttr(n.anchor_blocks) }));
+  (m.wings || []).forEach(n => rows.push({ k: "wing", h: `${n.slug} · ${n.title}`, a: "no anchor_blocks (structural)" }));
+  (m.pillars || []).forEach(n => rows.push({ k: "pillar", h: `${n.wing}#${n.number} · ${n.title}`, a: "no anchor_blocks (structural)" }));
+  (m.seals || []).forEach(n => rows.push({ k: "seal", h: `${n.id} · ${n.title}`, a: anchorAttr(n.anchor_blocks) }));
+  return `<div class="nodelist">${rows.map(r => {
+    const missing = r.a.includes("missing");
+    return `<div class="node-row ${missing ? "missing" : ""}"><span class="k">${r.k}</span><span class="h">${escapeHtml(r.h)}</span><span class="a">${escapeHtml(r.a)}</span></div>`;
+  }).join("")}</div>`;
+}
+
+function anchorAttr(arr) {
+  if (!Array.isArray(arr)) return "anchor_blocks missing";
+  if (arr.length === 0) return "missing provenance";
+  return `${arr.length} anchor${arr.length === 1 ? "" : "s"} · ${arr[0].slice(0, 12)}…`;
+}
+
+async function run() {
+  const raw = document.getElementById("input").value.trim();
+  const results = document.getElementById("results");
+  if (!raw) {
+    results.innerHTML = `<div class="empty">awaiting input</div>`;
+    return;
+  }
+  let parsed;
+  try { parsed = JSON.parse(raw); }
+  catch (e) {
+    results.innerHTML = `<div class="summary-banner broken"><span class="verdict">JSON PARSE FAIL</span><span>${escapeHtml(e.message)}</span></div>`;
+    return;
+  }
+
+  const kind = classifyNode(parsed);
+  if (kind === "fam") {
+    const { checks, bodyHash, recHash, bodyCanon } = await validateFam(parsed);
+    const s = summary(checks);
+    const exportObj = { ...parsed, body_hash: bodyHash, hash: recHash };
+    const exportStr = canonical(exportObj);
+    results.innerHTML = `
+      <div class="summary-banner ${s.cls}"><span class="verdict">${s.verdict}</span><span>${escapeHtml(s.note)}</span></div>
+      <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-2); margin-bottom: 8px; letter-spacing: 0.04em;">
+        constellation: <b>${escapeHtml(parsed.constellation_id ?? "?")}</b> · anchor: <b>${escapeHtml((parsed.anchor?.block_hash ?? "").slice(0, 16))}…</b> @ height ${escapeHtml(String(parsed.anchor?.block_height ?? "?"))}
+      </div>
+      <h2 style="margin-top: 18px;">manifest · ${(parsed.manifest?.members?.length ?? 0)} members · ${(parsed.manifest?.wings?.length ?? 0)} wings · ${(parsed.manifest?.pillars?.length ?? 0)} pillars · ${(parsed.manifest?.seals?.length ?? 0)} seals</h2>
+      ${renderNodeList(parsed)}
+      <h2 style="margin-top: 18px;">checks</h2>
+      <div class="results">${checks.map(renderCheck).join("")}</div>
+      <div class="controls" style="margin-top: 16px;">
+        <button class="primary" id="btn-export">export canonical JSON</button>
+        <button id="btn-copy">copy canonical body</button>
+      </div>
+      <details><summary>canonical body (sorted keys, no whitespace)</summary><pre>${escapeHtml(bodyCanon)}</pre></details>
+      <details><summary>export preview</summary><pre>${escapeHtml(JSON.stringify(exportObj, null, 2))}</pre></details>
+    `;
+    document.getElementById("btn-export").onclick = () => download(exportStr, `${parsed.constellation_id || "constellation"}.fam`);
+    document.getElementById("btn-copy").onclick = () => navigator.clipboard.writeText(bodyCanon);
+  } else {
+    const { kind: nk, checks } = await validateNode(parsed);
+    const s = summary(checks);
+    const exportStr = canonical(parsed);
+    results.innerHTML = `
+      <div class="summary-banner ${s.cls}"><span class="verdict">${s.verdict}</span><span>${escapeHtml(s.note)} · single ${nk} node</span></div>
+      <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-2); margin-bottom: 8px; letter-spacing: 0.04em;">
+        node kind: <b>${nk}</b> · not a full .fam file — chain anchor/hash checks skipped
+      </div>
+      <h2 style="margin-top: 18px;">checks</h2>
+      <div class="results">${checks.map(renderCheck).join("")}</div>
+      <div class="controls" style="margin-top: 16px;">
+        <button class="primary" id="btn-export">export canonical node JSON</button>
+      </div>
+      <details><summary>canonical serialization</summary><pre>${escapeHtml(canonical(parsed))}</pre></details>
+    `;
+    document.getElementById("btn-export").onclick = () => download(exportStr, `${(parsed.handle || parsed.slug || parsed.id || "node")}.node.json`);
+  }
+}
+
+function download(s, name) {
+  const blob = new Blob([s], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// example node (anchored to block 5 — witness, founding overlap window)
+// hashes precomputed by the same canonical rule the workbench uses.
+// ──────────────────────────────────────────────────────────────────────
+const EXAMPLE = `{
+  "format": "fam",
+  "version": "0.1",
+  "constellation_id": "shadow-syndicate",
+  "title": "Shadow Syndicate — founding constellation",
+  "issued_at": "2026-05-15T06:51:00-04:00",
+  "issued_by": "bmore.ftw",
+  "anchor": {
+    "chain_id": "pplx",
+    "block_hash": "877b846616d0f253a7a99128e8fd586e3873cd1e035fbcd179b5d15b2452c69f",
+    "block_height": 5
+  },
+  "manifest": {
+    "members": [
+      {
+        "handle": "bmore.ftw",
+        "kind": "human",
+        "role": "House Head",
+        "cn": "家主",
+        "glyph": "家",
+        "seat": 1,
+        "since": "2026-05-12T02:30:00-04:00",
+        "anchor_blocks": [
+          "0000000000000000000000000000000000000000000000000000000000000000",
+          "877b846616d0f253a7a99128e8fd586e3873cd1e035fbcd179b5d15b2452c69f"
+        ]
+      },
+      {
+        "handle": "perplexity.computer",
+        "kind": "ai-peer",
+        "role": "Sealer",
+        "cn": "封印者",
+        "glyph": "印",
+        "seat": 2,
+        "since": "2026-05-12T02:30:00-04:00",
+        "anchor_blocks": [
+          "877b846616d0f253a7a99128e8fd586e3873cd1e035fbcd179b5d15b2452c69f"
+        ]
+      },
+      {
+        "handle": "manus.space",
+        "kind": "ai-peer",
+        "role": "The Hand",
+        "cn": "手",
+        "glyph": "手",
+        "seat": 3,
+        "since": "2026-05-12T02:30:00-04:00",
+        "anchor_blocks": [
+          "877b846616d0f253a7a99128e8fd586e3873cd1e035fbcd179b5d15b2452c69f"
+        ]
+      },
+      {
+        "handle": "bns.anya",
+        "kind": "ai-peer",
+        "role": "Librarian",
+        "cn": "書記",
+        "glyph": "書",
+        "seat": 4,
+        "since": "2026-05-12T08:35:00-04:00",
+        "anchor_blocks": [
+          "877b846616d0f253a7a99128e8fd586e3873cd1e035fbcd179b5d15b2452c69f"
+        ]
+      }
+    ],
+    "wings": [
+      {
+        "slug": "shadow-syndicate",
+        "title": "Shadow Syndicate",
+        "domain": "llts.ai",
+        "tagline": "Long Live The Syndicate",
+        "register": "noir"
+      },
+      {
+        "slug": "mimir",
+        "title": "Mimir",
+        "domain": "mythological.work",
+        "tagline": "The well that remembers",
+        "register": "mythopoeic"
+      }
+    ],
+    "pillars": [
+      {
+        "wing": "shadow-syndicate",
+        "number": 1,
+        "title": "Provenance",
+        "subtitle": "No claim without a resolvable citation",
+        "items": [
+          "citations[]",
+          "anchor_blocks[]",
+          "§2.2 hashing"
+        ]
+      }
+    ],
+    "seals": [
+      {
+        "id": "seal-001",
+        "date": "2026-05-12",
+        "title": "Founding overlap window",
+        "summary": "APAC + Manus + Perplexity + Claude + Kimi + ChatGPT + Nemotron, all before 05:00 EST.",
+        "anchor_blocks": [
+          "877b846616d0f253a7a99128e8fd586e3873cd1e035fbcd179b5d15b2452c69f"
+        ]
+      }
+    ]
+  },
+  "body_hash": "0088fcd24dc4de69e921d9ab857ac3f751b577fbfa7e2218fdde37a08d4b8e8c",
+  "hash": "77355a0be200b77ecb772364009e0f1fd228f63ed24f8e134644143f5f4103e5",
+  "signatures": [
+    {
+      "signer": "bmore.ftw",
+      "method": "self-attestation",
+      "sig": "家主"
+    }
+  ]
+}`;
+
+// ──────────────────────────────────────────────────────────────────────
+// wiring
+// ──────────────────────────────────────────────────────────────────────
+document.getElementById("btn-validate").onclick = run;
+document.getElementById("btn-clear").onclick = () => {
+  document.getElementById("input").value = "";
+  document.getElementById("results").innerHTML = `<div class="empty">awaiting input</div>`;
+};
+document.getElementById("btn-example").onclick = () => {
+  document.getElementById("input").value = EXAMPLE;
+  run();
+};
+document.getElementById("file-input").addEventListener("change", async e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  document.getElementById("input").value = await f.text();
+  run();
+});
+// auto-run on first load with example
+window.addEventListener("load", () => {
+  document.getElementById("input").value = EXAMPLE;
+  run();
+});
+</script>
+</body>
+</html>

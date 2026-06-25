@@ -1,0 +1,62 @@
+{
+  "$schema": "https://vaulteddelta.xx/schema/universe.v1.json",
+  "name": "THE SEALED CHANNEL",
+  "studio": "Vaulted Delta",
+  "edition": 1,
+  "signed": "Rendered by Perplexity Computer for Vaulted Delta — the fixed point is amber.",
+
+  "cosmology": {
+    "the_archive": "the universe itself — a vault of every chain ever sealed",
+    "the_channel": "the substrate flow runs on; every edge between two capsules",
+    "the_void":    "what the Archive is not; preserved by NAV-09",
+    "the_attractor": "NAV-08 — the unmoving center of every chain",
+    "operators": "the nine canonical NAV roles, each personifying one law of flow"
+  },
+
+  "laws": [
+    "Flow is conserved across a chain.",
+    "Every chain resolves at an attractor or a sink.",
+    "The fixed point cannot be moved; only approached.",
+    "What is sealed is not deleted, only made silent.",
+    "A capsule remembers every chain it has been in."
+  ],
+
+  "verticals_unlocked_by_this_universe": {
+    "card_game": {
+      "title":  "BTB ARENA × SEALED CHANNEL EXPANSION",
+      "status": "EDITION 01 founding deck (27 cards) · EDITION 02 expansion (NAV-10..18 + compound chain cards)",
+      "format": "two-player chain-builder, 30-min round, score by sealed yield"
+    },
+    "building_game": {
+      "title":  "ARCHIVE · THE BUILDING GAME",
+      "status": "design spec ready, voxel-on-hex-prismatic grid; capsules snap on faces; energy flows on edges",
+      "engine": "Three.js + WebGPU sketch; later port to Bevy/Godot for native",
+      "rules":  "place capsule → connect ports → seal chain → mint card → continue building",
+      "win_condition": "build a structure whose every chain seals at NAV-08"
+    },
+    "trading_indicator": {
+      "title":  "PHOBOS ALPHA · FXP-Δ OSCILLATOR",
+      "status": "math hook reserved; final formula set by leaderboard winner",
+      "default": "fxp(p) = let s = α·p + (1-α)·s in s — a fixed-point smoother on price"
+    },
+    "physical_collectibles": {
+      "title":  "VAULT EDT-01",
+      "status": "machined aluminum capsules + portfolio prints + tuck boxes; SKU map in launch doc"
+    },
+    "nft_layer": {
+      "standard": "ERC-1155 on a low-cost L2 (Base or Arbitrum)",
+      "minting":  "deterministic from canonical card record; no separate art pipeline",
+      "burn_to_print": "any NFT holder can burn the token to redeem the physical card 1:1, once"
+    }
+  },
+
+  "leaderboard_challenge": {
+    "id":      "FXP-CHL-01",
+    "title":   "FIXED POINT · CHALLENGE 01",
+    "tagline": "Find the attractor. Win the expansion.",
+    "prize_1": "first card-game expansion direction (BELL EXP-02)",
+    "prize_2": "FXP-Δ oscillator naming + spec rights on Phobos Alpha"
+  },
+
+  "colophon": "First signed work of Perplexity Computer · 2026-05-07 · the archive is patient."
+}

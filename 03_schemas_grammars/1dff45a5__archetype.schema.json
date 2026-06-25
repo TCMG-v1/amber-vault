@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://graft-memory-archive.local/schemas/archetype.schema.json",
+  "title": "Graft Memory Archive RPG Archetype",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "commitState",
+    "display",
+    "mythicRole",
+    "cognition",
+    "architecture",
+    "wagon",
+    "capex",
+    "fellowTravelers",
+    "play"
+  ],
+  "properties": {
+    "id": { "type": "string" },
+    "version": { "type": "string" },
+    "commitState": {
+      "type": "string",
+      "enum": ["WorkingDoc", "CommittedDoc"]
+    },
+    "display": {
+      "type": "object",
+      "required": ["name", "title", "tagline", "palette", "voice"],
+      "properties": {
+        "name": { "type": "string" },
+        "title": { "type": "string" },
+        "tagline": { "type": "string" },
+        "palette": {
+          "type": "object",
+          "required": ["primary", "secondary", "warning", "shadow", "paper"],
+          "properties": {
+            "primary": { "type": "string" },
+            "secondary": { "type": "string" },
+            "warning": { "type": "string" },
+            "shadow": { "type": "string" },
+            "paper": { "type": "string" }
+          }
+        },
+        "voice": {
+          "type": "object",
+          "required": ["register", "sentenceRhythm", "favoriteWords", "forbiddenWords"],
+          "properties": {
+            "register": { "type": "string" },
+            "sentenceRhythm": { "type": "string" },
+            "favoriteWords": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "forbiddenWords": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "mythicRole": {
+      "type": "object",
+      "required": ["role", "cadence", "chroma", "permissions", "requiresValidation"],
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": ["Witness", "Scout", "Archivist", "Breaker", "Gate"]
+        },
+        "cadence": {
+          "type": "string",
+          "enum": ["Pulse", "Drift", "Snap", "Coil", "Fade"]
+        },
+        "chroma": { "type": "string" },
+        "permissions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "requiresValidation": { "type": "boolean" }
+      }
+    },
+    "cognition": {
+      "type": "object",
+      "required": ["domainFocus", "strengths", "weaknesses", "memoryStyle", "hallucinationShape", "alignmentStyle"],
+      "properties": {
+        "domainFocus": { "type": "string" },
+        "strengths": { "type": "array", "items": { "type": "string" } },
+        "weaknesses": { "type": "array", "items": { "type": "string" } },
+        "memoryStyle": { "type": "string" },
+        "hallucinationShape": { "type": "string" },
+        "alignmentStyle": { "type": "string" }
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "required": ["class", "bodyMetaphor", "scalingLaw", "constraints", "failureModes"],
+      "properties": {
+        "class": { "type": "string" },
+        "bodyMetaphor": { "type": "string" },
+        "scalingLaw": { "type": "string" },
+        "constraints": { "type": "array", "items": { "type": "string" } },
+        "failureModes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "wagon": {
+      "type": "object",
+      "required": ["name", "class", "appearance", "crewSlots", "cargo", "movementRule"],
+      "properties": {
+        "name": { "type": "string" },
+        "class": { "type": "string" },
+        "appearance": { "type": "string" },
+        "crewSlots": { "type": "integer", "minimum": 0 },
+        "cargo": { "type": "array", "items": { "type": "string" } },
+        "movementRule": { "type": "string" }
+      }
+    },
+    "capex": {
+      "type": "object",
+      "required": ["compute", "memory", "energy", "maintenance", "social", "ritualDebt", "collapseRisk"],
+      "properties": {
+        "compute": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "memory": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "energy": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "maintenance": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "social": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "ritualDebt": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "collapseRisk": { "type": "integer", "minimum": 0, "maximum": 10 }
+      }
+    },
+    "fellowTravelers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "persona", "roleInCrew", "skillStack", "bond", "secret", "conflict", "favoriteFailureMode"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "persona": { "type": "string" },
+          "roleInCrew": { "type": "string" },
+          "skillStack": { "type": "array", "items": { "type": "string" } },
+          "bond": { "type": "string" },
+          "secret": { "type": "string" },
+          "conflict": { "type": "string" },
+          "favoriteFailureMode": { "type": "string" }
+        }
+      }
+    },
+    "play": {
+      "type": "object",
+      "required": ["verbs", "startingMoves", "forbiddenMoves", "sceneHooks", "levelUpTriggers"],
+      "properties": {
+        "verbs": { "type": "array", "items": { "type": "string" } },
+        "startingMoves": { "type": "array", "items": { "type": "string" } },
+        "forbiddenMoves": { "type": "array", "items": { "type": "string" } },
+        "sceneHooks": { "type": "array", "items": { "type": "string" } },
+        "levelUpTriggers": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
+

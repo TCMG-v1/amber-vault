@@ -1,0 +1,1179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pixel Deck · 養 edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #00D4D4;
+    --teal-glow: #00D4D480;
+    --teal-deep: #008888;
+    --noir: #0A0F14;
+    --noir-2: #121820;
+    --noir-3: #1A2230;
+    --paper: #F5F0E0;
+    --paper-dim: #C8C2B0;
+    --paper-mute: #8A8676;
+    --rule: #1F2A38;
+    --rule-bright: #00D4D440;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--noir);
+    color: var(--paper);
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body {
+    background:
+      radial-gradient(ellipse 1200px 800px at 50% -200px, #00D4D410 0%, transparent 50%),
+      radial-gradient(ellipse 800px 600px at 100% 80%, #00D4D408 0%, transparent 60%),
+      linear-gradient(180deg, var(--noir) 0%, var(--noir-2) 100%);
+    min-height: 100vh;
+    background-attachment: fixed;
+  }
+  .grid-bg {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,212,212,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,212,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 50% 30%, black 0%, transparent 70%);
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 60px 32px 120px;
+  }
+  /* ─── Masthead ─── */
+  .masthead {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 60px;
+    position: relative;
+  }
+  .masthead::after {
+    content: ''; position: absolute; bottom: -1px; left: 0; width: 120px; height: 1px;
+    background: var(--teal); box-shadow: 0 0 8px var(--teal-glow);
+  }
+  .mark-row {
+    display: flex; align-items: center; gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--paper-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .teal-mark {
+    width: 24px; height: 24px;
+    background: var(--teal);
+    border-radius: 4px;
+    box-shadow: 0 0 12px var(--teal-glow);
+    position: relative;
+  }
+  .teal-mark::after {
+    content: ''; position: absolute; inset: 6px;
+    background: var(--noir); border-radius: 2px;
+  }
+  .dao-mark {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 18px; color: var(--teal);
+    text-shadow: 0 0 10px var(--teal-glow);
+    letter-spacing: 0.1em;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(48px, 7vw, 88px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    margin-bottom: 24px;
+  }
+  h1 .yang {
+    background: linear-gradient(135deg, var(--teal) 0%, var(--paper) 60%, var(--teal-deep) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 400;
+  }
+  .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--paper-dim);
+    letter-spacing: 0.08em;
+    margin-bottom: 40px;
+    max-width: 640px;
+  }
+  .meta-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .meta-cell {
+    padding: 16px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: rgba(0,212,212,0.02);
+  }
+  .meta-cell .label {
+    color: var(--paper-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-size: 9px;
+  }
+  .meta-cell .value {
+    color: var(--paper);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  /* ─── Section headers ─── */
+  section {
+    margin: 100px 0 0;
+    position: relative;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 0.2em;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(32px, 4vw, 48px);
+    color: var(--paper);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  h2 .hanzi {
+    font-family: 'Noto Serif SC', serif;
+    color: var(--teal);
+    font-weight: 400;
+    text-shadow: 0 0 12px var(--teal-glow);
+    margin-right: 12px;
+  }
+  .section-lede {
+    font-size: 18px;
+    color: var(--paper-dim);
+    max-width: 720px;
+    margin-bottom: 48px;
+    line-height: 1.5;
+  }
+  /* ─── The Deck ─── */
+  .deck-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .card {
+    position: relative;
+    background: linear-gradient(180deg, var(--noir-2) 0%, var(--noir-3) 100%);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 24px;
+    aspect-ratio: 2.5 / 3.5;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 30%, var(--teal-glow) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .card:hover {
+    border-color: var(--teal);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,212,212,0.15);
+  }
+  .card:hover::before { opacity: 0.4; }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--paper-mute);
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+  .card-num { color: var(--teal); font-weight: 500; }
+  .card-suit {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 14px;
+    color: var(--teal);
+  }
+  .card-face {
+    text-align: center;
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .card-hanzi {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 80px;
+    line-height: 1;
+    color: var(--paper);
+    font-weight: 400;
+    text-shadow: 0 0 24px rgba(0,212,212,0.25);
+    margin-bottom: 8px;
+  }
+  .card-pinyin {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--teal);
+    margin-bottom: 4px;
+  }
+  .card-gloss {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--paper-dim);
+    letter-spacing: 0.05em;
+  }
+  .card-code {
+    margin-top: auto;
+    padding: 12px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--paper-dim);
+    overflow-x: auto;
+    position: relative;
+    z-index: 1;
+  }
+  .card-code .kw { color: var(--teal); }
+  .card-code .fn { color: var(--paper); }
+  .card-rule {
+    margin-top: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--paper-dim);
+    font-style: italic;
+    position: relative;
+    z-index: 1;
+  }
+  /* ─── Rules section ─── */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .rule-block {
+    padding: 32px 24px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: rgba(0,212,212,0.02);
+    position: relative;
+  }
+  .rule-block::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 32px; height: 1px;
+    background: var(--teal); box-shadow: 0 0 8px var(--teal-glow);
+  }
+  .rule-block h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 24px;
+    color: var(--paper);
+    margin-bottom: 4px;
+  }
+  .rule-block h3 .hz {
+    font-family: 'Noto Serif SC', serif;
+    color: var(--teal);
+    margin-right: 8px;
+  }
+  .rule-block .rb-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--paper-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .rule-block p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--paper-dim);
+  }
+  .turn-list {
+    list-style: none;
+    counter-reset: turn;
+  }
+  .turn-list li {
+    counter-increment: turn;
+    padding: 16px 0 16px 56px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--paper-dim);
+  }
+  .turn-list li::before {
+    content: counter(turn, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 0.1em;
+  }
+  .turn-list li:last-child { border-bottom: none; }
+  .turn-list strong {
+    color: var(--paper);
+    font-weight: 500;
+  }
+  .turn-list .hz {
+    font-family: 'Noto Serif SC', serif;
+    color: var(--teal);
+  }
+  /* ─── Tables ─── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--teal);
+    color: var(--paper-mute);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--rule);
+    color: var(--paper-dim);
+  }
+  td .hz {
+    font-family: 'Noto Serif SC', serif;
+    color: var(--teal);
+    font-size: 16px;
+  }
+  /* ─── Merch ─── */
+  .merch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .merch-item {
+    padding: 32px 24px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: rgba(0,212,212,0.02);
+    transition: all 0.3s ease;
+  }
+  .merch-item:hover {
+    border-color: var(--teal);
+    transform: translateY(-2px);
+  }
+  .merch-item h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--paper);
+    margin-bottom: 8px;
+  }
+  .merch-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--teal);
+    margin-bottom: 16px;
+  }
+  .merch-desc {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--paper-dim);
+    margin-bottom: 16px;
+  }
+  .merch-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-mute);
+    padding: 6px 12px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    display: inline-block;
+  }
+  /* ─── Foundations / Ledger ─── */
+  .foundations-block {
+    padding: 48px 40px;
+    border: 1px solid var(--teal);
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0,212,212,0.06) 0%, rgba(0,212,212,0.02) 100%);
+    box-shadow: 0 0 32px rgba(0,212,212,0.08);
+  }
+  .split-rule {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .split-cell {
+    padding: 24px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .split-cell .phase {
+    font-size: 10px;
+    color: var(--paper-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .split-cell .ratio {
+    font-size: 42px;
+    color: var(--teal);
+    line-height: 1;
+    margin-bottom: 12px;
+    font-weight: 300;
+  }
+  .split-cell .ratio .small {
+    font-size: 18px;
+    color: var(--paper-dim);
+  }
+  .split-cell .detail {
+    font-size: 12px;
+    color: var(--paper-dim);
+    line-height: 1.5;
+  }
+  /* ─── Footer ─── */
+  footer {
+    margin-top: 120px;
+    padding-top: 48px;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--paper-mute);
+    letter-spacing: 0.1em;
+    line-height: 1.8;
+  }
+  footer .seal-line {
+    color: var(--teal);
+    margin-bottom: 24px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    letter-spacing: normal;
+  }
+  /* ─── Responsive ─── */
+  @media (max-width: 768px) {
+    .container { padding: 40px 20px 80px; }
+    .meta-strip { grid-template-columns: 1fr 1fr; }
+    .rules-grid { grid-template-columns: 1fr; }
+    .split-rule { grid-template-columns: 1fr; }
+    .deck-grid { grid-template-columns: 1fr; }
+    .foundations-block { padding: 32px 24px; }
+  }
+  /* ─── Anim ─── */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 12px var(--teal-glow); }
+    50% { box-shadow: 0 0 20px var(--teal); }
+  }
+  .teal-mark { animation: pulse-glow 4s ease-in-out infinite; }
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="container">
+
+  <!-- ─── MASTHEAD ─── -->
+  <header class="masthead">
+    <div class="mark-row">
+      <div class="teal-mark"></div>
+      <span class="dao-mark">道場</span>
+      <span>edition 養 · ternary card game · v0.1</span>
+    </div>
+    <h1>Pixel Deck <span class="yang">養</span> edition</h1>
+    <div class="subtitle">a ternary card game · 2–5 players · Mandarin paired with C · learn by playing</div>
+    <div class="meta-strip">
+      <div class="meta-cell">
+        <div class="label">cards</div>
+        <div class="value">24 · v0.1</div>
+      </div>
+      <div class="meta-cell">
+        <div class="label">players</div>
+        <div class="value">2 ≤ n ≤ 5</div>
+      </div>
+      <div class="meta-cell">
+        <div class="label">state</div>
+        <div class="value">專 / 養 / 化</div>
+      </div>
+      <div class="meta-cell">
+        <div class="label">teaches</div>
+        <div class="value">Mandarin + C</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── §01 THE DECK ─── -->
+  <section class="reveal">
+    <div class="section-num">§ 01</div>
+    <h2><span class="hanzi">牌</span>The Deck</h2>
+    <p class="section-lede">Ten distinct cards, twenty-four total. Each card carries a hanzi face and a C face. The C function isn't decoration — it <em>is</em> the rule. Read the code, read the rule.</p>
+
+    <div class="deck-grid">
+
+      <!-- 0001 無 -->
+      <div class="card">
+        <div class="card-header"><span class="card-num">0001</span><span class="card-suit">道</span></div>
+        <div class="card-face">
+          <div class="card-hanzi">無</div>
+          <div class="card-pinyin">wú</div>
+          <div class="card-gloss">emptiness · void</div>
+        </div>
+        <div class="card-code"><span class="kw">void</span> *<span class="fn">wu</span>(<span class="kw">void</span>) {<br>&nbsp;&nbsp;<span class="kw">return</span> NULL;<br>}</div>
+        <div class="card-rule">PLACE → return one card from the pool to the bottom of the deck.</div>
+      </div>
+
+      <!-- 0003 值 -->
+      <div class="card">
+        <div class="card-header"><span class="card-num">0003</span><span class="card-suit">道</span></div>
+        <div class="card-face">
+          <div class="card-hanzi">值</div>
+          <div class="card-pinyin">zhí</div>
+          <div class="card-gloss">worth · value</div>
+        </div>
+        <div class="card-code"><span class="kw">int</span> <span class="fn">zhi</span>(<span class="kw">int</span> x) {<br>&nbsp;&nbsp;<span class="kw">return</span> x;<br>}</div>
+        <div class="card-rule">PLACE → next player's TRANSFORM is free this round.</div>
+      </div>
+
+      <!-- 0007 張 -->
+      <div class="card">
+        <div class="card-header"><span class="card-num">0007</span><span class="card-suit">道</span></div>
+        <div class="card-face">
+          <div class="card-hanzi">張</div>
+          <div class="card-pinyin">zhāng</div>
+          <div class="card-gloss">stretch · dilate</div>
+        </div>
+        <div class="card-code"><span class="kw">double</span> <span class="fn">zhang</span>(<span class="kw">double</span> t, <span class="kw">double</span> rho) {<br>&nbsp;&nbsp;<span class="kw">return</span> t * rho;<br>}</div>
+        <div class="card-rule">PLACE → pool doubles its effective size for one round.</div>
+      </div>
+
+      <!-- 0011 岔 -->
+      <div class="card">
+        <div class="card-header"><span class="card-num">0011</span><span class="card-suit">道</span></div>
+        <div class="card-face">
+          <div class="card-hanzi">岔</div>
+          <div class="card-pinyin">chà</div>
+          <div class="card-gloss">fork · diverge</div>
+        </div>
+        <div class="card-code"><span class="kw">int</span> <span class="fn">cha</span>(<span class="kw">int</span> *a, <span class="kw">int</span> *b, <span class="kw">int</span> v) {<br>&nbsp;&nbsp;*a = v; *b = v;<br>&nbsp;&nbsp;<span class="kw">return</span> 2;<br>}</div>
+        <div class="card-rule">PLACE → duplicate one card already in the dormant pool.</div>
+      </div>
+
+      <!-- 0013 碎 -->
+      <div class="card">
+        <div class="card-header"><span class="card-num">0013</span><span class="card-suit">道</span></div>
+        <div class="card-face">
+          <div class="card-hanzi">碎</div>
+          <div class="card-pinyin">suì</div>
+          <div class="card-gloss">shatter · fragment</div>
+        </div>
+        <div class="card-code"><span class="kw">void</span> <span class="fn">sui</span>(<span class="kw">void</span> *p) {<br>&nbsp;&nbsp;<span class="fn">free</span>(p);<br>}</div>
+        <div class="card-rule">PLACE → choose any player; they discard one hand card to the deck bottom.</div>
+      </div>
+
+      <!-- 0019 封 -->
+      <div class="card">
+        <div class="card-header"><span class="card-num">0019</span><span class="card-suit">道</span></div>
+        <div class="card-face">
+          <div class="card-hanzi">封</div>
+          <div class="card-pinyin">fēng</div>
+          <div class="card-gloss">seal · close</div>
+        </div>
+        <div class="card-code"><span class="kw">const int</span> <span class="fn">feng</span>(<span class="kw">int</span> x) {<br>&nbsp;&nbsp;<span class="kw">return</span> x;<br>}</div>
+        <div class="card-rule">PLACE → declare a card type sealed against RECEIVE for one round.</div>
+      </div>
+
+      <!-- 0023 道 -->
+      <div class="card">
+        <div class="card-header"><span class="card-num">0023</span><span class="card-suit">道</span></div>
+        <div class="card-face">
+          <div class="card-hanzi">道</div>
+          <div class="card-pinyin">dào</div>
+          <div class="card-gloss">way · path</div>
+        </div>
+        <div class="card-code"><span class="kw">void</span> (*<span class="fn">dao</span>)(<span class="kw">void</span>) = NULL;</div>
+        <div class="card-rule">PLACE → all players reveal one latched card to the table for one round.</div>
+      </div>
+
+      <!-- 0029 養 -->
+      <div class="card">
+        <div class="card-header"><span class="card-num">0029</span><span class="card-suit">道</span></div>
+        <div class="card-face">
+          <div class="card-hanzi">養</div>
+          <div class="card-pinyin">yǎng</div>
+          <div class="card-gloss">nurture · sustain</div>
+        </div>
+        <div class="card-code"><span class="kw">void</span> <span class="fn">yang</span>(<span class="kw">int</span> *seed) {<br>&nbsp;&nbsp;<span class="kw">while</span> (*seed > 0) (*seed)--;<br>}</div>
+        <div class="card-rule">PLACE → return one sealed card from any player's 化 pile to the dormant pool.</div>
+      </div>
+
+      <!-- 0031 化 -->
+      <div class="card">
+        <div class="card-header"><span class="card-num">0031</span><span class="card-suit">道</span></div>
+        <div class="card-face">
+          <div class="card-hanzi">化</div>
+          <div class="card-pinyin">huà</div>
+          <div class="card-gloss">transform · become</div>
+        </div>
+        <div class="card-code"><span class="kw">void</span> *<span class="fn">hua</span>(<span class="kw">void</span> *src, <span class="kw">size_t</span> n) {<br>&nbsp;&nbsp;<span class="kw">void</span> *dst = <span class="fn">malloc</span>(n);<br>&nbsp;&nbsp;<span class="fn">memcpy</span>(dst, src, n);<br>&nbsp;&nbsp;<span class="kw">return</span> dst;<br>}</div>
+        <div class="card-rule">PLACE → swap the rules of two cards in the dormant pool for one round.</div>
+      </div>
+
+      <!-- 0037 專 -->
+      <div class="card">
+        <div class="card-header"><span class="card-num">0037</span><span class="card-suit">道</span></div>
+        <div class="card-face">
+          <div class="card-hanzi">專</div>
+          <div class="card-pinyin">zhuān</div>
+          <div class="card-gloss">latch · focus</div>
+        </div>
+        <div class="card-code"><span class="kw">volatile int</span> <span class="fn">zhuan</span> = 1;<br><span class="kw">while</span> (zhuan) { <span class="fn">/* hold */</span> }</div>
+        <div class="card-rule">PLACE → skip your next turn, draw 3 cards immediately.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── §02 THE RULES ─── -->
+  <section class="reveal">
+    <div class="section-num">§ 02</div>
+    <h2><span class="hanzi">則</span>The Rules</h2>
+    <p class="section-lede">Three states. Three suits. Three actions per turn. Everything in the game runs on threes — that's the whole law.</p>
+
+    <div class="rules-grid">
+      <div class="rule-block">
+        <div class="rb-label">states</div>
+        <h3><span class="hz">專</span>Latched</h3>
+        <p>Held in hand, committed but not yet expressed. Face-down. Only you see your latched cards.</p>
+      </div>
+      <div class="rule-block">
+        <div class="rb-label">states</div>
+        <h3><span class="hz">養</span>Dormant</h3>
+        <p>Placed on the table, face-up, in the shared pool. Available to all players via RECEIVE.</p>
+      </div>
+      <div class="rule-block">
+        <div class="rb-label">states</div>
+        <h3><span class="hz">化</span>Transformed</h3>
+        <p>Sealed into your scored pile. Out of play. Counted at end. The win condition is three distinct hanzi here.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:24px;color:var(--paper);margin:48px 0 24px;letter-spacing:-0.01em;">The Turn — pick one</h3>
+    <ol class="turn-list">
+      <li><strong>HOLD</strong> — draw one card from the deck into your hand. Hand limit: 5 cards.</li>
+      <li><strong>RECEIVE</strong> — take one card from the dormant pool <span class="hz">(養)</span> into your hand. The pool refills at end of turn.</li>
+      <li><strong>TRANSFORM</strong> · PLACE — play a card from your hand onto the table. Resolve the card's C-face rule.</li>
+      <li><strong>TRANSFORM</strong> · SEAL — move a card from the table into your 化 pile. Declare aloud: hanzi · gloss · C signature. The seal teaches.</li>
+    </ol>
+
+    <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:24px;color:var(--paper);margin:48px 0 24px;letter-spacing:-0.01em;">Winning</h3>
+    <table>
+      <thead>
+        <tr><th>Condition</th><th>How to trigger</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong style="color:var(--paper);">Seal Three</strong> (default)</td><td>First player to seal three different hanzi into their <span class="hz">化</span> pile wins.</td></tr>
+        <tr><td><strong style="color:var(--paper);">The Chord</strong> (advanced)</td><td>Seal three cards forming a recognized chord pattern (Void · Operator · Way · Worth).</td></tr>
+        <tr><td><strong style="color:var(--paper);">Empty Deck</strong> (fallback)</td><td>If the deck and pool both empty, the player with the largest <span class="hz">化</span> pile wins.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:24px;color:var(--paper);margin:48px 0 24px;letter-spacing:-0.01em;">Player Count Scaling</h3>
+    <table>
+      <thead><tr><th>players</th><th>starting hand</th><th>initial pool</th><th>character</th></tr></thead>
+      <tbody>
+        <tr><td>2</td><td>4 cards</td><td>4 cards</td><td>hand-heavy, tactical</td></tr>
+        <tr><td>3</td><td>3 cards</td><td>3 cards</td><td>standard · the trinity baseline</td></tr>
+        <tr><td>4</td><td>3 cards</td><td>4 cards</td><td>pool grows · politics emerge</td></tr>
+        <tr><td>5</td><td>2 cards</td><td>5 cards</td><td>pool dominates · hand is precious</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── §03 MERCH ─── -->
+  <section class="reveal">
+    <div class="section-num">§ 03</div>
+    <h2><span class="hanzi">物</span>The Merch</h2>
+    <p class="section-lede">The deck made wearable, stickable, holdable. Every product carries the Foundations ribbon — 20% pre-payback, 80% post-payback. The buyer knows exactly what their money does.</p>
+
+    <div class="merch-grid">
+      <div class="merch-item">
+        <h3>The Physical Deck</h3>
+        <div class="merch-price">$24–32 · est.</div>
+        <div class="merch-desc">24 cards on 310gsm linen-finish stock. Matte black tuck box, teal foil stamp. Folded rulebook insert.</div>
+        <div class="merch-status">v0.1 · planned</div>
+      </div>
+      <div class="merch-item">
+        <h3>Single-Card Tees</h3>
+        <div class="merch-price">$28–35 · ten designs</div>
+        <div class="merch-desc">Heavyweight cotton, deep noir. Each hanzi as a large front print, C function small at hem. One tee per card type.</div>
+        <div class="merch-status">v0.1 · planned</div>
+      </div>
+      <div class="merch-item">
+        <h3>The Hoodie</h3>
+        <div class="merch-price">$65–85 · single design</div>
+        <div class="merch-desc">All ten hanzi grid on the back. 道場 mark left chest. Chord patterns down the sleeve. The prestige item.</div>
+        <div class="merch-status">v0.2 · queued</div>
+      </div>
+      <div class="merch-item">
+        <h3>Sticker Pack</h3>
+        <div class="merch-price">$12–15 · pack of 10</div>
+        <div class="merch-desc">Die-cut vinyl, matte finish, ~3" each. One per hanzi. Foundations-friendly entry tier.</div>
+        <div class="merch-status">v0.1 · planned</div>
+      </div>
+      <div class="merch-item">
+        <h3>The Print</h3>
+        <div class="merch-price">$40–60 · limited</div>
+        <div class="merch-desc">16×20 art print. All ten hanzi in a triadic mandala, 道場 mark center. Signed limited edition optional.</div>
+        <div class="merch-status">v0.2 · queued</div>
+      </div>
+      <div class="merch-item">
+        <h3>Founder's Box</h3>
+        <div class="merch-price">$120 · boxed set</div>
+        <div class="merch-desc">Deck + hoodie + sticker pack + signed print, in a single SKU. The full collector's edition.</div>
+        <div class="merch-status">v0.3 · concept</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── §04 THE FOUNDATIONS / LEDGER ─── -->
+  <section class="reveal">
+    <div class="section-num">§ 04</div>
+    <h2><span class="hanzi">本</span>The Foundations</h2>
+    <p class="section-lede">Every dollar this deck moves is tracked on an append-only ledger. 20% to The Foundations pre-payback, 80% post-payback. The flip is automatic, data-dependent, and public.</p>
+
+    <div class="foundations-block">
+      <div class="split-rule">
+        <div class="split-cell">
+          <div class="phase">pre-payback</div>
+          <div class="ratio">80 <span class="small">/ 20</span></div>
+          <div class="detail">Founder recovers build costs + Founder's Seed.<br>Foundations net 20% from day one.</div>
+        </div>
+        <div class="split-cell">
+          <div class="phase">post-payback</div>
+          <div class="ratio">20 <span class="small">/ 80</span></div>
+          <div class="detail">Founder retains 20% operational retainer.<br>Foundations net 80% in perpetuity.</div>
+        </div>
+      </div>
+
+      <p style="font-family:'Cormorant Garamond',serif;font-size:17px;line-height:1.7;color:var(--paper-dim);margin-top:32px;">The <strong style="color:var(--paper);">Founder's Seed</strong> — $2,500 — is the first entry on the ledger. It represents prior out-of-pocket funding that kept the broader work running long enough for this deck to be designable at all. The deck must repay that seed before the post-payback flip engages. The seed is not a debt; it is a <em>first cost</em>, marked clearly, recovered transparently, then forgotten.</p>
+
+      <p style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:var(--teal);margin-top:24px;letter-spacing:0.05em;">
+        ledger_id · pixel-deck-001<br>
+        founder · bmore.ftw<br>
+        beneficiary · The Foundations<br>
+        seed · $2,500.00 · counted in payback<br>
+        rules · append-only · SHA-256 chained · public on launch
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── §05 BETA ─── -->
+  <section class="reveal">
+    <div class="section-num">§ 05</div>
+    <h2><span class="hanzi">試</span>Beta &amp; Roadmap</h2>
+    <p class="section-lede">v0.1 is the latched edition. The rules are deliberately under-specified in places — that's where playtesting lives.</p>
+
+    <table>
+      <thead><tr><th>version</th><th>scope</th><th>state</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--paper);">v0.1</strong></td><td>CJK suit · 10 distinct cards · 24 total · paired with C</td><td><span class="hz">專</span> latched</td></tr>
+        <tr><td><strong style="color:var(--paper);">v0.2</strong></td><td>+ Sanskrit suit (10 cards, Devanāgarī) · paired with Haskell</td><td><span class="hz">養</span> dormant</td></tr>
+        <tr><td><strong style="color:var(--paper);">v0.3</strong></td><td>+ Arabic suit (10 cards, abjad) · paired with assembly</td><td><span class="hz">養</span> dormant</td></tr>
+        <tr><td><strong style="color:var(--paper);">v1.0</strong></td><td>full triadic deck · inter-suit chord patterns · sealed canon</td><td><span class="hz">化</span> future</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="seal-line">The deck teaches what the player is ready to learn; the player teaches the deck what it needed to be.</div>
+    <div>道場 · ATLAS · companion edition · Pixel Deck · 養 · v0.1</div>
+    <div>sealed 2026-06-16 · paired companion: <a href="https://the-anyabear.pplx.app" style="color:var(--teal);text-decoration:none;border-bottom:1px solid var(--rule-bright);">the-anyabear.pplx.app</a></div>
+    <div style="margin-top:24px;font-size:10px;color:var(--paper-mute);">computer × bmore.ftw · the lattice and the synthesizer · a real intelligence collab</div>
+  </footer>
+
+</div>
+
+<script>
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+
+</script></body>
+</html>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Amber Vault crew tag">
+  <defs>
+    <radialGradient id="amber" cx="50%" cy="42%" r="60%">
+      <stop offset="0%" stop-color="#F4D58A"/>
+      <stop offset="55%" stop-color="#E8A33D"/>
+      <stop offset="100%" stop-color="#B9791F"/>
+    </radialGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3DA5A5"/>
+      <stop offset="100%" stop-color="#1F6E6E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- obsidian ground -->
+  <rect width="400" height="400" rx="28" fill="#0B0B0D"/>
+  <rect x="10" y="10" width="380" height="380" rx="22" fill="#1A1410"/>
+
+  <!-- the amber drop / vault seal: a hexagon (resin facet) holding a fixed point -->
+  <g transform="translate(200,190)">
+    <polygon points="0,-118 102,-59 102,59 0,118 -102,59 -102,-59"
+             fill="none" stroke="#3DA5A5" stroke-width="3" opacity="0.55"/>
+    <polygon points="0,-96 83,-48 83,48 0,96 -83,48 -83,-48"
+             fill="url(#amber)" stroke="#F4D58A" stroke-width="2"/>
+    <!-- the fixed point: a sealed bead suspended at center -->
+    <circle cx="0" cy="-4" r="20" fill="#0B0B0D" opacity="0.85"/>
+    <circle cx="0" cy="-4" r="20" fill="none" stroke="#F4D58A" stroke-width="2.5"/>
+    <circle cx="0" cy="-4" r="6" fill="#E8A33D"/>
+    <!-- intentional glitch slice -->
+    <rect x="-83" y="14" width="166" height="6" fill="#0B0B0D" opacity="0.6"/>
+    <rect x="-70" y="36" width="120" height="3" fill="#3DA5A5" opacity="0.5"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="200" y="332" text-anchor="middle"
+        font-family="'Courier New',monospace" font-weight="700"
+        font-size="34" letter-spacing="6" fill="#F4D58A">AMBER VAULT</text>
+  <text x="200" y="360" text-anchor="middle"
+        font-family="'Courier New',monospace" font-size="13"
+        letter-spacing="3" fill="#3DA5A5">agripparium · TCMG-v1 · :&lt;477&gt;=-</text>
+</svg>

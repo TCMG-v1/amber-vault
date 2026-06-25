@@ -1,0 +1,24 @@
+{
+  "raw_ref": "content://media/external/images/media/100231",
+  "raw_path": "/sdcard/DCIM/Camera/PXL_20260623_080411.dng",
+  "media_kind": "photo",
+  "captured_at": "2026-06-23T08:04:11Z",
+  "exif": {
+    "Make": "Google",
+    "Model": "Pixel 9 Pro",
+    "LensModel": "Pixel 9 Pro back camera 6.9mm f/1.7",
+    "ISO": 55,
+    "ExposureTime": "1/120",
+    "FNumber": 1.7,
+    "Orientation": 1,
+    "gps_lat": 38.78462,
+    "gps_lon": -75.30518
+  },
+  "live_track": [
+    {"t": "2026-06-23T08:04:09Z", "lat": 38.78460, "lon": -75.30520},
+    {"t": "2026-06-23T08:04:13Z", "lat": 38.78465, "lon": -75.30515}
+  ],
+  "timeline": [
+    {"t": "2026-06-23T08:00:00Z", "lat": 38.7901, "lon": -75.3110}
+  ]
+}

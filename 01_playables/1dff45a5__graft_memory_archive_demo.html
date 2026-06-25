@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Graft Memory Archive Semantic Bridge</title>
+    <meta
+      name="description"
+      content="A semantic rendering bridge where TextSegments become living archive interface elements."
+    />
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=boska@400,500,700&f[]=satoshi@400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root,
+      [data-theme="light"] {
+        --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+        --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+        --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+        --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+        --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+        --space-1: 0.25rem;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --space-5: 1.25rem;
+        --space-6: 1.5rem;
+        --space-8: 2rem;
+        --space-10: 2.5rem;
+        --space-12: 3rem;
+        --space-16: 4rem;
+        --font-display: "Boska", Georgia, serif;
+        --font-body: "Satoshi", "Inter", sans-serif;
+        --color-bg: #f3efe4;
+        --color-surface: #fbf7ed;
+        --color-surface-2: #eee4d2;
+        --color-text: #282016;
+        --color-muted: #756957;
+        --color-border: color-mix(in oklab, #282016 18%, transparent);
+        --chroma-crimson: #9e2f3f;
+        --chroma-sapphire: #1c5e83;
+        --chroma-emerald: #3f7a46;
+        --chroma-amber: #a76718;
+        --chroma-violet: #6e4e8b;
+        --chroma-onyx: #282016;
+        --shadow: 0 18px 48px color-mix(in oklab, #282016 16%, transparent);
+        --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      [data-theme="dark"] {
+        --color-bg: #17130f;
+        --color-surface: #211b15;
+        --color-surface-2: #2a221a;
+        --color-text: #eee3cf;
+        --color-muted: #b6a88f;
+        --color-border: color-mix(in oklab, #eee3cf 18%, transparent);
+        --chroma-crimson: #df6e7a;
+        --chroma-sapphire: #69a8cc;
+        --chroma-emerald: #7fbd82;
+        --chroma-amber: #d79a45;
+        --chroma-violet: #b293d2;
+        --chroma-onyx: #eee3cf;
+        --shadow: 0 18px 48px color-mix(in oklab, #000 55%, transparent);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+
+      body {
+        min-height: 100dvh;
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        line-height: 1.6;
+        color: var(--color-text);
+        background:
+          linear-gradient(90deg, color-mix(in oklab, var(--color-border) 45%, transparent) 1px, transparent 1px),
+          linear-gradient(var(--color-bg), var(--color-bg));
+        background-size: 28px 28px, auto;
+      }
+
+      button {
+        font: inherit;
+        color: inherit;
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--chroma-sapphire);
+        outline-offset: 3px;
+      }
+
+      .shell {
+        width: min(1120px, calc(100% - var(--space-8)));
+        margin-inline: auto;
+        padding-block: var(--space-8);
+      }
+
+      .skip-link {
+        position: absolute;
+        top: var(--space-2);
+        left: var(--space-2);
+        transform: translateY(-150%);
+        padding: var(--space-2) var(--space-3);
+        color: var(--color-bg);
+        background: var(--color-text);
+        z-index: 10;
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+        margin-bottom: var(--space-8);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        font-size: var(--text-sm);
+        color: var(--color-muted);
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        color: var(--chroma-amber);
+      }
+
+      .theme-toggle {
+        min-width: 44px;
+        min-height: 44px;
+        border: 1px solid var(--color-border);
+        border-radius: 999px;
+        background: var(--color-surface);
+        cursor: pointer;
+        transition:
+          background var(--transition-interactive),
+          transform var(--transition-interactive),
+          box-shadow var(--transition-interactive);
+      }
+
+      .theme-toggle:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow);
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+        gap: var(--space-8);
+        align-items: start;
+      }
+
+      .doctrine-card,
+      .archive-card,
+      .console-card {
+        border: 1px solid var(--color-border);
+        border-radius: 24px;
+        background: color-mix(in oklab, var(--color-surface) 94%, transparent);
+        box-shadow: var(--shadow);
+      }
+
+      .doctrine-card {
+        grid-column: 1 / -1;
+        padding: var(--space-6);
+        margin-bottom: var(--space-6);
+      }
+
+      .doctrine-card h1 {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        color: var(--chroma-sapphire);
+        margin-bottom: var(--space-2);
+      }
+
+      .doctrine-card .subtitle {
+        color: var(--color-muted);
+        margin-bottom: var(--space-5);
+      }
+
+      .doctrine-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-4);
+      }
+
+      .doctrine-grid article {
+        padding: var(--space-4);
+        border-radius: 16px;
+        background: color-mix(in oklab, var(--color-surface-2) 52%, transparent);
+      }
+
+      .doctrine-grid h2 {
+        font-size: var(--text-sm);
+        margin-bottom: var(--space-2);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .doctrine-grid p {
+        font-size: var(--text-sm);
+        color: var(--color-muted);
+      }
+
+      .archive-card {
+        padding: clamp(var(--space-6), 6vw, var(--space-12));
+        min-height: 620px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .archive-card::before {
+        content: "";
+        position: absolute;
+        inset: var(--space-4);
+        border: 1px dashed color-mix(in oklab, var(--color-border) 70%, transparent);
+        border-radius: 18px;
+        pointer-events: none;
+      }
+
+      .segments {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-6);
+      }
+
+      .text-segment {
+        max-width: 68ch;
+      }
+
+      h1.text-segment {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        line-height: 1.05;
+        letter-spacing: 0.02em;
+      }
+
+      p.text-segment {
+        font-size: var(--text-lg);
+      }
+
+      aside.text-segment {
+        align-self: flex-end;
+        max-width: 34ch;
+        padding: var(--space-4);
+        border-radius: 16px;
+        background: color-mix(in oklab, var(--color-surface-2) 72%, transparent);
+        font-size: var(--text-sm);
+      }
+
+      output.text-segment {
+        display: block;
+        width: 100%;
+        padding: var(--space-4);
+        border-radius: 16px;
+        border: 1px solid var(--color-border);
+        background: color-mix(in oklab, var(--color-surface-2) 52%, transparent);
+      }
+
+      button.text-segment {
+        min-height: 44px;
+        padding: var(--space-3) var(--space-5);
+        border: 1px solid currentColor;
+        border-radius: 999px;
+        background: transparent;
+        cursor: pointer;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        transition:
+          transform var(--transition-interactive),
+          box-shadow var(--transition-interactive),
+          background var(--transition-interactive);
+      }
+
+      button.text-segment:hover {
+        transform: translateY(-1px);
+        background: color-mix(in oklab, currentColor 10%, transparent);
+        box-shadow: var(--shadow);
+      }
+
+      button.text-segment:active {
+        transform: translateY(0);
+      }
+
+      .segment--crimson {
+        color: var(--chroma-crimson);
+      }
+
+      .segment--sapphire {
+        color: var(--chroma-sapphire);
+      }
+
+      .segment--emerald {
+        color: var(--chroma-emerald);
+      }
+
+      .segment--amber {
+        color: var(--chroma-amber);
+      }
+
+      .segment--violet {
+        color: var(--chroma-violet);
+      }
+
+      .segment--onyx {
+        color: var(--chroma-onyx);
+      }
+
+      .role--gate {
+        text-transform: uppercase;
+      }
+
+      .role--breaker {
+        font-weight: 700;
+      }
+
+      .cadence--pulse {
+        animation: pulse-cadence 1.8s var(--ease-out) infinite;
+      }
+
+      .cadence--snap {
+        animation: snap-cadence 480ms var(--ease-out) both;
+      }
+
+      .cadence--coil {
+        animation: coil-cadence 4s ease-in-out infinite;
+      }
+
+      .cadence--drift {
+        animation: drift-cadence 9s ease-in-out infinite;
+      }
+
+      .console-card {
+        padding: var(--space-5);
+        position: sticky;
+        top: var(--space-6);
+      }
+
+      .console-card h2 {
+        font-size: var(--text-lg);
+        margin-bottom: var(--space-4);
+      }
+
+      .assembly-panel,
+      .gate-console {
+        display: grid;
+        gap: var(--space-3);
+      }
+
+      .policy-list {
+        display: grid;
+        gap: var(--space-2);
+        margin-bottom: var(--space-6);
+        font-size: var(--text-xs);
+        color: var(--color-muted);
+      }
+
+      .commit-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+        margin-bottom: var(--space-5);
+        padding: var(--space-3);
+        border-radius: 14px;
+        background: color-mix(in oklab, var(--color-surface-2) 52%, transparent);
+      }
+
+      .commit-status {
+        font-size: var(--text-xs);
+        color: var(--color-muted);
+      }
+
+      .commit-button {
+        min-height: 44px;
+        padding: var(--space-2) var(--space-4);
+        border: 1px solid var(--chroma-amber);
+        border-radius: 999px;
+        color: var(--chroma-amber);
+        background: transparent;
+        cursor: pointer;
+        font-weight: 700;
+        transition:
+          transform var(--transition-interactive),
+          background var(--transition-interactive);
+      }
+
+      .commit-button:hover {
+        transform: translateY(-1px);
+        background: color-mix(in oklab, var(--chroma-amber) 10%, transparent);
+      }
+
+      .policy-list code {
+        color: var(--color-text);
+      }
+
+      .assembly-block {
+        overflow-x: hidden;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        padding: var(--space-3);
+        border-radius: 12px;
+        background: color-mix(in oklab, var(--color-text) 8%, transparent);
+        color: var(--color-muted);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: var(--text-xs);
+        line-height: 1.5;
+      }
+
+      .gate-console {
+        margin-top: var(--space-6);
+        color: var(--color-muted);
+        font-size: var(--text-sm);
+      }
+
+      .gate-console p {
+        max-width: none;
+      }
+
+      @keyframes pulse-cadence {
+        0%,
+        100% {
+          opacity: 0.72;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes snap-cadence {
+        from {
+          filter: blur(2px);
+          letter-spacing: 0.18em;
+        }
+        to {
+          filter: blur(0);
+          letter-spacing: 0.08em;
+        }
+      }
+
+      @keyframes coil-cadence {
+        0%,
+        100% {
+          letter-spacing: 0.02em;
+        }
+        50% {
+          letter-spacing: 0.06em;
+        }
+      }
+
+      @keyframes drift-cadence {
+        0%,
+        100% {
+          opacity: 0.82;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 800px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+
+        .console-card {
+          position: static;
+        }
+
+        .doctrine-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand" aria-label="Graft Memory Archive">
+          <svg class="brand-mark" aria-hidden="true" viewBox="0 0 48 48" fill="none">
+            <path d="M12 32c8-18 16-18 24 0" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+            <path d="M16 24h16M24 10v28" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+            <circle cx="24" cy="24" r="5" stroke="currentColor" stroke-width="3" />
+          </svg>
+          <span>Semantic rendering bridge</span>
+        </div>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme">◐</button>
+      </header>
+
+      <main id="main">
+        <section class="doctrine-card" aria-label="Graft Memory Archive doctrine">
+          <h1>Graft Memory Archive</h1>
+          <p class="subtitle">Controlled semantic play for living documents, pattern systems, and machine lore.</p>
+          <div class="doctrine-grid">
+            <article>
+              <h2>Prime rule</h2>
+              <p>No raw power without role, no role without validation, no validation without memory.</p>
+            </article>
+            <article>
+              <h2>Commit rule</h2>
+              <p>Everything is a working document until commit.</p>
+            </article>
+            <article>
+              <h2>Motto</h2>
+              <p>A secure archive should still feel alive.</p>
+            </article>
+            <article>
+              <h2>Security slogan</h2>
+              <p>The Breaker may enter, but the Archivist writes the log.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="archive-card" aria-label="Rendered semantic archive">
+          <div id="segments" class="segments" data-testid="region-segments"></div>
+        </section>
+
+        <aside class="console-card" aria-label="Assembly overlay and gate console">
+          <div class="commit-row">
+            <span id="commit-status" class="commit-status">State: working document</span>
+            <button id="commit-archive" class="commit-button" type="button" data-testid="button-commit-archive">
+              Commit Archive
+            </button>
+          </div>
+          <h2>Policy Layer</h2>
+          <div class="policy-list" aria-label="Role permissions">
+            <p><code>Scout</code> → observe + highlight</p>
+            <p><code>Witness</code> → read-only truth</p>
+            <p><code>Archivist</code> → store + lock + audit</p>
+            <p><code>Gate</code> → approve + deny + audit</p>
+            <p><code>Breaker</code> → rupture + audit</p>
+          </div>
+          <h2>FIB-64 Overlay</h2>
+          <div id="assembly" class="assembly-panel" data-testid="region-assembly"></div>
+          <div id="gate-console" class="gate-console" data-testid="region-gate-console">
+            <p>Gate console waiting.</p>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <script src="./semantic_renderer.js"></script>
+    <script>
+      const semanticSegments = [
+        {
+          id: "codexHeading",
+          content: "GRAFT MEMORY ARCHIVE",
+          chroma: "Sapphire",
+          semantic: "Spectral",
+          cadence: "Coil",
+          role: "Archivist",
+          target: "HeadingSurface",
+          commitState: "WorkingDoc",
+          isCommitted: false,
+          requiresValidation: false,
+          permissions: ["Store", "Lock", "Audit"],
+          mayExecute: false,
+          assembly: [
+            "; MOV SEGMENT, CODEX_HEADING",
+            "; SET CHROMA, SAPPHIRE",
+            "; APPLY CADENCE, COIL",
+            "; ROLE = ARCHIVIST :: PRESERVE CONTEXT",
+          ],
+        },
+        {
+          id: "inkWitness",
+          content: "Memory is not stored. It is grafted into living structure.",
+          chroma: "Onyx",
+          semantic: "Spectral",
+          cadence: "Drift",
+          role: "Witness",
+          target: "BodySurface",
+          commitState: "WorkingDoc",
+          isCommitted: false,
+          requiresValidation: false,
+          permissions: ["ReadTruth"],
+          mayExecute: true,
+          assembly: [
+            "; MOV SEGMENT, INK_WITNESS",
+            "; SET CHROMA, ONYX",
+            "; APPLY CADENCE, DRIFT",
+            "; ROLE = WITNESS :: OBSERVE WITHOUT AUTHORITY",
+          ],
+        },
+        {
+          id: "archiveGate",
+          content: "ACCESS ARCHIVE",
+          chroma: "Amber",
+          semantic: "Cool",
+          cadence: "Snap",
+          role: "Gate",
+          target: "ButtonSurface",
+          commitState: "WorkingDoc",
+          isCommitted: false,
+          requiresValidation: true,
+          permissions: ["Approve", "Deny", "Audit"],
+          mayExecute: false,
+          assembly: [
+            "; MOV SEGMENT, ARCHIVE_GATE",
+            "; SET CHROMA, AMBER",
+            "; APPLY CADENCE, SNAP",
+            "; ROLE = GATE :: VALIDATION REQUIRED",
+          ],
+        },
+        {
+          id: "rhoCommittedGate",
+          content: "Rho reads only the committed gate.",
+          chroma: "Emerald",
+          semantic: "Viridescent",
+          cadence: "Pulse",
+          role: "Gate",
+          target: "StatusSurface",
+          commitState: "WorkingDoc",
+          isCommitted: false,
+          requiresValidation: true,
+          permissions: ["Approve", "Deny", "Audit"],
+          mayExecute: false,
+          assembly: [
+            "; MOV SEGMENT, RHO_COMMITTED_GATE",
+            "; SET CHROMA, EMERALD",
+            "; APPLY CADENCE, PULSE",
+            "; ROLE = GATE :: COMMITTED AUTHORITY ONLY",
+          ],
+        },
+        {
+          id: "vixBreaker",
+          content: "Backwardation detected. The archive stops pretending the floor is stable.",
+          chroma: "Crimson",
+          semantic: "Warm",
+          cadence: "Snap",
+          role: "Breaker",
+          target: "StatusSurface",
+          commitState: "WorkingDoc",
+          isCommitted: false,
+          requiresValidation: true,
+          permissions: ["Rupture", "Audit"],
+          mayExecute: false,
+          assembly: [
+            "; MOV SEGMENT, VIX_BREAKER",
+            "; SET CHROMA, CRIMSON",
+            "; APPLY CADENCE, SNAP",
+            "; ROLE = BREAKER :: INTERRUPT FLOW",
+          ],
+        },
+        {
+          id: "canisTrainingLine",
+          content: "Training is not obedience; it is shared timing.",
+          chroma: "Violet",
+          semantic: "Threshold",
+          cadence: "Drift",
+          role: "Witness",
+          target: "MarginSurface",
+          commitState: "WorkingDoc",
+          isCommitted: false,
+          requiresValidation: false,
+          permissions: ["ReadTruth"],
+          mayExecute: true,
+          assembly: [
+            "; MOV SEGMENT, CANIS_TIMING_LINE",
+            "; SET CHROMA, VIOLET",
+            "; APPLY CADENCE, DRIFT",
+            "; ROLE = WITNESS :: TIMING BEFORE COMMAND",
+          ],
+        },
+      ];
+
+      const renderer = window.GraftSemanticRenderer;
+      const segmentMount = document.querySelector("#segments");
+      const assemblyMount = document.querySelector("#assembly");
+      const gateConsole = document.querySelector("#gate-console");
+      const commitButton = document.querySelector("#commit-archive");
+      const commitStatus = document.querySelector("#commit-status");
+      let activeSegments = semanticSegments;
+
+      renderer.renderSegments(activeSegments, segmentMount);
+      renderer.renderAssemblyOverlay(activeSegments, assemblyMount);
+      renderer.installGateConsole(segmentMount, gateConsole);
+
+      commitButton.addEventListener("click", () => {
+        activeSegments = renderer.commitSegments(activeSegments, segmentMount);
+        renderer.installGateConsole(segmentMount, gateConsole);
+        commitStatus.textContent = `State: committed at ${renderer.archiveState.committedAt}`;
+        const line = document.createElement("p");
+        line.textContent = "[COMMITTED] archive: The Breaker may enter, but the Archivist writes the log.";
+        gateConsole.prepend(line);
+      });
+
+      (function installThemeToggle() {
+        const toggle = document.querySelector("[data-theme-toggle]");
+        const root = document.documentElement;
+        let theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        root.setAttribute("data-theme", theme);
+        toggle.addEventListener("click", () => {
+          theme = theme === "dark" ? "light" : "dark";
+          root.setAttribute("data-theme", theme);
+          toggle.setAttribute("aria-label", `Switch to ${theme === "dark" ? "light" : "dark"} mode`);
+        });
+      })();
+    </script>
+  </body>
+</html>

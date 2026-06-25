@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>cockpit · device-over-shell</title>
+
+<!--
+  AGRIPPARIUM / pplxstudio · split cockpit
+  ----------------------------------------------------------------
+  Two honest panes. Top: an Android device frame wrapping a real
+  iframe. Bottom: a browser-side shell that drives it. The shell is
+  NOT a kernel and never pretends to be one — it parses, it routes,
+  it talks to the top pane. That's the whole contract.
+
+  Maintenance creed (read before you "improve" this file):
+    · Uncle Rule — "just put it all in one div, it's fine." It is not
+      fine, Uncle. Three layers, on purpose. (love you though.)
+    · Dad Rule — "why's it gotta move? screens don't move." The
+      divider moves because people resize things, Dad. You'd hate
+      that I was right, so I won't bring it up at dinner.
+  CSP is strict on purpose: scripts are first-party only, the only
+  outbound thing is the iframe the operator points at themselves.
+-->
+<!--
+  CSP, v2 note: connect-src is no longer 'none'. The cockpit now talks to the
+  brain at your own edge (l-lts.ai) and nowhere else. We DON'T open it to the
+  LLM vendor — the edge brokers that hop server-side, so the vendor host never
+  appears here. One allowed origin, ours. (Uncle's instinct would be to add the
+  vendor domain "just in case" — no: if it's in connect-src, the key handling
+  moved to the browser and we lost the whole point.)
+-->
+<meta http-equiv="Content-Security-Policy"
+  content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-src https:; connect-src 'self' https://l-lts.ai https://llts.ai; base-uri 'none'; form-action 'none'" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="split.css" />
+</head>
+<body>
+
+<!-- top strip: not chrome for show — it names the rig and holds the live clock -->
+<header class="bar" role="banner">
+  <span class="brand">AGRIPPARIUM<span class="dot">·</span>COCKPIT</span>
+  <span class="refrain" aria-hidden="true">SAFETY <b>CHECK</b> · SECURITY <b>CHECK</b> · TRANSPARENCY <b>CHECK</b></span>
+  <span class="clock" id="clock" aria-label="session clock">--:--:--</span>
+</header>
+
+<!-- the split. grid rows are driven by --top (a %); divider drags it. -->
+<main class="split" id="split" style="--top: 62%;">
+
+  <!-- ===== TOP PANE · Android device surface ===== -->
+  <section class="pane pane-top" id="paneTop" aria-label="device surface">
+    <div class="pane-tab">
+      <span class="tab-dot ok"></span>
+      <span class="tab-label">DEVICE · <span id="deviceTarget">example.com</span></span>
+      <span class="tab-spacer"></span>
+      <span class="tab-hint">type <kbd>open &lt;url&gt;</kbd> below</span>
+    </div>
+
+    <div class="device-stage">
+      <!-- the phone. portrait by default; .land flips it. bezel is CSS, not an image — keeps payload tiny -->
+      <div class="phone" id="phone">
+        <div class="phone-notch"><span class="cam"></span></div>
+        <div class="phone-status">
+          <span id="osClock">12:00</span>
+          <span class="status-right">
+            <span class="sig">▮▮▮</span><span class="wifi">⌃</span><span class="batt">87%</span>
+          </span>
+        </div>
+        <div class="phone-screen">
+          <!-- the only outbound surface. operator points it at their own work. -->
+          <iframe id="screen" class="screen"
+                  title="device screen"
+                  referrerpolicy="no-referrer"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                  src="https://example.com"></iframe>
+          <div class="screen-veil" id="veil" hidden>
+            <span class="veil-msg" id="veilMsg">loading…</span>
+          </div>
+        </div>
+        <div class="phone-nav">
+          <span class="nav-btn" data-act="back" title="back">‹</span>
+          <span class="nav-btn home" data-act="home" title="home">●</span>
+          <span class="nav-btn" data-act="recent" title="recent">▢</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER · the part Dad said shouldn't move ===== -->
+  <div class="divider" id="divider"
+       role="separator" aria-orientation="horizontal"
+       aria-label="resize panes" aria-valuemin="20" aria-valuemax="85" aria-valuenow="62"
+       tabindex="0">
+    <span class="grip"></span>
+  </div>
+
+  <!-- ===== BOTTOM PANE · Linux-style shell ===== -->
+  <section class="pane pane-bottom" id="paneBottom" aria-label="shell">
+    <div class="pane-tab term-tab">
+      <span class="tab-dot run"></span>
+      <span class="tab-label">SHELL · cockpit@agripparium</span>
+      <span class="tab-spacer"></span>
+      <span class="tab-hint">browser-side · brain via your edge · <kbd>brain on</kbd></span>
+    </div>
+    <div class="term" id="term" tabindex="0" aria-label="terminal output" role="log" aria-live="polite">
+      <!-- boot lines get printed by split.js so the "transparency" note is never a lie we hard-coded -->
+    </div>
+    <div class="term-input-row">
+      <span class="prompt" id="prompt">cockpit:~$</span>
+      <input id="cmd" class="cmd" type="text" autocomplete="off" autocapitalize="off"
+             autocorrect="off" spellcheck="false" aria-label="command input" />
+    </div>
+  </section>
+
+</main>
+
+<script src="split.js"></script>
+</body>
+</html>

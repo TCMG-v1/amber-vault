@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- Hardening: enforce the zero-network promise at the browser level. Scripts are first-party only;
+     connect-src 'none' blocks all fetch/XHR/beacon/WebSocket; fonts are the only external resource. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'" />
+<title>bns-ai.ai · Architecture Record</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --obsidian:#0B0A09;
+  --obsidian-2:#13110F;
+  --panel:#191613;
+  --panel-line:#2A2520;
+  --umbra:#B8862F;
+  --amber:#FFB300;
+  --amber-dim:#7a5a1e;
+  --bone:#F3EDE1;
+  --bone-dim:#9c958a;
+  --cyan:#00E5FF;
+  --blue:#0044AA;
+  --green:#4ADE80;
+  --mono:'JetBrains Mono','SFMono-Regular',monospace;
+  --body:'Inter','system-ui',sans-serif;
+  --glitch-r:#ff2e63;
+  --glitch-c:#00E5FF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--obsidian);
+  color:var(--bone);
+  font-family:var(--body);
+  line-height:1.6;
+  font-weight:300;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(circle at 20% -10%, rgba(184,134,47,0.08), transparent 45%),
+    radial-gradient(circle at 90% 110%, rgba(0,229,255,0.04), transparent 40%);
+}
+/* ---- intentional glitch layer ---- */
+/* faint CRT scanlines over the whole page */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9997;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,0.16) 0px,rgba(0,0,0,0.16) 1px,transparent 1px,transparent 3px);
+  mix-blend-mode:multiply;opacity:.5;
+}
+/* occasional global flicker */
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9996;
+  background:rgba(0,229,255,0.015);opacity:0;
+  animation:flick 7s steps(1) infinite;
+}
+@keyframes flick{0%,96%,100%{opacity:0}97%{opacity:.5}98%{opacity:0}99%{opacity:.35}}
+/* glitch text — RGB split, used on the h1 + on hover targets */
+.glitch{position:relative;display:inline-block}
+.glitch::before,.glitch::after{
+  content:attr(data-text);position:absolute;left:0;top:0;width:100%;
+  clip-path:inset(0);opacity:.85;pointer-events:none;
+}
+.glitch::before{color:var(--glitch-r);transform:translate(-1.5px,0);animation:gshiftR 4s steps(2) infinite}
+.glitch::after{color:var(--glitch-c);transform:translate(1.5px,0);animation:gshiftC 4s steps(2) infinite}
+@keyframes gshiftR{0%,90%,100%{transform:translate(-1.5px,0);clip-path:inset(0 0 0 0)}
+  92%{transform:translate(-4px,1px);clip-path:inset(10% 0 60% 0)}94%{transform:translate(3px,-1px);clip-path:inset(70% 0 5% 0)}}
+@keyframes gshiftC{0%,90%,100%{transform:translate(1.5px,0);clip-path:inset(0 0 0 0)}
+  92%{transform:translate(4px,-1px);clip-path:inset(55% 0 20% 0)}94%{transform:translate(-3px,1px);clip-path:inset(20% 0 65% 0)}}
+@media(prefers-reduced-motion:reduce){body::after,.glitch::before,.glitch::after{animation:none}}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+
+/* header */
+header{padding:72px 0 40px;border-bottom:1px solid var(--panel-line)}
+.kicker{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.32em;
+  text-transform:uppercase;color:var(--umbra);margin-bottom:22px;
+}
+h1{
+  font-family:var(--mono);font-weight:500;
+  font-size:clamp(28px,5vw,46px);line-height:1.08;letter-spacing:-0.01em;
+  color:var(--bone);
+}
+h1 .dom{color:var(--amber)}
+.sub{
+  margin-top:18px;max-width:620px;color:var(--bone-dim);
+  font-size:15px;line-height:1.7;
+}
+.meta{
+  margin-top:26px;display:flex;gap:28px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:11px;letter-spacing:0.12em;
+  color:var(--umbra);text-transform:uppercase;
+}
+.meta span b{color:var(--bone);font-weight:400}
+
+/* section heads */
+section{padding:56px 0;border-bottom:1px solid var(--panel-line)}
+.sec-no{font-family:var(--mono);font-size:11px;color:var(--amber-dim);letter-spacing:0.3em}
+.sec-title{
+  font-family:var(--mono);font-weight:500;font-size:22px;
+  margin-top:8px;color:var(--bone);letter-spacing:-0.01em;
+}
+.sec-lede{margin-top:14px;max-width:640px;color:var(--bone-dim);font-size:14.5px}
+
+/* the stack diagram */
+.stack{margin-top:42px;display:flex;flex-direction:column;gap:0}
+.layer{
+  position:relative;
+  border:1px solid var(--panel-line);
+  background:linear-gradient(180deg,var(--panel),var(--obsidian-2));
+  padding:26px 28px;
+}
+.layer + .layer{border-top:none}
+.layer .lno{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.28em;
+  color:var(--amber-dim);text-transform:uppercase;
+}
+.layer h3{
+  font-family:var(--mono);font-weight:500;font-size:18px;margin-top:6px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.layer h3 .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.layer p{margin-top:10px;color:var(--bone-dim);font-size:14px;max-width:760px}
+.layer .tags{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+.tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:0.06em;
+  border:1px solid var(--panel-line);color:var(--bone-dim);
+  padding:4px 10px;border-radius:2px;background:rgba(0,0,0,0.25);
+}
+/* the seam connectors */
+.seam{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  padding:9px 0;font-family:var(--mono);font-size:10px;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--umbra);
+}
+.seam::before,.seam::after{content:"";height:1px;width:60px;background:var(--amber-dim);opacity:0.55}
+.seam .arrow{color:var(--amber);font-size:13px}
+
+.l-merchant .dot{background:var(--green)}
+.l-office .dot{background:var(--cyan)}
+.l-ledger .dot{background:var(--amber)}
+.l-emulator .dot{background:var(--bone-dim)}
+.layer.l-ledger{border-color:var(--amber-dim);box-shadow:inset 0 0 40px rgba(255,179,0,0.04)}
+
+/* the loop callout */
+.loop{
+  margin-top:44px;border:1px solid var(--amber-dim);border-radius:3px;
+  padding:30px 28px;background:rgba(255,179,0,0.03);
+}
+.loop .lt{font-family:var(--mono);font-size:11px;letter-spacing:0.28em;color:var(--amber);text-transform:uppercase}
+.loop-row{
+  margin-top:22px;display:flex;align-items:stretch;gap:0;flex-wrap:wrap;
+}
+.node{
+  flex:1;min-width:150px;border:1px solid var(--panel-line);
+  background:var(--obsidian-2);padding:18px 16px;text-align:center;
+}
+.node .nl{font-family:var(--mono);font-size:10px;color:var(--amber-dim);letter-spacing:0.2em}
+.node .nt{font-family:var(--mono);font-size:14px;margin-top:8px;color:var(--bone)}
+.node .nd{font-size:12px;color:var(--bone-dim);margin-top:7px;line-height:1.5}
+.conn{display:flex;align-items:center;justify-content:center;padding:0 8px;color:var(--amber);font-family:var(--mono);font-size:18px}
+@media(max-width:720px){
+  .conn{width:100%;justify-content:center;padding:6px 0;transform:rotate(90deg)}
+  .node{min-width:100%}
+}
+
+/* seams table */
+.seams-grid{margin-top:36px;display:grid;grid-template-columns:1fr;gap:14px}
+.seam-card{border:1px solid var(--panel-line);background:var(--panel);padding:20px 22px}
+.seam-card .sc-h{font-family:var(--mono);font-size:13px;color:var(--amber);letter-spacing:0.04em}
+.seam-card .sc-b{margin-top:9px;color:var(--bone-dim);font-size:13.5px;line-height:1.6}
+.seam-card .sc-b b{color:var(--bone);font-weight:500}
+
+/* principles */
+.principles{margin-top:34px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--panel-line);border:1px solid var(--panel-line)}
+.principle{background:var(--obsidian-2);padding:24px}
+.principle .pn{font-family:var(--mono);font-size:10px;color:var(--amber-dim);letter-spacing:0.24em}
+.principle .pt{font-family:var(--mono);font-size:15px;margin-top:8px;color:var(--bone)}
+.principle .pd{margin-top:9px;font-size:13px;color:var(--bone-dim)}
+@media(max-width:640px){.principles{grid-template-columns:1fr}}
+
+/* footer / seal */
+footer{padding:56px 0 80px;text-align:center}
+.aphorism{
+  max-width:560px;margin:0 auto;color:var(--bone-dim);
+  font-size:14px;font-style:italic;line-height:1.8;
+}
+.sigillum{
+  margin-top:30px;font-family:var(--mono);font-size:13px;
+  color:var(--amber);letter-spacing:0.18em;
+}
+.disclaim{margin-top:18px;font-family:var(--mono);font-size:10px;color:var(--amber-dim);letter-spacing:0.14em;text-transform:uppercase}
+
+/* ---- everything-clickable affordances ---- */
+.layer[data-expand],.principle[data-expand]{cursor:pointer;transition:border-color .2s,background .2s}
+.layer[data-expand]:hover{border-color:var(--umbra)}
+.layer[data-expand]::after{content:"+ tap to expand";position:absolute;top:14px;right:18px;font-family:var(--mono);font-size:9px;letter-spacing:0.18em;color:var(--amber-dim);text-transform:uppercase;opacity:.7}
+.layer[data-expand].open::after{content:"– tap to close"}
+.expand-body{max-height:0;overflow:hidden;transition:max-height .35s ease;opacity:0}
+.layer[data-expand].open .expand-body,.principle[data-expand].open .expand-body{max-height:240px;opacity:1;margin-top:14px}
+.expand-body{font-size:13px;color:var(--bone-dim);border-top:1px dashed var(--panel-line);padding-top:0}
+.layer[data-expand].open .expand-body{padding-top:14px}
+.node{cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s}
+.node:hover{border-color:var(--umbra)}
+.node.active{border-color:var(--amber);box-shadow:inset 0 0 24px rgba(255,179,0,0.07)}
+.node.active .nl{color:var(--amber)}
+
+/* ---- tap ripple + serotonin pop ---- */
+.tap-ripple{position:fixed;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;
+  background:radial-gradient(circle,var(--amber),rgba(255,179,0,0));pointer-events:none;z-index:9998;
+  animation:ripple .55s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes ripple{0%{transform:scale(.4);opacity:.9}100%{transform:scale(8);opacity:0}}
+/* the +1 'pop' that floats up on each tap */
+.tap-pop{position:fixed;pointer-events:none;z-index:9998;font-family:var(--mono);
+  font-size:13px;font-weight:700;color:var(--amber);text-shadow:0 0 8px rgba(255,179,0,.6);
+  margin:-10px 0 0 -6px;animation:pop .7s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes pop{0%{transform:translateY(0) scale(.6);opacity:0}
+  20%{transform:translateY(-6px) scale(1.15);opacity:1}
+  100%{transform:translateY(-42px) scale(.9);opacity:0}}
+/* spark burst on a seal */
+.seal-burst{position:fixed;pointer-events:none;z-index:9998;width:6px;height:6px;border-radius:50%;background:var(--amber);
+  box-shadow:0 0 10px var(--amber);animation:burst .6s ease-out forwards}
+@keyframes burst{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--bx),var(--by)) scale(0);opacity:0}}
+/* whole-body tap squish for tactile feel */
+body.tapped{animation:bodytick .12s ease-out}
+@keyframes bodytick{50%{transform:scale(.998)}}
+/* clickable things bounce on press */
+.node:active,.layer[data-expand]:active,.principle[data-expand]:active,.tag:active{transform:scale(.97);transition:transform .08s}
+
+/* ---- miner dock ---- */
+#miner-dock{position:fixed;right:20px;bottom:20px;width:300px;z-index:9999;
+  background:linear-gradient(180deg,var(--panel),var(--obsidian));
+  border:1px solid var(--amber-dim);border-radius:4px;
+  box-shadow:0 12px 40px rgba(0,0,0,.5),inset 0 0 40px rgba(255,179,0,.03);
+  font-family:var(--mono);transition:transform .3s,box-shadow .3s}
+#miner-dock.seal-pulse{box-shadow:0 0 0 2px var(--amber),0 12px 40px rgba(0,0,0,.5)}
+#miner-dock.min{transform:translateY(calc(100% - 42px))}
+.md-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--panel-line);cursor:default}
+.md-head .ttl{font-size:11px;letter-spacing:0.2em;color:var(--amber);text-transform:uppercase}
+#m-toggle{background:none;border:none;color:var(--bone-dim);cursor:pointer;font-size:11px;padding:2px 6px}
+.md-body{padding:14px}
+.md-row{display:flex;justify-content:space-between;font-size:11px;color:var(--bone-dim);margin-bottom:8px}
+.md-row b{color:var(--bone);font-weight:500}
+.m-bar{height:6px;background:var(--obsidian-2);border:1px solid var(--panel-line);border-radius:3px;overflow:hidden;margin:10px 0 5px}
+#m-progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--umbra),var(--amber));transition:width .15s}
+#m-progress-txt{font-size:9px;color:var(--amber-dim);letter-spacing:0.1em;text-align:right}
+.m-hashline{margin-top:12px;font-size:10px;color:var(--cyan);word-break:break-all;line-height:1.5;min-height:28px}
+.m-hashlabel{font-size:9px;color:var(--bone-dim);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:4px}
+#m-status{margin-top:10px;font-size:10px;letter-spacing:0.12em;color:var(--bone-dim);text-transform:uppercase}
+#m-status.flash{color:var(--green)}
+.md-hint{margin-top:11px;font-size:9.5px;color:var(--amber-dim);letter-spacing:0.06em;line-height:1.5;border-top:1px dashed var(--panel-line);padding-top:9px}
+@media(max-width:520px){#miner-dock{right:10px;left:10px;width:auto}}
+
+/* ---- exit banner ---- */
+#exit-banner{position:fixed;top:0;left:0;right:0;z-index:10000;
+  background:linear-gradient(180deg,rgba(255,179,0,0.14),var(--obsidian));
+  border-bottom:1px solid var(--amber);
+  transform:translateY(-110%);transition:transform .4s ease}
+#exit-banner.show{transform:translateY(0)}
+#exit-banner .eb{max-width:1080px;margin:0 auto;padding:16px 28px;display:flex;align-items:center;gap:16px}
+#exit-banner .ei{font-family:var(--mono);font-size:18px;color:var(--amber)}
+#exit-msg{font-size:13.5px;color:var(--bone);line-height:1.5}
+
+/* ---- onboarding hint (guidance during) ---- */
+#hint{position:fixed;left:18px;bottom:22px;transform:translateY(20px);
+  z-index:9998;background:linear-gradient(180deg,var(--panel),var(--obsidian));
+  border:1px solid var(--amber);border-radius:40px;padding:11px 22px;
+  font-family:var(--mono);font-size:12px;letter-spacing:0.06em;color:var(--bone);
+  box-shadow:0 8px 30px rgba(0,0,0,.5);opacity:0;transition:opacity .4s,transform .4s;
+  display:flex;align-items:center;gap:10px;max-width:min(420px,72vw)}
+#hint.show{opacity:1;transform:translateY(0)}
+@media(max-width:520px){#hint{left:10px;right:10px;max-width:none}}
+#hint .pulse{width:8px;height:8px;border-radius:50%;background:var(--amber);
+  box-shadow:0 0 0 0 rgba(255,179,0,.5);animation:hpulse 1.4s infinite}
+@keyframes hpulse{0%{box-shadow:0 0 0 0 rgba(255,179,0,.5)}70%{box-shadow:0 0 0 9px rgba(255,179,0,0)}100%{box-shadow:0 0 0 0 rgba(255,179,0,0)}}
+#hint b{color:var(--amber);font-weight:500}
+
+/* ---- step rail: tiny progress of the guided journey ---- */
+#step-rail{position:fixed;left:18px;top:50%;transform:translateY(-50%);z-index:9999;
+  display:flex;flex-direction:column;gap:14px}
+.step-dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--amber-dim);
+  background:transparent;transition:all .3s;position:relative}
+.step-dot.done{background:var(--amber);border-color:var(--amber);box-shadow:0 0 8px rgba(255,179,0,.5)}
+.step-dot .lbl{position:absolute;left:18px;top:-4px;white-space:nowrap;
+  font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:var(--bone-dim);
+  text-transform:uppercase;opacity:0;transition:opacity .3s}
+.step-dot:hover .lbl,.step-dot.done .lbl{opacity:.8}
+@media(max-width:780px){#step-rail{display:none}}
+
+/* ---- DEBRIEF panel ---- */
+#debrief{border-top:2px solid var(--amber-dim);background:linear-gradient(180deg,rgba(255,179,0,0.04),var(--obsidian))}
+#debrief .wrap-d{max-width:1080px;margin:0 auto;padding:62px 28px 20px}
+#debrief .d-kick{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;color:var(--amber);text-transform:uppercase}
+#debrief h2{font-family:var(--mono);font-weight:500;font-size:24px;margin-top:10px;color:var(--bone)}
+#debrief .d-lede{margin-top:14px;max-width:640px;color:var(--bone-dim);font-size:14.5px}
+.d-stats{margin-top:30px;display:flex;gap:0;flex-wrap:wrap;border:1px solid var(--panel-line)}
+.d-stat{flex:1;min-width:130px;padding:20px;border-right:1px solid var(--panel-line);background:var(--obsidian-2)}
+.d-stat:last-child{border-right:none}
+.d-stat .v{font-family:var(--mono);font-size:28px;color:var(--amber)}
+.d-stat .k{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;color:var(--bone-dim);text-transform:uppercase;margin-top:6px}
+.d-steps{margin-top:34px;counter-reset:dstep}
+.d-step{display:flex;gap:18px;padding:18px 0;border-bottom:1px dashed var(--panel-line)}
+.d-step .n{counter-increment:dstep;font-family:var(--mono);font-size:13px;color:var(--amber);flex:none;width:34px}
+.d-step .n::before{content:"0" counter(dstep)}
+.d-step .t{font-family:var(--mono);font-size:15px;color:var(--bone)}
+.d-step .b{margin-top:6px;font-size:13.5px;color:var(--bone-dim);max-width:720px}
+.d-tie{margin-top:34px;border:1px solid var(--amber-dim);background:rgba(255,179,0,0.03);padding:24px 26px;border-radius:3px}
+.d-tie .h{font-family:var(--mono);font-size:12px;letter-spacing:0.2em;color:var(--amber);text-transform:uppercase}
+.d-tie p{margin-top:12px;color:var(--bone-dim);font-size:14px;max-width:760px}
+.d-tie p b{color:var(--bone);font-weight:500}
+
+/* ---- the three-beat refrain ---- */
+.refrain{display:flex;gap:0;flex-wrap:wrap;justify-content:center;margin:0 auto;
+  font-family:var(--mono);font-size:12px;letter-spacing:0.18em;text-transform:uppercase}
+.refrain span{padding:6px 16px;color:var(--bone-dim);position:relative}
+.refrain span b{color:var(--amber);font-weight:500}
+.refrain span+span::before{content:"·";position:absolute;left:-3px;color:var(--amber-dim)}
+
+/* ---- self-audit panel ---- */
+#audit{border-top:1px solid var(--panel-line)}
+#audit .wrap-a{max-width:1080px;margin:0 auto;padding:58px 28px}
+.audit-kick{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;color:var(--amber);text-transform:uppercase;text-align:center}
+#audit h2{font-family:var(--mono);font-weight:500;font-size:23px;margin-top:12px;color:var(--bone);text-align:center}
+.audit-lede{margin:14px auto 0;max-width:600px;color:var(--bone-dim);font-size:14px;text-align:center}
+#audit-groups{margin-top:34px;display:grid;gap:16px}
+.audit-group{border:1px solid var(--panel-line);background:var(--obsidian-2)}
+.ag-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--panel-line)}
+.ag-title{font-family:var(--mono);font-size:14px;letter-spacing:0.06em;color:var(--bone)}
+.ag-stamp{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;color:var(--bone-dim)}
+.ag-stamp.pass{color:var(--green)}
+.ag-stamp.fail{color:var(--glitch-r)}
+.ag-rows{padding:6px 0}
+.audit-row{display:grid;grid-template-columns:18px 1fr auto auto;gap:12px;align-items:center;
+  padding:10px 18px;font-size:13px}
+.ar-dot{width:8px;height:8px;border-radius:50%;background:var(--bone-dim)}
+.audit-row.ok .ar-dot{background:var(--green);box-shadow:0 0 8px rgba(74,222,128,.5)}
+.audit-row.fail .ar-dot{background:var(--glitch-r);box-shadow:0 0 8px rgba(255,46,99,.5)}
+.ar-label{color:var(--bone)}
+.ar-detail{font-family:var(--mono);font-size:11px;color:var(--bone-dim);text-align:right}
+.ar-mark{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;color:var(--green)}
+.audit-row.fail .ar-mark{color:var(--glitch-r)}
+#audit-verdict{margin-top:24px;text-align:center;font-family:var(--mono);font-size:13px;
+  letter-spacing:0.04em;color:var(--bone-dim);padding:16px;border:1px dashed var(--panel-line)}
+#audit-verdict.pass{color:var(--green);border-color:var(--amber-dim)}
+#audit-verdict.fail{color:var(--glitch-r)}
+@media(max-width:640px){.audit-row{grid-template-columns:14px 1fr auto;}.ar-detail{display:none}}
+
+/* ---- transparency manifest ---- */
+.manifest{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--panel-line);border:1px solid var(--panel-line)}
+.mani{background:var(--obsidian-2);padding:20px 22px}
+.mani .mh{font-family:var(--mono);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber)}
+.mani ul{margin-top:10px;list-style:none}
+.mani li{font-size:13px;color:var(--bone-dim);padding:5px 0 5px 18px;position:relative;line-height:1.5}
+.mani li::before{content:"→";position:absolute;left:0;color:var(--amber-dim);font-family:var(--mono)}
+.mani.no li::before{content:"×";color:var(--glitch-r)}
+@media(max-width:640px){.manifest{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Agripparium LLC · Architecture Record · v0.1 · Seed</div>
+  <h1><span class="dom glitch" data-text="bns-ai.ai">bns-ai.ai</span><br/><span class="glitch" data-text="the store that seals itself">the store that seals itself</span></h1>
+  <p class="sub">A merchant surface where the purchase is also the seal. Buy an artifact, and the act of buying writes its provenance to an append-only ledger. Commerce becomes the sealing engine — mint-to-publish, made literal at point of sale.</p>
+  <div class="refrain" style="margin-top:24px;justify-content:flex-start">
+    <span>safety <b>check</b></span><span>security <b>check</b></span><span>transparency <b>check</b></span>
+  </div>
+  <div class="meta">
+    <span>Provenance seat · <b>Bone &amp; Saucer / 477</b></span>
+    <span>State · <b>Spec seed, unsealed</b></span>
+    <span>Voice · <b>Lab-honest</b></span>
+  </div>
+</header>
+
+<section id="stack">
+  <div class="sec-no">§ I</div>
+  <div class="sec-title">The Four Layers</div>
+  <p class="sec-lede">Read top to bottom. Each layer is its own hardened thing; the seams between them are where the work lives. The money stays boring and compliant. The provenance stays yours.</p>
+
+  <div class="stack">
+
+    <div class="layer l-merchant">
+      <div class="lno">Layer 01 · Surface</div>
+      <h3><span class="dot"></span>Secure Merchant Store</h3>
+      <p>The storefront and checkout. A real payment processor handles cards — PCI-hardened, audited, off-the-shelf. This layer's only job is to take money safely and confirm a purchase. It knows nothing about hashing; it just announces "a sale happened."</p>
+      <div class="tags"><span class="tag">PCI processor</span><span class="tag">account / auth</span><span class="tag">checkout</span><span class="tag">emits: purchase-confirmed</span></div>
+    </div>
+
+    <div class="seam"><span>purchase-confirmed event</span><span class="arrow">↓</span></div>
+
+    <div class="layer l-office">
+      <div class="lno">Layer 02 · Back Office</div>
+      <h3><span class="dot"></span>Google Docs + Gemini</h3>
+      <p>The records spine you already live in. Catalog, SKUs, order records — sourced from the docs that are your working truth. Gemini sits in the loop for catalog reasoning, copy, and fulfillment logic. This is where a sale becomes a recorded fact, not just a transaction.</p>
+      <div class="tags"><span class="tag">Docs as source-of-truth</span><span class="tag">Gemini in-loop</span><span class="tag">catalog / SKU</span><span class="tag">order records</span></div>
+    </div>
+
+    <div class="seam"><span>sealed-work reference + buyer-anonymous payload</span><span class="arrow">↓</span></div>
+
+    <div class="layer l-ledger">
+      <div class="lno">Layer 03 · Provenance — the heart</div>
+      <h3><span class="dot"></span>Tap-to-Hash Ledger</h3>
+      <p>Underneath the purchase. When a sale confirms, this fires a hash event — SHA-256 over the sealed work + sale fact — and appends one line to the ledger. Same move as the Pontifex Archive, now at the storefront instead of the repo. Buy → hash → sealed. The store mints provenance as it sells.</p>
+      <div class="tags"><span class="tag">SHA-256 seal</span><span class="tag">append-only ledger.jsonl</span><span class="tag">mint-to-publish</span><span class="tag">rides alongside, not inside, the card flow</span></div>
+    </div>
+
+    <div class="seam"><span>everything above is demonstrable in</span><span class="arrow">↓</span></div>
+
+    <div class="layer l-emulator">
+      <div class="lno">Layer 04 · Proof</div>
+      <h3><span class="dot"></span>Emulator / Demo</h3>
+      <p>The whole flow runs in a sandbox before it ever touches real money. Inspectable, explainable, demonstrable — you can show a buy fire a hash and write a ledger line with zero dollars at risk. Proof first, production second.</p>
+      <div class="tags"><span class="tag">sandboxed end-to-end</span><span class="tag">no live funds</span><span class="tag">inspectable ledger</span><span class="tag">show-don't-tell</span></div>
+    </div>
+
+  </div>
+</section>
+
+<section id="loop">
+  <div class="sec-no">§ II</div>
+  <div class="sec-title">The Purchase = Seal Loop</div>
+  <p class="sec-lede">The one idea this whole thing is built around. The buy action is the seal action.</p>
+
+  <div class="loop">
+    <div class="lt">Buy → Hash → Sealed</div>
+    <div class="loop-row">
+      <div class="node"><div class="nl">01 · TAP</div><div class="nt">Purchase</div><div class="nd">Buyer taps buy. Processor confirms. Money side done.</div></div>
+      <div class="conn">→</div>
+      <div class="node"><div class="nl">02 · FIRE</div><div class="nt">Hash event</div><div class="nd">Sale fact + sealed work → SHA-256. Fired alongside, never inside, the card flow.</div></div>
+      <div class="conn">→</div>
+      <div class="node"><div class="nl">03 · WRITE</div><div class="nt">Ledger line</div><div class="nd">One append-only line. Provenance now exists and is unprovable to forge.</div></div>
+      <div class="conn">→</div>
+      <div class="node"><div class="nl">04 · HOLD</div><div class="nt">Sealed</div><div class="nd">The work is now in the estate, provably, by the act of someone wanting it.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="seams">
+  <div class="sec-no">§ III</div>
+  <div class="sec-title">The Seams — Where Future-Proofing Lives</div>
+  <p class="sec-lede">"Future-proofing constantly, within reasonable reason." The trick isn't predicting the future — it's clean seams, so any one layer can be swapped without ripping out the others.</p>
+
+  <div class="seams-grid">
+    <div class="seam-card">
+      <div class="sc-h">Seam A · Store ⇄ Records</div>
+      <div class="sc-b">The merchant layer emits a plain <b>purchase-confirmed</b> event. Swap processors (Stripe today, something else tomorrow) and nothing downstream cares. The contract is the event, not the vendor.</div>
+    </div>
+    <div class="seam-card">
+      <div class="sc-h">Seam B · Records ⇄ Ledger</div>
+      <div class="sc-b">The back office hands the ledger a <b>sealed-work reference + sale fact</b> — never card data. The hash layer is deliberately ignorant of payments. Money side stays compliant; provenance side stays yours.</div>
+    </div>
+    <div class="seam-card">
+      <div class="sc-h">Seam C · Everything ⇄ Emulator</div>
+      <div class="sc-b">The same events run against a sandbox. If it works in the emulator, it works in production — because production is just the emulator with a real processor plugged into Seam A.</div>
+    </div>
+  </div>
+</section>
+
+<section id="principles">
+  <div class="sec-no">§ IV</div>
+  <div class="sec-title">Standing Principles</div>
+
+  <div class="principles">
+    <div class="principle"><div class="pn">P · 01</div><div class="pt">Keep the money boring</div><div class="pd">Card processing is a hardened, compliant, off-the-shelf thing. Never put your clever ideas inside the payment flow. Ride alongside it.</div></div>
+    <div class="principle"><div class="pn">P · 02</div><div class="pt">The buy is the seal</div><div class="pd">A purchase fires a hash and writes a ledger line. Commerce feeds provenance automatically. Selling it is proving it.</div></div>
+    <div class="principle"><div class="pn">P · 03</div><div class="pt">Build seams, not predictions</div><div class="pd">Future-proof by making layers swappable, not by guessing what's coming. Reasonable reason: ship the seam, not the prophecy.</div></div>
+    <div class="principle"><div class="pn">P · 04</div><div class="pt">Prove before live</div><div class="pd">Nothing touches real money until it's run end-to-end in the emulator. Demonstrable first. It needs to just work.</div></div>
+  </div>
+</section>
+
+<footer>
+  <p class="aphorism">The store does not merely sell the work; it witnesses it. Every purchase is a hand raised, every hash a name written down. We sort so the work is found; we seal so the work is proven.</p>
+  <div class="sigillum">:&lt;477&gt;=-</div>
+  <div class="disclaim">Spec seed · unsealed · no code · awaiting Operator direction</div>
+</footer>
+
+</div>
+
+<!-- ============ DEBRIEF ============ -->
+<section id="debrief">
+  <div class="wrap-d">
+    <div class="d-kick">◬ Debrief · what just happened</div>
+    <h2>You just ran the whole machine with your fingertips.</h2>
+    <p class="d-lede" id="d-lede">Everything you tapped on this page was feeding a real cryptographic seal. No mockup, no fake counter — actual SHA-256, the same primitive that would seal a real sale on the storefront. Here's the receipt.</p>
+
+    <div class="d-stats">
+      <div class="d-stat"><div class="v" id="d-taps">0</div><div class="k">Taps you made</div></div>
+      <div class="d-stat"><div class="v" id="d-seals">0</div><div class="k">Lines sealed</div></div>
+      <div class="d-stat"><div class="v">SHA-256</div><div class="k">Real hash run</div></div>
+      <div class="d-stat"><div class="v">$0</div><div class="k">At risk · it's the emulator</div></div>
+    </div>
+
+    <div class="d-steps">
+      <div class="d-step"><div class="n"></div><div><div class="t">Your tap was the “purchase.”</div><div class="b">On the real store, a buyer taps Buy. Here, your tap stands in for it — the trigger that starts everything. Every tap = one buy event.</div></div></div>
+      <div class="d-step"><div class="n"></div><div><div class="t">The tap fired a hash.</div><div class="b">Each tap fed entropy into a live SHA-256 digest (watch the cyan hash in the dock churn). This is the exact mechanism the Tap-to-Hash Ledger layer describes — running in your browser, right now.</div></div></div>
+      <div class="d-step"><div class="n"></div><div><div class="t">Twelve taps sealed a line.</div><div class="b">When enough taps accumulated, a line of a small document got written and hashed — the spark, the chime, the SEALED stamp. That’s a ledger line being minted. Append-only: once written, never rewritten.</div></div></div>
+      <div class="d-step"><div class="n"></div><div><div class="t">That’s mint-to-publish.</div><div class="b">Swap “tap” for “purchase” and you have the whole bns-ai.ai idea: selling the work is the same act as proving it. The store witnesses every sale into the archive automatically.</div></div></div>
+    </div>
+
+    <div class="d-tie">
+      <div class="h">◬ So why build it this way</div>
+      <p>Because <b>the money stays boring and the provenance stays yours.</b> The card processor never touches the hash; the hash never touches the card. They ride side by side, joined only by a clean event. That seam is the whole future-proofing strategy — swap any piece without breaking the others. <b>It needs to just work</b>, and it needs to be demonstrable before a single real dollar moves. This page is that demonstration.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SELF-AUDIT ============ -->
+<section id="audit">
+  <div class="wrap-a">
+    <div class="audit-kick">◬ Self-audit · run live in your browser, right now</div>
+    <h2>Don't take our word. Watch it check itself.</h2>
+    <p class="audit-lede">We say it every time, out loud — <b>safety check · security check · transparency check</b>. So here is the machine auditing itself in front of you. Every PASS below is a real test that ran a moment ago, not a sticker we painted on. Nothing is hidden.</p>
+
+    <div class="refrain" aria-hidden="true">
+      <span>safety <b>check</b></span><span>security <b>check</b></span><span>transparency <b>check</b></span>
+    </div>
+
+    <div id="audit-groups"><noscript>Enable JavaScript to watch the live audit run. The written manifest below holds either way.</noscript></div>
+
+    <div id="audit-verdict">audit idle — scroll holds it here until it's in view, then it runs on its own.</div>
+
+    <!-- written transparency manifest: plain words, no code required -->
+    <div class="manifest">
+      <div class="mani yes">
+        <div class="mh">What this page does</div>
+        <ul>
+          <li>Runs a real SHA-256 in your browser when you tap — the same primitive a real sale would use.</li>
+          <li>Keeps a tiny in-memory ledger that only ever grows, never rewrites a prior line.</li>
+          <li>Plays a small sound and a small animation, only after you tap — never on its own.</li>
+          <li>Shows you its own source: miner.js and checks.js are first-party and human-readable.</li>
+          <li>Audits itself out loud and stamps PASS only when a claim is actually proven.</li>
+          <li>Reaches you through the pplxstudio edge — pass-through only, which rewrites the address and forwards. It adds nothing, so every claim above survives the hop.</li>
+        </ul>
+      </div>
+      <div class="mani no">
+        <div class="mh">What this page does NOT do</div>
+        <ul>
+          <li>Take any card, payment, or money — there is no checkout here; $0 is ever at risk.</li>
+          <li>Phone home — zero network calls fire from our scripts; instrumented and counted live above.</li>
+          <li>Set a cookie or write to local/session storage — it forgets you the instant you leave.</li>
+          <li>Load any third-party script, tracker, pixel, or analytics beacon.</li>
+          <li>Autoplay audio or motion, or move anything if you've asked for reduced motion.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- live tap-miner dock -->
+<aside id="miner-dock" class="min">
+  <div class="md-head">
+    <span class="ttl">◬ Live Tap-Miner</span>
+    <button id="m-toggle" aria-label="minimize">▲</button>
+  </div>
+  <div class="md-body">
+    <div class="md-row"><span>Taps</span><b id="m-taps">0</b></div>
+    <div class="md-row"><span>Lines sealed</span><b id="m-seals">0</b></div>
+    <div class="m-bar"><div id="m-progress-fill"></div></div>
+    <div id="m-progress-txt">0/12 to seal</div>
+    <div class="m-hashlabel">Live SHA-256 (rolling)</div>
+    <div class="m-hashline" id="m-hash">tap anywhere to begin…</div>
+    <div id="m-status">IDLE</div>
+    <div class="md-hint">Every tap on this page feeds a real SHA-256. Twelve taps seal one line of a small document. This is the storefront's buy-to-hash loop, running live.</div>
+  </div>
+</aside>
+
+<!-- exit-intent banner -->
+<div id="exit-banner"><div class="eb"><span class="ei">◬</span><span id="exit-msg"></span></div></div>
+
+<!-- guidance hint -->
+<div id="hint"><span class="pulse"></span><span id="hint-txt">Tap anywhere — you're mining a seal. <b>Try it.</b></span></div>
+
+<!-- guided step rail -->
+<div id="step-rail">
+  <div class="step-dot" id="sd-1"><span class="lbl">tap to mine</span></div>
+  <div class="step-dot" id="sd-2"><span class="lbl">watch the hash</span></div>
+  <div class="step-dot" id="sd-3"><span class="lbl">seal a line</span></div>
+  <div class="step-dot" id="sd-4"><span class="lbl">read the debrief</span></div>
+</div>
+
+<script src="miner.js"></script>
+<script src="checks.js"></script>
+</body>
+</html>

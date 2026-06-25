@@ -1,0 +1,63 @@
+name = "pplxstudio"
+main = "src/worker.js"
+compatibility_date = "2026-06-01"
+
+# ---------------------------------------------------------------------------
+# Brain broker config (interaction tier · l-lts.ai/api/chat).
+# The KEY is a secret, never a var: set it locally with
+#   wrangler secret put LLM_API_KEY
+# These [vars] only pick which provider/model the edge brokers to. Change them
+# freely; none of them is sensitive. Leave LLM_API_KEY out of this file forever
+# — a key in wrangler.toml is a key in git is a key on the internet.
+# ---------------------------------------------------------------------------
+[vars]
+LLM_BASE_URL = "https://api.openai.com/v1"
+LLM_MODEL = "gpt-4o-mini"
+
+# routes.json is imported by the Worker at build time (esbuild/Wrangler bundles
+# JSON imports automatically). No KV, no runtime config fetch — the map ships
+# inside the bundle so the edge has nothing to phone home for.
+
+# ---------------------------------------------------------------------------
+# Custom domains. With your domains already in Cloudflare, custom_domain = true
+# tells Cloudflare to attach the hostname to this Worker and provision TLS for
+# you. Add one block per hostname you want LIVE. Keep apex + www together.
+#
+# Only uncomment a domain once its target row in routes.json has a real
+# pplx.app target. A custom_domain with no target will 404 (by design).
+# ---------------------------------------------------------------------------
+
+[[routes]]
+pattern = "bns-ai.ai"
+custom_domain = true
+
+[[routes]]
+pattern = "www.bns-ai.ai"
+custom_domain = true
+
+# --- add as you build each work (mirror the row in routes.json) ---
+
+# [[routes]]
+# pattern = "anya-ai.xyz"
+# custom_domain = true
+# [[routes]]
+# pattern = "www.anya-ai.xyz"
+# custom_domain = true
+
+# [[routes]]
+# pattern = "velmaforge.ai"
+# custom_domain = true
+
+# [[routes]]
+# pattern = "mimir.art"
+# custom_domain = true
+
+# --- interaction tier · the cockpit brain lives here (l-lts.ai/api/chat) ---
+# These are LIVE because the brain route is built. Other domains above stay
+# commented until each has a real pplx.app target.
+[[routes]]
+pattern = "l-lts.ai"
+custom_domain = true
+[[routes]]
+pattern = "llts.ai"
+custom_domain = true

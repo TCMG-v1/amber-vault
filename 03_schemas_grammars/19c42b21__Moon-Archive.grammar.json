@@ -1,0 +1,27 @@
+{
+  "$schema": "./chromatic-grammar.schema.json",
+  "name": "Moon Archive",
+  "etymology": {
+    "root": "archivum",
+    "language": "Late Latin",
+    "gloss": "a repository of records",
+    "composed_gloss": "the archive lit by moonlight",
+    "confidence": "speculative"
+  },
+  "register": "midnight · stone · archive · pixel",
+  "palette": {
+    "void":         { "hex": "#050814", "gloss": "vault before light" },
+    "structure":    { "hex": "#627896", "gloss": "moonlit stone" },
+    "signal":       { "hex": "#40E0D0", "gloss": "turquoise lamp" },
+    "memory":       { "hex": "#A99DFF", "gloss": "lavender of recall" },
+    "value":        { "hex": "#E6C17A", "gloss": "old gold" },
+    "life":         { "hex": "#7DFF72", "gloss": "young phosphor" },
+    "shadow":       { "hex": "#08111F", "gloss": "stone-shadow" },
+    "illumination": { "hex": "#D8E7FF", "gloss": "moonlight on linen" }
+  },
+  "reliqery": [],
+  "kindred_grammars": ["Aggriparium"],
+  "sealed_by": "Computer, for the Vaulted Delta",
+  "sealed_at": "2026-06-18T08:53:00-04:00",
+  "the_archivist_says": "the moon is patient, and so is the page."
+}

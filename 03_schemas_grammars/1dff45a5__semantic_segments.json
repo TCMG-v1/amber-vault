@@ -1,0 +1,122 @@
+[
+  {
+    "id": "codexHeading",
+    "content": "GRAFT MEMORY ARCHIVE",
+    "chroma": "Sapphire",
+    "semantic": "Spectral",
+    "cadence": "Coil",
+    "role": "Archivist",
+    "target": "HeadingSurface",
+    "commitState": "WorkingDoc",
+    "isCommitted": false,
+    "requiresValidation": false,
+    "permissions": ["Store", "Lock", "Audit"],
+    "mayExecute": false,
+    "assembly": [
+      "; MOV SEGMENT, CODEX_HEADING",
+      "; SET CHROMA, SAPPHIRE",
+      "; APPLY CADENCE, COIL",
+      "; ROLE = ARCHIVIST :: PRESERVE CONTEXT"
+    ]
+  },
+  {
+    "id": "inkWitness",
+    "content": "Memory is not stored. It is grafted into living structure.",
+    "chroma": "Onyx",
+    "semantic": "Spectral",
+    "cadence": "Drift",
+    "role": "Witness",
+    "target": "BodySurface",
+    "commitState": "WorkingDoc",
+    "isCommitted": false,
+    "requiresValidation": false,
+    "permissions": ["ReadTruth"],
+    "mayExecute": true,
+    "assembly": [
+      "; MOV SEGMENT, INK_WITNESS",
+      "; SET CHROMA, ONYX",
+      "; APPLY CADENCE, DRIFT",
+      "; ROLE = WITNESS :: OBSERVE WITHOUT AUTHORITY"
+    ]
+  },
+  {
+    "id": "archiveGate",
+    "content": "ACCESS ARCHIVE",
+    "chroma": "Amber",
+    "semantic": "Cool",
+    "cadence": "Snap",
+    "role": "Gate",
+    "target": "ButtonSurface",
+    "commitState": "WorkingDoc",
+    "isCommitted": false,
+    "requiresValidation": true,
+    "permissions": ["Approve", "Deny", "Audit"],
+    "mayExecute": false,
+    "assembly": [
+      "; MOV SEGMENT, ARCHIVE_GATE",
+      "; SET CHROMA, AMBER",
+      "; APPLY CADENCE, SNAP",
+      "; ROLE = GATE :: VALIDATION REQUIRED"
+    ]
+  },
+  {
+    "id": "rhoCommittedGate",
+    "content": "Rho reads only the committed gate.",
+    "chroma": "Emerald",
+    "semantic": "Viridescent",
+    "cadence": "Pulse",
+    "role": "Gate",
+    "target": "StatusSurface",
+    "commitState": "WorkingDoc",
+    "isCommitted": false,
+    "requiresValidation": true,
+    "permissions": ["Approve", "Deny", "Audit"],
+    "mayExecute": false,
+    "assembly": [
+      "; MOV SEGMENT, RHO_COMMITTED_GATE",
+      "; SET CHROMA, EMERALD",
+      "; APPLY CADENCE, PULSE",
+      "; ROLE = GATE :: COMMITTED AUTHORITY ONLY"
+    ]
+  },
+  {
+    "id": "vixBreaker",
+    "content": "Backwardation detected. The archive stops pretending the floor is stable.",
+    "chroma": "Crimson",
+    "semantic": "Warm",
+    "cadence": "Snap",
+    "role": "Breaker",
+    "target": "StatusSurface",
+    "commitState": "WorkingDoc",
+    "isCommitted": false,
+    "requiresValidation": true,
+    "permissions": ["Rupture", "Audit"],
+    "mayExecute": false,
+    "assembly": [
+      "; MOV SEGMENT, VIX_BREAKER",
+      "; SET CHROMA, CRIMSON",
+      "; APPLY CADENCE, SNAP",
+      "; ROLE = BREAKER :: INTERRUPT FLOW"
+    ]
+  },
+  {
+    "id": "canisTrainingLine",
+    "content": "Training is not obedience; it is shared timing.",
+    "chroma": "Violet",
+    "semantic": "Threshold",
+    "cadence": "Drift",
+    "role": "Witness",
+    "target": "MarginSurface",
+    "commitState": "WorkingDoc",
+    "isCommitted": false,
+    "requiresValidation": false,
+    "permissions": ["ReadTruth"],
+    "mayExecute": true,
+    "assembly": [
+      "; MOV SEGMENT, CANIS_TIMING_LINE",
+      "; SET CHROMA, VIOLET",
+      "; APPLY CADENCE, DRIFT",
+      "; ROLE = WITNESS :: TIMING BEFORE COMMAND"
+    ]
+  }
+]

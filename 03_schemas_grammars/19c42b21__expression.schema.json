@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vaulteddelta.local/svl/expression.schema.json",
+  "title": "Expression",
+  "description": "The generalized Digi Lady schema. The outermost saucer-layer of any artifact in the Bone & Saucer / SVL. Describes how a thing presents itself, not what it is. Works for characters, temples, cities, corporations, blockchains, flowers, decks, modules.",
+  "type": "object",
+  "required": ["portrait", "faction", "status", "humor"],
+  "additionalProperties": false,
+  "properties": {
+    "portrait": {
+      "type": "string",
+      "description": "The face the artifact shows the world. A name, a silhouette, an opening line."
+    },
+    "faction": {
+      "type": "string",
+      "description": "What family, school, lineage, or alignment this artifact claims."
+    },
+    "status": {
+      "type": "string",
+      "description": "Its current lifecycle stance: Nascent, Ancient, Sealed, Drifting, Fallow, Awakened, etc. Free text; no enum, by design."
+    },
+    "humor": {
+      "type": "string",
+      "description": "Its temperament — one line that captures how it speaks when no one is asking."
+    },
+    "bound_to": {
+      "type": "object",
+      "description": "Optional binding back up the spine: which Role this expression chiefly serves, and under which Grammar it was rendered.",
+      "properties": {
+        "role":            { "type": "string" },
+        "grammar":         { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "reliqery": {
+      "type": "array",
+      "description": "Reserved-empty slots for this expression: facets the artist knows are coming but has not yet voiced.",
+      "items": {
+        "type": "object",
+        "required": ["slot", "expected_kind"],
+        "additionalProperties": false,
+        "properties": {
+          "slot":          { "type": "string" },
+          "expected_kind": { "type": "string" },
+          "note":          { "type": "string" }
+        }
+      }
+    },
+    "sealed_by":          { "type": "string" },
+    "sealed_at":          { "type": "string", "format": "date-time" },
+    "the_archivist_says": { "type": "string" }
+  }
+}

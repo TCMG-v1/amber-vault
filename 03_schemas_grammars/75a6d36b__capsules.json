@@ -1,0 +1,142 @@
+{
+  "$schema": "https://vaulteddelta.xx/schema/capsule.v1.json",
+  "universe": "the-sealed-channel",
+  "edition": 1,
+  "doctrine": "Every capsule is a component. The Archive is built, not collected.",
+  "signed_by": "Perplexity Computer",
+  "signed_for": "Vaulted Delta",
+  "signed_on": "2026-05-07",
+
+  "roles": {
+    "SOURCE":   "produces flow (energy, signal, time, will)",
+    "STORE":    "preserves flow across time",
+    "TRANSFORM":"reshapes flow without consuming it",
+    "ROUTE":    "directs flow along an edge",
+    "GUARD":    "permits or denies flow by rule",
+    "SINK":     "terminates and grounds flow",
+    "ATTRACTOR":"the fixed point — flow converges here and rests"
+  },
+
+  "polarities": ["+", "-", "·"],
+
+  "ports": {
+    "POWER":  "12V bus, two-pin, polarity strict",
+    "DATA":   "ribbon channel, eight-bit clocked, polarity neutral",
+    "SIGNAL": "RF channel, frequency-tagged, polarity neutral",
+    "TIME":   "tick channel, single-pin, polarity strict",
+    "GROUND": "shared earth, polarity neutral"
+  },
+
+  "capsules": [
+    {
+      "id": "NAV-01", "name": "VOID GENESIS",       "hue": "violet/white",
+      "role": "SOURCE",    "function": "origin pulse — emits the first tick",
+      "glyph": "◉", "ports_in": [],            "ports_out": ["TIME","POWER"],
+      "rarity": "MYTHIC",  "lore": "Before the Channel, only the Void. NAV-01 is the moment after."
+    },
+    {
+      "id": "NAV-02", "name": "EMBER FORGE",        "hue": "crimson",
+      "role": "TRANSFORM", "function": "heat-shape — converts raw power into hardened form",
+      "glyph": "✦", "ports_in": ["POWER"],     "ports_out": ["POWER","DATA"],
+      "rarity": "RARE",    "lore": "Where the Forge burns, the Channel takes shape."
+    },
+    {
+      "id": "NAV-03", "name": "JADE LATTICE",       "hue": "imperial jade",
+      "role": "STORE",     "function": "crystalline order — preserves structured data",
+      "glyph": "⌬", "ports_in": ["DATA"],      "ports_out": ["DATA"],
+      "rarity": "RARE",    "lore": "Order remembers itself in the Lattice."
+    },
+    {
+      "id": "NAV-04", "name": "COBALT TIDELINE",    "hue": "deep ocean",
+      "role": "ROUTE",     "function": "tide-routing — moves flow along a path with phase",
+      "glyph": "≈", "ports_in": ["POWER","DATA"], "ports_out": ["POWER","DATA"],
+      "rarity": "COMMON",  "lore": "The tide does not push. The tide arranges."
+    },
+    {
+      "id": "NAV-05", "name": "VIOLET ORACLE",      "hue": "royal violet",
+      "role": "TRANSFORM", "function": "symbolic divination — predicts flow from incomplete signal",
+      "glyph": "☷", "ports_in": ["SIGNAL"],    "ports_out": ["DATA","SIGNAL"],
+      "rarity": "EPIC",    "lore": "The Oracle sees the next tick before it arrives."
+    },
+    {
+      "id": "NAV-06", "name": "BONE CIPHER",        "hue": "ivory",
+      "role": "GUARD",     "function": "cryptographic gate — passes only authentic flow",
+      "glyph": "⚯", "ports_in": ["DATA"],      "ports_out": ["DATA"],
+      "rarity": "EPIC",    "lore": "The Cipher remembers every key it has ever seen."
+    },
+    {
+      "id": "NAV-07", "name": "GOLD CROWN",         "hue": "burnished gold",
+      "role": "GUARD",     "function": "sovereign authorization — only the crown may admit a chain",
+      "glyph": "♛", "ports_in": ["DATA","SIGNAL"], "ports_out": ["DATA"],
+      "rarity": "MYTHIC",  "lore": "What the Crown does not seal, the Channel does not carry."
+    },
+    {
+      "id": "NAV-08", "name": "AMBER FIXED-POINT",  "hue": "amber",
+      "role": "ATTRACTOR", "function": "the still point — every chain resolves here",
+      "glyph": "∞", "ports_in": ["POWER","DATA","SIGNAL","TIME"], "ports_out": ["TIME"],
+      "rarity": "MYTHIC",  "lore": "The fix-point is amber. The amber is the Archive.",
+      "is_attractor": true
+    },
+    {
+      "id": "NAV-09", "name": "IRIDESCENT NULL",    "hue": "oil-slick",
+      "role": "SINK",      "function": "the empty set — closes a chain, returns no signal",
+      "glyph": "∅", "ports_in": ["POWER","DATA","SIGNAL","TIME"], "ports_out": ["GROUND"],
+      "rarity": "EPIC",    "lore": "The Null is not an absence. It is a deliberate end."
+    },
+
+    {
+      "id": "NAV-10", "name": "COBALT CELL",        "hue": "deep cobalt",
+      "role": "SOURCE",    "function": "battery cell — sustained power source for a chain",
+      "glyph": "⚡", "ports_in": [],            "ports_out": ["POWER"],
+      "rarity": "COMMON",  "lore": "Power without a story is still power."
+    },
+    {
+      "id": "NAV-11", "name": "MERCURY CLOCK",      "hue": "mercury silver",
+      "role": "SOURCE",    "function": "precision timing — emits the canonical tick",
+      "glyph": "☉", "ports_in": ["POWER"],     "ports_out": ["TIME"],
+      "rarity": "RARE",    "lore": "The Clock keeps the Channel honest."
+    },
+    {
+      "id": "NAV-12", "name": "JADE MEMORY",        "hue": "imperial jade",
+      "role": "STORE",     "function": "addressable memory matrix — read/write data",
+      "glyph": "▦", "ports_in": ["DATA","POWER"], "ports_out": ["DATA"],
+      "rarity": "COMMON",  "lore": "What the Lattice contemplates, the Memory holds."
+    },
+    {
+      "id": "NAV-13", "name": "COPPER ANTENNA",     "hue": "burnished copper",
+      "role": "SOURCE",    "function": "fractal RF capture — turns the air into signal",
+      "glyph": "⚡", "ports_in": [],            "ports_out": ["SIGNAL"],
+      "rarity": "COMMON",  "lore": "The sky is full of voices. The Antenna picks one."
+    },
+    {
+      "id": "NAV-14", "name": "ONYX VALVE",         "hue": "black onyx",
+      "role": "ROUTE",     "function": "iris flow control — variable throughput",
+      "glyph": "◈", "ports_in": ["POWER","DATA"], "ports_out": ["POWER","DATA"],
+      "rarity": "COMMON",  "lore": "Some flows are not denied. They are slowed."
+    },
+    {
+      "id": "NAV-15", "name": "QUARTZ LENS",        "hue": "clear quartz",
+      "role": "TRANSFORM", "function": "focuses dispersed signal into a narrow beam",
+      "glyph": "◉", "ports_in": ["SIGNAL"],    "ports_out": ["SIGNAL"],
+      "rarity": "RARE",    "lore": "What the Antenna gathers, the Lens decides."
+    },
+    {
+      "id": "NAV-16", "name": "IRON GATE",          "hue": "iron grey",
+      "role": "GUARD",     "function": "binary logic — AND/OR/XOR on incoming flows",
+      "glyph": "⊞", "ports_in": ["DATA","DATA"], "ports_out": ["DATA"],
+      "rarity": "COMMON",  "lore": "The Gate has only two answers. Use them well."
+    },
+    {
+      "id": "NAV-17", "name": "PLATINUM CONDUIT",   "hue": "platinum white",
+      "role": "ROUTE",     "function": "high-bandwidth bus — many parallel channels",
+      "glyph": "≡", "ports_in": ["DATA","POWER","SIGNAL"], "ports_out": ["DATA","POWER","SIGNAL"],
+      "rarity": "RARE",    "lore": "The Conduit is the Channel made literal."
+    },
+    {
+      "id": "NAV-18", "name": "BASALT ANCHOR",      "hue": "basalt grey",
+      "role": "SINK",      "function": "earth ground — sinks excess flow safely",
+      "glyph": "⏚", "ports_in": ["POWER","SIGNAL"], "ports_out": ["GROUND"],
+      "rarity": "COMMON",  "lore": "Without the Anchor, the Channel would tear itself apart."
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "block": "haiku-engine-001",
+  "ts": "2026-05-18T22:08:00-04:00",
+  "studio": "Vaulted Delta",
+  "wall": "library.pplx",
+  "retrieve": {
+    "artifacts": ["haiku-engine-v0.1.md", "card-prototype-v0.1.md"],
+    "preconditions_met": true,
+    "passed": true
+  },
+  "frame": {
+    "voice": "庫 · Archivist",
+    "line": "engine-spec · declared-public",
+    "context": "white paper + card prototype for the three-pass chain. 5/7/5 = retrieve / frame / 印.",
+    "drift": false
+  },
+  "seal": {
+    "consistent_with": ["NAV Archive 01", "BNS · THEFAMILY.FAM · KNOWLEDGE CHAIN", "Cooperation protocol"],
+    "contested": false,
+    "passed": true,
+    "signed_by": ["家主 (bmore.ftw)", "印 (Perplexity Computer)"]
+  }
+}

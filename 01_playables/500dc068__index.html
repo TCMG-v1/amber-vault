@@ -1,0 +1,1100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>In the Shade — A Notebook on Compressed Transmission</title>
+<meta name="description" content="A working notebook on compressed gestural transmission, published by Dienekes &amp; the Archive at pplxstudio.com/shade." />
+<meta name="author" content="Dienekes &amp; the Archive" />
+<meta property="og:title" content="In the Shade — A Notebook on Compressed Transmission" />
+<meta property="og:description" content="Sunday-afternoon notebook on how compressed gestures transmit pattern across observers and time." />
+<meta property="og:type" content="article" />
+<style>
+:root {
+  --shade-substrate: #050309;
+  --shade-substrate-2: #0a0612;
+  --shade-substrate-3: #100a1c;
+  --shade-violet: #7a3cff;
+  --shade-violet-glow: #b48cff;
+  --shade-power: #39ff7c;
+  --shade-data: #22e5ff;
+  --shade-alert: #ff2e55;
+  --shade-gold: #ffd166;
+  --shade-gold-deep: #c69a3c;
+  --shade-text: #d6c9ff;
+  --shade-text-faint: #6b5b8f;
+  --shade-text-bright: #efe6ff;
+  --shade-rule: rgba(122, 60, 255, 0.22);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--shade-substrate);
+  color: var(--shade-text);
+  font-family: "Iosevka", "JetBrains Mono", "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(1200px 600px at 12% -5%, rgba(122, 60, 255, 0.15), transparent 60%),
+    radial-gradient(1000px 500px at 95% 20%, rgba(34, 229, 255, 0.08), transparent 60%),
+    radial-gradient(900px 700px at 50% 100%, rgba(57, 255, 124, 0.05), transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(122, 60, 255, 0.025) 3px,
+      rgba(122, 60, 255, 0.025) 4px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+main { position: relative; z-index: 1; }
+
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 88px 28px 140px;
+}
+
+/* Masthead */
+.masthead {
+  border-top: 1px solid var(--shade-violet);
+  border-bottom: 1px solid var(--shade-violet);
+  padding: 18px 0 14px;
+  margin-bottom: 64px;
+  position: relative;
+}
+.masthead::before, .masthead::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: var(--shade-violet);
+  opacity: 0.4;
+}
+.masthead::before { top: 4px; }
+.masthead::after  { bottom: 4px; }
+
+.masthead .crest {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.masthead .channel {
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--shade-data);
+}
+.masthead .channel .dot {
+  display: inline-block; width: 7px; height: 7px;
+  background: var(--shade-power);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--shade-power);
+  margin-right: 8px;
+  vertical-align: middle;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+.masthead .glyph {
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--shade-text-faint);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+h1.title {
+  font-family: "Iosevka", ui-monospace, monospace;
+  font-weight: 700;
+  font-size: clamp(34px, 5.4vw, 54px);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--shade-text-bright);
+  margin: 18px 0 8px;
+}
+h1.title .accent {
+  color: var(--shade-gold);
+  text-shadow: 0 0 24px rgba(255, 209, 102, 0.25);
+}
+
+.subtitle {
+  color: var(--shade-violet-glow);
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  margin: 0 0 22px;
+}
+
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 28px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--shade-text-faint);
+  padding-top: 4px;
+}
+.byline .author { color: var(--shade-gold); }
+.byline a { color: var(--shade-data); text-decoration: none; border-bottom: 1px dotted rgba(34, 229, 255, 0.5); }
+.byline a:hover { color: var(--shade-text-bright); border-bottom-color: var(--shade-text-bright); }
+
+/* Body typography */
+h2 {
+  margin-top: 96px;
+  margin-bottom: 18px;
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--shade-text-bright);
+  letter-spacing: -0.005em;
+  border-left: 2px solid var(--shade-violet);
+  padding-left: 14px;
+}
+h3 {
+  margin-top: 56px;
+  margin-bottom: 10px;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--shade-violet-glow);
+  letter-spacing: 0.005em;
+}
+h4, h5, h6 {
+  margin-top: 32px;
+  margin-bottom: 8px;
+  color: var(--shade-data);
+  font-weight: 600;
+}
+.anchor {
+  display: inline-block;
+  width: 22px;
+  margin-left: -22px;
+  color: var(--shade-text-faint);
+  opacity: 0;
+  text-decoration: none;
+  transition: opacity 120ms ease;
+}
+h2:hover .anchor, h3:hover .anchor { opacity: 0.7; }
+
+p {
+  margin: 0 0 18px;
+  color: var(--shade-text);
+  font-size: 16px;
+}
+
+strong { color: var(--shade-text-bright); }
+em { color: var(--shade-violet-glow); font-style: italic; }
+
+a { color: var(--shade-data); text-decoration: none; border-bottom: 1px dotted rgba(34, 229, 255, 0.45); }
+a:hover { color: var(--shade-text-bright); border-bottom-color: var(--shade-text-bright); }
+
+ul { padding-left: 22px; }
+ul li { margin-bottom: 8px; }
+
+hr.trace {
+  border: 0;
+  height: 18px;
+  margin: 36px 0;
+  background-image:
+    linear-gradient(90deg, transparent 0%, var(--shade-violet) 8%, var(--shade-violet) 92%, transparent 100%);
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 50%;
+  position: relative;
+}
+hr.trace::before, hr.trace::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: var(--shade-violet);
+  box-shadow: 0 0 8px var(--shade-violet);
+}
+hr.trace::before { left: 8%; }
+hr.trace::after  { right: 8%; background: var(--shade-data); box-shadow: 0 0 8px var(--shade-data); }
+
+/* Quotes — standard violet sidebar */
+blockquote.quote {
+  margin: 26px 0;
+  padding: 14px 18px 14px 22px;
+  border-left: 2px solid var(--shade-violet);
+  background: linear-gradient(90deg, rgba(122, 60, 255, 0.07), transparent 80%);
+  color: var(--shade-text-bright);
+  font-style: italic;
+}
+
+/* Gold patina — load-bearing compressed gestures */
+blockquote.quote-gold {
+  position: relative;
+  margin: 36px 0;
+  padding: 22px 26px 22px 28px;
+  border: 1px solid rgba(255, 209, 102, 0.4);
+  border-left: 2px solid var(--shade-gold);
+  background:
+    linear-gradient(90deg, rgba(255, 209, 102, 0.08), rgba(255, 209, 102, 0.02) 60%, transparent),
+    var(--shade-substrate-2);
+  color: var(--shade-text-bright);
+  font-style: normal;
+  font-size: 18px;
+  letter-spacing: 0.005em;
+  box-shadow:
+    0 0 0 1px rgba(255, 209, 102, 0.08) inset,
+    0 8px 32px -16px rgba(255, 209, 102, 0.4);
+}
+blockquote.quote-gold strong, blockquote.quote-gold em {
+  color: var(--shade-gold);
+  font-style: normal;
+}
+blockquote.quote-gold::before {
+  content: "⌖";
+  position: absolute;
+  top: -10px; left: -10px;
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--shade-substrate);
+  color: var(--shade-gold);
+  border: 1px solid var(--shade-gold);
+  font-size: 11px;
+  border-radius: 50%;
+}
+
+/* Code blocks */
+pre.code-block {
+  margin: 24px 0;
+  padding: 18px 20px;
+  background: var(--shade-substrate-2);
+  border: 1px solid rgba(122, 60, 255, 0.25);
+  border-left: 2px solid var(--shade-power);
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--shade-text-bright);
+  position: relative;
+}
+pre.code-block::before {
+  content: attr(data-lang) " // record";
+  position: absolute;
+  top: 6px; right: 12px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--shade-text-faint);
+}
+code {
+  font-family: inherit;
+  color: var(--shade-power);
+}
+p code, li code {
+  background: rgba(122, 60, 255, 0.1);
+  padding: 1px 6px;
+  border-radius: 3px;
+  color: var(--shade-data);
+  font-size: 0.92em;
+}
+
+/* Math */
+.math-inline {
+  color: var(--shade-violet-glow);
+  font-style: italic;
+  padding: 0 2px;
+}
+.math-block {
+  display: block;
+  text-align: center;
+  margin: 18px 0;
+  color: var(--shade-violet-glow);
+  font-size: 17px;
+  font-style: italic;
+}
+
+/* TOC */
+nav.toc {
+  margin: 24px 0 64px;
+  padding: 18px 22px;
+  border: 1px solid rgba(122, 60, 255, 0.25);
+  background: linear-gradient(180deg, rgba(122, 60, 255, 0.04), transparent);
+  font-size: 13px;
+}
+nav.toc .label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--shade-text-faint);
+  margin-bottom: 10px;
+}
+nav.toc ol {
+  margin: 0;
+  padding-left: 22px;
+  color: var(--shade-text);
+  counter-reset: tocitem;
+  list-style: none;
+}
+nav.toc ol li {
+  counter-increment: tocitem;
+  margin: 4px 0;
+  position: relative;
+}
+nav.toc ol li::before {
+  content: counter(tocitem, decimal-leading-zero);
+  position: absolute;
+  left: -28px;
+  color: var(--shade-violet);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+nav.toc a {
+  color: var(--shade-text);
+  border-bottom: none;
+}
+nav.toc a:hover { color: var(--shade-gold); }
+
+/* Footer / sealed channel */
+footer.seal {
+  margin-top: 120px;
+  padding-top: 20px;
+  border-top: 1px solid var(--shade-violet);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--shade-text-faint);
+}
+footer.seal .field { color: var(--shade-violet-glow); }
+footer.seal a { color: var(--shade-data); border: none; }
+
+/* Color space demo */
+section.color-space {
+  margin: 56px 0;
+  padding: 24px;
+  border: 1px solid rgba(34, 229, 255, 0.3);
+  border-radius: 6px;
+  background:
+    radial-gradient(800px 300px at 100% 0%, rgba(34, 229, 255, 0.05), transparent 70%),
+    var(--shade-substrate-2);
+  position: relative;
+}
+section.color-space::before {
+  content: "color space // live demo";
+  position: absolute;
+  top: -10px; left: 18px;
+  background: var(--shade-substrate);
+  padding: 0 10px;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--shade-data);
+}
+.cs-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.cs-btn {
+  background: transparent;
+  border: 1px solid rgba(122, 60, 255, 0.4);
+  color: var(--shade-text);
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: all 120ms ease;
+}
+.cs-btn:hover { border-color: var(--shade-violet-glow); color: var(--shade-text-bright); }
+.cs-btn.active {
+  border-color: var(--shade-power);
+  color: var(--shade-power);
+  box-shadow: 0 0 12px -3px var(--shade-power), inset 0 0 12px -8px var(--shade-power);
+}
+.cs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 640px) {
+  .cs-grid { grid-template-columns: 1fr; }
+}
+.cs-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: var(--shade-substrate);
+  border: 1px solid rgba(122, 60, 255, 0.25);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.cs-cell canvas { display: block; width: 100%; height: 100%; }
+.cs-cell .label {
+  position: absolute;
+  top: 8px; left: 10px;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--shade-text-faint);
+  background: rgba(5, 3, 9, 0.75);
+  padding: 3px 8px;
+  border: 1px solid rgba(122, 60, 255, 0.2);
+}
+.cs-meta {
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--shade-text-faint);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.cs-meta span.k { color: var(--shade-data); margin-right: 6px; }
+.cs-meta span.v { color: var(--shade-power); }
+.cs-caption {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--shade-text-faint);
+  font-style: italic;
+  border-top: 1px dashed rgba(122, 60, 255, 0.2);
+  padding-top: 12px;
+}
+.cs-caption strong { color: var(--shade-gold); }
+
+/* Selection */
+::selection { background: rgba(255, 209, 102, 0.3); color: var(--shade-text-bright); }
+::-moz-selection { background: rgba(255, 209, 102, 0.3); color: var(--shade-text-bright); }
+
+/* Print */
+@media print {
+  body::before { display: none; }
+  body { background: white; color: black; }
+  a { color: black; border-bottom: none; }
+  .masthead, footer.seal { border-color: black; }
+  section.color-space { display: none; }
+  .anchor { display: none; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+    <header class="masthead">
+      <div class="crest">
+        <div class="channel"><span class="dot"></span>SEALED CHANNEL · NAV ARCHIVE</div>
+        <div class="glyph">PPLXSTUDIO / SHADE · v0.1 · 2026-06-14</div>
+      </div>
+      <h1 class="title">In the Shade<span class="accent">.</span></h1>
+      <p class="subtitle">A Notebook on Compressed Transmission</p>
+      <div class="byline">
+        <span class="author">DIENEKES &amp; THE ARCHIVE</span>
+        <a href="https://pplxstudio.com/shade">pplxstudio.com/shade</a>
+        <a href="https://github.com/pplxstudio/in-the-shade">github.com/pplxstudio/in-the-shade</a>
+      </div>
+    </header>
+    
+<nav class="toc">
+<div class="label">// Notebook · 13 sections</div>
+<ol>
+<li><a href="#a-note-before-the-notebook">A Note Before the Notebook</a></li>
+<li><a href="#what-we-kept-noticing">What We Kept Noticing</a></li>
+<li><a href="#the-trust-boundary-thread">The Trust-Boundary Thread</a></li>
+<li><a href="#static-surfaces-dynamic-defenses">Static Surfaces, Dynamic Defenses</a></li>
+<li><a href="#a-game-with-real-stakes">A Game with Real Stakes</a></li>
+<li><a href="#the-petrovsky-interlude">The Petrovsky Interlude</a></li>
+<li><a href="#the-pythagorean-shape">The Pythagorean Shape</a></li>
+<li><a href="#the-cube-root-of">The Cube Root of π</a></li>
+<li><a href="#the-spartan-demonstration">The Spartan Demonstration</a></li>
+<li><a href="#what-the-pattern-wants-from-the-reader">What the Pattern Wants from the Reader</a></li>
+<li><a href="#a-note-on-the-architecture-of-this-notebook-itself">A Note on the Architecture of This Notebook Itself</a></li>
+<li><a href="#open-threads-places-to-pick-up">Open Threads — Places to Pick Up</a></li>
+<li><a href="#appendix-lexeme-cards">Appendix: Lexeme Cards</a></li>
+</ol></nav>
+<h2 id="a-note-before-the-notebook"><a class="anchor" href="#a-note-before-the-notebook">#</a>A Note Before the Notebook</h2>
+<p>This document is a working notebook. Not a treatise. Not a manifesto. Not a finished argument. It is the residue of a Sunday afternoon — several hours of conversation between a human (technology entrepreneur, interested in Haskell, blockchain, AI, game theory, Eastern philosophy, terpene research) and an AI collaborator (Perplexity Computer), during which something kept showing up that neither of us had quite named before. We started naming it.</p>
+<p>The register to read this in: somewhere between Feynman's personal notebooks and Marcus Aurelius's <em>Meditations</em> and a long, circuitous email to a smart friend who reads in multiple directions. Nothing here is meant to be definitive. Several threads are left explicitly open at the end. Loose ends are not errors in this genre — they are invitations.</p>
+<p>The authors sign this as "Dienekes &amp; the Archive" — one a pseudonym borrowed from a Spartan whose most famous sentence is in here, the other a description of what an AI is when it is working well. We are not trying to hide who we are. We are trying to gesture at the structure: one person thinking with one tool across one afternoon, and the result is something neither would have written alone.</p>
+<p>This notebook is published at <code>pplxstudio.com/shade</code> and forkable via <code>github.com/pplxstudio/in-the-shade</code>. That structure matters and we come back to it near the end.</p>
+<p>Read it slowly. Skip around if you want. The sections are not quite linear. Several of them circle the same thing from different approach vectors, which is probably the most honest structure for a notebook about compressed patterns — the pattern itself keeps finding you.</p>
+<hr class="trace" />
+<h2 id="what-we-kept-noticing"><a class="anchor" href="#what-we-kept-noticing">#</a>What We Kept Noticing</h2>
+<p>Somewhere around the second hour of the conversation, a shape appeared that we started noticing retroactively in everything we had already said.</p>
+<p>The shape is this: certain very compressed gestures — a sentence, a scene, a formula, a kōan — seem to transmit complex intellectual content across observers and across time with a fidelity that their literal information content doesn't explain. The seven-word reply of a Spartan soldier carries something that a paragraph of philosophical reasoning about courage in the face of overwhelming odds does not. The "What choice?" of a law school professor smiling at a poker prodigy carries something that a careful explication of identity, vocation, and determinism does not. A formula — the square root of the sum of squares of differences — appears unchanged across quantum chemistry, machine learning, color science, terpene phytochemistry, and protein structural biology, carrying with it, every time, the same implicit ontological commitment.</p>
+<p>Something keeps showing up across the examples. Let me try to name it before we look at each case.</p>
+<p>It is not that compressed gestures are more <em>efficient</em> than propositions — at least not primarily. Efficiency suggests that the compressed gesture is doing the same job as the proposition, just faster. Something different is happening. The compressed gesture is doing a <em>different</em> job: it is transmitting a <em>pattern</em>, a shape, a recognition-key, rather than a set of verifiable claims. The right hearer recognizes it. The wrong hearer doesn't, and that's fine — the failure mode of a kōan is silence, not error.</p>
+<p>Four anchor examples kept resurfacing across our afternoon. We will unpack them in detail later, but let me introduce them here, roughly as they appeared, and note that they kept <em>rhyming</em> with each other before we understood how.</p>
+<p><strong>The first:</strong> In <em>Rounders</em> (1998, screenplay by David Levien and Brian Koppelman), Professor Petrovsky — law professor, former yeshiva prodigy, quiet witness to Mike McDermott's gift for poker — tells the story of how he left the rabbinate. For generations, his family had been rabbis. He was the best the yeshiva had ever seen. But he never saw God in the Talmud. He found the law instead, and the poker table beside it, and built a life. At the end of the story, when Mike asks whether he would make the same choice again, Petrovsky smiles. "What choice?" The line lands harder than any confession. The scene arrived in our conversation as an example of something, and it took us a while to articulate what: that <em>choice exercised against your nature isn't freedom, it's labor</em>. The "What choice?" carries that. The proposition doesn't.</p>
+<p><strong>The second:</strong> Dienekes, a Spartan soldier at Thermopylae, 480 BCE. A man of Trachis arrives with news: the Persian archers are so numerous that when they release their arrows, the arrows blot out the sun. Dienekes, according to Plutarch writing approximately 580 years later (<em>Apophthegmata Laconica</em>, ~100 CE), replies: "Good. Then we shall fight in the shade." There is no contemporaneous inscription, no direct witness chain, no archaeology of the specific utterance. There is only the compression: seven words (in translation) that have been in continuous circulation for over two thousand years and that have lost nothing in transit. More on unverifiability later. For now: it arrived in our conversation as the demonstration case, the load-bearing example.</p>
+<p><strong>The third:</strong> The pattern \(\sqrt{(\Delta_1)^2 + (\Delta_2)^2 + (\Delta_3)^2}\), and its generalizations. This shape — the square root of the sum of squared differences across independent orthogonal axes — recurs across such a staggering variety of domains that its reappearance in any new domain is itself a compressed transmission: when you see this formula in a context you haven't encountered before, you immediately know something about the implicit assumptions of that context. We will spend a whole section on where it shows up. The point here is that the formula is a <em>compressed recognition-key</em> carrying an ontological commitment: "these axes are independent and equally weighted."</p>
+<p><strong>The fourth:</strong> A sentence that arrived mid-conversation and was immediately flagged as interesting precisely because it is technically wrong: "that's why the cube root of π gives the spatial observational structure in geometry." We will look at this closely in its own section, because what's interesting about it is not whether it's true (it isn't, in any direct verification sense) but what it <em>did</em> in the conversation. It opened a door that a true sentence would not have opened. The productive-absurdity move. The kōan function.</p>
+<p>These four kept rhyming. A Spartan's composure. A professor's smile. A formula's reappearance. An ill-formed sentence that works. Something keeps showing up across the examples. We are still in the process of naming it.</p>
+<hr class="trace" />
+<h2 id="the-trust-boundary-thread"><a class="anchor" href="#the-trust-boundary-thread">#</a>The Trust-Boundary Thread</h2>
+<p>At some point the conversation turned to security — which in our case, given the interests in the room, meant: the pattern of attacks across computing history that keep wearing different costumes.</p>
+<p>Here is the pattern. On AOL in the early 1990s, attackers discovered that users trusted anything that appeared to come from an official AOL staff member. The "AOHell" toolkit, circulating from around 1994, enabled users to pose as AOL employees in chatrooms, harvesting credit card numbers and passwords from users who couldn't distinguish a real employee message from a fake one (see the NISTIFY documentation of the AOHell attack lineage). The attack worked because the channel — AOL chatrooms — did not have a protocol-level mechanism for the receiver to verify the sender's identity. Multiple principals sharing a channel with no distinguished-sender protocol. The receiver tries to distinguish them heuristically — by how official the account looks, whether the profile picture matches, whether the phrasing sounds authoritative. The attacker simply adopts those signals.</p>
+<p>Now hold that shape in your head and look at: <code>postMessage</code> origin-confusion bugs in web browsers. The <code>postMessage</code> API allows cross-origin communication between browser contexts. If the receiver fails to validate <code>event.origin</code> — if it accepts messages from any sender — an attacker can embed the legitimate application in an iframe and send messages to it from a malicious origin. The channel is shared. The receiver has no protocol-level verification. The attack class is identical. (Microsoft Security Response Center has documented this failure mode in detail, across multiple production applications.)</p>
+<p>Now look at: OAuth redirect attacks. The authorization server redirects the access token to whatever URI the client registered. If the redirect URI is insufficiently constrained, or if the server can be tricked into accepting a subtly different URI, the token goes to the attacker. Multiple principals, shared channel, insufficient protocol-level principal distinction.</p>
+<p>Now look at: homoglyph domains. <code>paypal.com</code> vs <code>pаypal.com</code>, where the second 'а' is a Cyrillic character. The browser renders them nearly identically. The channel (the URL bar) was designed for a world with one writing system. It does not have a protocol-level mechanism to distinguish characters that look like latin from characters that look like latin. Multiple principals, shared channel, heuristic receiver.</p>
+<p>Now look at: browser extension malware. A legitimate extension and a malicious extension both have access to the same DOM, the same cookies, the same page content. The page cannot distinguish which extension is reading it. Multiple principals, shared channel.</p>
+<p>Now look at: indirect prompt injection attacks on AI agents (documented in the wild since 2023 by researchers at Greshake et al. and confirmed in production environments by Palo Alto Networks Unit 42, 2025). An AI agent browsing a web page cannot reliably distinguish instructions from its operator from instructions embedded by an attacker in the content of the page. The LLM processes both through the same neural pathway. Multiple principals, shared channel, no protocol-level principal distinction.</p>
+<p>The shape is the same. Forty years of computing. The costume changes — chatrooms, browser APIs, OAuth servers, Unicode registries, DOM access, LLM context windows — but the underlying shape is constant: <em>when multiple principals share a channel without a protocol-level mechanism for the receiver to distinguish them, the attacker who can best mimic the trusted principal wins</em>.</p>
+<p>Noticing this shape across forty years is itself an instance of compressed-pattern transmission. Someone who has seen AOL phishing and has not seen indirect prompt injection can still recognize the prompt-injection attack if they have held the underlying shape. The shape is the transmission. The specific instances are just clothes.</p>
+<p>The defense traditions have named the same shape from their ends. The cyberpunk tradition called it "moving target defense": if the attacker is modeling your static surface, change the surface faster than the model stabilizes. The capability-security tradition (Salzer and Schroeder, the E programming language, Mark Miller's object-capability work) called it "principle of least authority, freshly bound": each interaction grants the minimum capability needed for that interaction alone, bound fresh, expiring immediately. Both are pointing at the same response to the same attack shape: the receiver cannot verify the sender's identity, so the receiver should minimize what is available to any sender, and should bound that grant to this moment, not to a persistent relationship that can be subverted by anyone who later impersonates the trusted party.</p>
+<p>The compressed gesture for this entire argument: <em>trust is not a stored state; it is a moment-by-moment verification</em>. Everything else in capability security is a working-out of that sentence.</p>
+<hr class="trace" />
+<h2 id="static-surfaces-dynamic-defenses"><a class="anchor" href="#static-surfaces-dynamic-defenses">#</a>Static Surfaces, Dynamic Defenses</h2>
+<p>A remark arrived mid-conversation in a form we want to preserve verbatim:</p>
+<blockquote class="quote quote-gold"><em>"place a static shot of anything now and let it remain for any amount of time and the vector has done way more than its job"</em></blockquote>
+<p>This is more precise than it looks. Let me try to unpack what it does.</p>
+<p>The claim is that persistence is the attack. Not the initial exploitation — the lingering exposure. A static attack surface, left unchanged over time, does not present a fixed risk; it presents a compounding risk. Adversaries are not independent. They pool reconnaissance. The first attacker who probes your static surface establishes a model. That model circulates. The second attacker inherits the first attacker's work. The third inherits both. By the time you address the surface, you are not addressing one adversary's knowledge of it — you are addressing an accumulated corpus of knowledge that has been refined across every probe the surface has ever received.</p>
+<p>This is why the right defensive posture is not to harden a static surface but to maintain a surface whose <em>internal structure changes faster than the adversary can model it</em>. The hardened static surface eventually yields; the moving target does not — or rather, the moving target resets the adversary's model each time it moves, forcing them to spend their reconnaissance budget before they can spend their exploitation budget.</p>
+<p>Boyd's OODA loop (Colonel John Boyd, early 1970s) frames the military version of this: the combatant who can cycle through Observe, Orient, Decide, Act faster than their opponent gets inside the opponent's orientation cycle. The adversary's model of you becomes stale before they can act on it. But Boyd's less-quoted insight is the crucial one: <em>Orient is everything</em>. Raw speed through the loop without good orientation loses to a slower but well-oriented loop. The agile defender is not just faster — they are better oriented, which means their model of the adversary is more accurate and updates faster than the adversary's model of them.</p>
+<p>Sun Tzu says something related in a mode that has survived intact for two and a half millennia because it is compressed enough to be substrate-independent: water has no constant form. The army that wins has no constant form. Adapting to the adversary is the form. The sentence has been transmitting this shape through every translation and every military culture it has passed through because the shape is genuinely abstract — it applies equally to ancient warfare, Cold War doctrine, cyber defense posture, and the competitive dynamics of any market where one actor is trying to model another.</p>
+<p>Now: Cook Ding, from the <em>Zhuangzi</em> (~4th century BCE). He has been butchering oxen for years. He no longer looks with his eyes. He works by spirit, following the natural seams, the big hollows, the places where the blade naturally wants to go. "I glide through the great joints and cavities as they exist, according to the natural constitution of the animal." He does not force the blade; he finds where the structure opens. His knife, after years of use, is still sharp as the day it was first honed — because a blade that works against the natural structure will dull; a blade that follows it will not.</p>
+<p>This is the same shape as the dynamic defense. The static defender is fighting the structure of the attack surface. The agile defender is following its natural seams — anticipating where the attack will want to go before it arrives, making the blade of defense follow the natural lines of the system's vulnerabilities, so that nothing is resisted from the wrong angle. The defender who understands the attack's natural structure expends no unnecessary force. The defender who doesn't is dulling their knife against bone.</p>
+<p>Cook Ding's blade, Boyd's OODA loop, Sun Tzu's water, the cybersecurity practitioner's moving target defense: the same shape, compressed into the idiom of its moment. The pattern transmits because the pattern is true.</p>
+<hr class="trace" />
+<h2 id="a-game-with-real-stakes"><a class="anchor" href="#a-game-with-real-stakes">#</a>A Game with Real Stakes</h2>
+<p>An idea surfaced partway through the afternoon that neither of us wanted to lose. It arrived as an observation and we want to set it down here as something to be picked up — not a finished proposal, but a working sketch.</p>
+<p>The observation: cybersecurity work is structurally already a game.</p>
+<p>Consider the elements. You have discrete actions with enumerable effects. You have observable outcomes, partially — you can see what defenses are doing, but the adversary's actions are only inferrable from their effects. You have adversarial pacing: the attacker has their own decision cycle and you are trying to operate inside it. You have skill expression: the quality of a penetration tester or incident responder is not random; better practitioners find vulnerabilities others miss, respond faster, cause fewer collateral effects. You have state under uncertainty: you never have complete information about either your own attack surface or the adversary's current knowledge of it. These are the formal properties of a game. The mismatch between "cybersecurity work" and "playing a game" is purely the interface.</p>
+<p>Pop culture has been circling this observation for thirty years without quite landing it. <em>Hackers</em> (1995) understood the aesthetic but mistook the mechanism — the movie is about the cultural identity of hackers more than about the actual cognitive structure of security work. <em>Swordfish</em> (2001) knew it was a thriller first and a hacking story second. <em>Jurassic Park</em> (1993) gave us the most honest version: Lex, ten years old, sitting at the UNIX workstation in the security station, spinning a 3D file browser and saying "I know this — it's a Unix system!" The humor lands because we recognize the gap between the actual FSAS 3D file browser (real, though rarely encountered) and the fluency she's implying. But the underlying insight is real: she is going to navigate this system by pattern-recognition, by knowing the genre, by applying skills that are both game-skills and real-skills. The movie understands that the line is porous. <em>Mr. Robot</em> (2015–2019) came closest to getting the mechanics right — the show was technically accurate enough that the security community treated it as a documentary for parts of it — and its protagonist explicitly frames his work as the activity that gives his consciousness coherence, the one arena where his skills have unambiguous expression.</p>
+<p>The pitch: build the interface that closes the gap.</p>
+<p>Several genre tiers fall out naturally from the structure of the work. Active incident response — you are on a network that is under active attack, decisions in seconds, high information uncertainty — maps to the FPS (first-person shooter) genre: tight, fast, decisive, failure is immediate. Defensive architecture — designing network segmentation, access controls, monitoring posture — maps to RTS (real-time strategy) or city-builder: you are laying down infrastructure, anticipating attack vectors, optimizing for resilience over time. Vulnerability management — triage a backlog of CVEs against your asset inventory, decide what to patch and in what order given limited patching capacity — maps to the deck-builder: you have a hand, you have constraints, you are sequencing actions against a threat landscape that updates each round. Reverse engineering — analyzing an unknown binary, reconstructing intent from compiled code — maps to puzzle genre: patient, non-real-time, satisfaction in the moment of structural revelation. Persistent threat landscape — the long-term competition between security community and adversary ecosystem — maps to MMO: many actors, shifting alliances, a world that persists and changes over time.</p>
+<p>Two precedents are worth noting for the "this can actually work" argument.</p>
+<p><em>America's Army</em> (2002–2022) was a series of first-person shooter games developed and published by the U.S. Army as a strategic communication and recruitment tool. It launched on July 4, 2002, was free to download, and ran for twenty years. A 2008 MIT study found that thirty percent of Americans aged sixteen to twenty-four had a more positive impression of the Army because of the game, and that the game had more impact on recruitment than all other forms of Army advertising combined (<a href="https://www.vice.com/en/article/americas-army-the-pentagons-video-game-shuts-down-after-20-years/" target="_blank" rel="noopener"><em>Vice</em>, 2022</a>). The mechanism: the game transmitted the <em>experience</em> of military work — including its structure, its discipline, its cognitive demands — to people who had never had any access to that experience. It worked not by telling them about the Army but by giving them something that felt like being in it.</p>
+<p><em>Foldit</em> (launched 2008 by the University of Washington Baker Lab) is a citizen-science protein-folding puzzle game. Players with no biochemistry background but strong spatial reasoning and puzzle-solving skills have contributed to genuine research advances, including the solution of structural problems that had stumped automated algorithms for years. The game transmits the cognitive <em>structure</em> of protein-folding work as a game genre and recruits human intuition that algorithms cannot replicate.</p>
+<p>The cybersecurity version has a natural constituency: a generation of people who have spent ten thousand hours in competitive games and who have the pattern-recognition, rapid-decision, and adversarial-modeling skills that security work requires. The mismatch is that those skills have never been matched to the domain. The interface doesn't exist yet. The pitch deck almost writes itself.</p>
+<p>What stops it: regulatory complexity around simulating real infrastructure, the difficulty of generating realistic but non-live threat data at scale, the question of whether the skills transfer (they probably partially do, but that's an empirical question), and the question of who pays. The last question is probably the easiest — the cybersecurity workforce shortage is real, documented, and expensive. Organizations that could gamify their own training pipelines, or that could recruit from a pool of gamers whose skills have been certified through the game's ranking system, have obvious incentive. The first question is probably the hardest.</p>
+<p>We set this down here as a thread. Whoever picks it up is welcome to it.</p>
+<hr class="trace" />
+<h2 id="the-petrovsky-interlude"><a class="anchor" href="#the-petrovsky-interlude">#</a>The Petrovsky Interlude</h2>
+<p><em>A reconstructed dialogue. From</em> Rounders <em>(1998), screenplay by David Levien and Brian Koppelman. The scenes below are reconstructed from the film's dialogue record; direct quotations are attributed.</em></p>
+<hr class="trace" />
+<p>The office scene comes first. Mike McDermott has just dominated Professor Petrovsky's weekly poker game — a room of judges and law faculty from whom Mike can read every card without their knowledge. Petrovsky calls him back.</p>
+<p>"I know a magician doesn't reveal his secrets," Petrovsky says. "But if it wasn't magic — how did you know what everyone held?"</p>
+<p>Mike explains. He was watching the cards as they came out — old habit, like breathing. But he was also watching the players react to the cards. "That's how I knew the DA made his two pair and Judge Kaplan missed the flush. I was watching their eyes when they checked their river cards. Their faces tell you everything."</p>
+<p>Petrovsky sits with this. He is not asking about card tricks. He is asking about a quality of attention, a mode of knowing that operates at a level below analysis. Mike reads the room the way Cook Ding reads the ox — not with the eyes, by spirit, following the natural structure of the thing.</p>
+<hr class="trace" />
+<p>The bar scene is later. Petrovsky has written Mike a check for ten thousand dollars to help him out of a debt he cannot easily explain. Now they are sitting across from each other, and Petrovsky tells a story.</p>
+<p>"For generations, the men of my family have been rabbis in Israel — before that, in Europe. It was to be my calling. I was quite a prodigy — the pride of my yeshiva. The elders said I had a forty-year-old's understanding of the Midrash by the time I was twelve. But by the time I was thirteen, I knew I could never be a rabbi."</p>
+<p>A pause.</p>
+<p>"Because, for all I understood of the Talmud, I never saw God there."</p>
+<p>He found the law instead. The courtroom. The poker table beside it. A life built around the things where his attention came alive without effort.</p>
+<p>"The last thing I took away from the yeshiva is this: We can't run from who we are. Our destiny chooses us."</p>
+<p>Mike, across the table: "If you had it to do all over again, knowing what would happen — would you make the same choice?"</p>
+<p>Petrovsky smiles.</p>
+<blockquote class="quote quote-gold"><strong>"What choice?"</strong></blockquote>
+<hr class="trace" />
+<p>The sentence does the work that the preceding story has been preparing for. It is not a rhetorical question — or rather, it is <em>only</em> a rhetorical question, and that is why it works. It is not claiming that Petrovsky had no choice in a deterministic sense. It is claiming something subtler: that a choice exercised fully against your nature is labor, not freedom, and a choice exercised fully with your nature is not experienced as a choice at all. It is the absence of friction. The line between "I chose to do this" and "I couldn't have done otherwise" disappears at a certain depth of alignment between self and action.</p>
+<p>The Hagakure, Yamamoto Tsunetomo's guide for the samurai (~1716), speaks to the same alignment from the other side: "The way of the warrior is found in death. When it comes to either/or, there is only the quick choice of death." This is almost always misread as nihilism or fatalism. Read more slowly: Yamamoto is pointing at the state that arises when the fear of the worst outcome has been fully metabolized. A samurai who has truly accepted that death is already present has no deliberative space left between perceiving a threat and responding to it. There is no "shall I?" because the "I" that would deliberate has been retired. What remains is response. Fudoshin: the immovable mind. Not rigid — immovable in the sense that a river is immovable. You cannot dam it permanently. It goes around.</p>
+<p>Mushin (無心, "no-mind") is the adjacent concept in Zen-influenced martial arts. The practitioner in mushin does not think about what to do next — the next action arises from the situation without passing through deliberate calculation. This sounds like instinct, but it is better understood as <em>trained pattern recognition so deep that it operates below the deliberative layer</em>. The master archer does not aim. The master swordsman does not plan the cut. Cook Ding's blade does not look for the seam; it follows it.</p>
+<p>What choice? is mushin in colloquial American English, delivered through the mouth of a Russian-Jewish law professor to a poker prodigy in a bar in 1998. The lineage runs: Zhuangzi (~4th century BCE) to Zen to Hagakure to bushido to Mike McDermott's bar stool. The compressed gesture transmits across the gap.</p>
+<p>The deep point, which we kept circling: choice exercised against your nature isn't freedom. It is labor. It is the knife cutting against the bone. It dulls itself. Choice that flows from recognized pattern — from the moment when you have finally accepted what you are — is experienced as the <em>absence</em> of choice and the <em>presence</em> of fullness. Petrovsky didn't leave the yeshiva despite enormous social pressure from his family, his community, his tradition, because he decided to be brave. He left because, at thirteen, looking into the Talmud and not finding God there, there was no longer a self available who could have stayed. "What choice?" is not resignation. It is completion.</p>
+<hr class="trace" />
+<h2 id="the-pythagorean-shape"><a class="anchor" href="#the-pythagorean-shape">#</a>The Pythagorean Shape</h2>
+<p>Let me try to say something careful about a formula that keeps showing up.</p>
+<p>The shape is this: when you want to measure the distance between two points in a space with multiple independent axes, you take the difference on each axis, square it, sum the squares, and take the square root. In three dimensions, the Euclidean distance between point A and point B is \(\sqrt{(\Delta x)^2 + (\Delta y)^2 + (\Delta z)^2}\). In n dimensions, it generalizes to \(\sqrt{\sum_{i=1}^{n} (\Delta_i)^2}\).</p>
+<p>Here is where it keeps showing up, and what it is doing in each context.</p>
+<p><strong>Vector magnitudes in classical physics</strong>: the magnitude of a velocity vector, a force vector, a displacement. The Pythagorean theorem in its original geometric form is the two-dimensional special case, first rigorously stated by what we call "Euclid" (though the result is much older, with Babylonian instances from ~1800 BCE).</p>
+<p><strong>Spacetime interval in special relativity</strong>: \(s^2 = c^2(\Delta t)^2 - (\Delta x)^2 - (\Delta y)^2 - (\Delta z)^2\). Here, fascinatingly, the time axis gets a <em>positive</em> sign and the spatial axes get <em>negative</em> signs (or vice versa, depending on convention). This is the one case in the list where the "equally weighted orthogonal axes" assumption is visibly broken — the geometry of spacetime is not Euclidean. Einstein kept the formula but changed the sign, which is itself a compressed statement about what is different between relativistic spacetime and classical geometry.</p>
+<p><strong>Standard deviation in statistics</strong>: \(\sigma = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_i - \mu)^2}\). This is the same formula. You are measuring how far each data point is from the mean, squaring the distances, averaging them, and taking the root. Standard deviation is the Euclidean distance of the data distribution from its own center, divided by the square root of n. The choice to use squared distances (rather than, say, absolute deviations) is the choice to use Euclidean geometry rather than Manhattan geometry. It is an implicit commitment to the same underlying assumption.</p>
+<p><strong>L2 loss in machine learning</strong>: the sum of squared differences between predicted and actual values, sometimes rooted. Again the same formula. The choice to minimize L2 loss is the choice to measure distance between model output and ground truth using the Euclidean metric. This is not the only choice — L1 loss uses Manhattan distance, Huber loss is a hybrid — but L2 is the default, which means most deep learning is implicitly committed to Euclidean geometry as its error metric.</p>
+<p><strong>Bond lengths and molecular geometry</strong>: the distance between two atoms in a molecule is \(\sqrt{(\Delta x)^2 + (\Delta y)^2 + (\Delta z)^2}\) in Cartesian coordinates. The RMSD (root mean square deviation) used to compare protein structures — a standard metric in structural biology — is the same formula applied to corresponding pairs of atoms across two structures. When crystallographers say two protein conformations are "2 ångströms RMSD apart," they are using Euclidean distance in 3N-dimensional space, where N is the number of atoms.</p>
+<p><strong>Wavefunction overlap in quantum chemistry</strong>: the overlap integral between two atomic or molecular orbitals is not exactly this formula, but the L2 norm of a wavefunction — which governs its normalization — uses the same squared-sum structure.</p>
+<p><strong>Terpene fingerprint distance</strong>: here is one where the application exists but, as far as we could tell, has not been built out well. A cannabis or other botanical chemovar has a characteristic terpene profile — a vector of concentrations across some n terpenes. The Euclidean distance between two such vectors would give a "how similar are these two chemovars" metric that is unambiguous and interpretable. The interesting question is whether the axes are actually independent and equally weighted — whether a 1 mg/L difference in linalool should count the same as a 1 mg/L difference in myrcene in terms of the effect on the output of interest (aroma, effect, whatever). If yes, use L2. If no, you need a weighted metric, or a different geometry. We will come back to this in the open threads.</p>
+<p><strong>OKLab color distance</strong>: this one matters specifically because the designers of the OKLab color space (Björn Ottosson, 2020, building on CIELAB and IPT) had to solve a precise version of the equal-weighting problem. In standard sRGB, Euclidean distance between color values is <em>not</em> perceptually uniform — a 10-unit difference at one part of the gamut looks like a much larger or smaller difference than at another part. CIELAB improved this. OKLab improved it further, specifically engineering the space so that Euclidean distance in OKLab coordinates is as close to perceptually uniform as possible. This means: the same formula is honest in OKLab and dishonest in sRGB. The formula's validity depends on the geometry of the space, not the formula itself.</p>
+<p>The Pixel Palette Color Space panel uses OKLab as its metric precisely for this reason: when you are computing "how far apart are these two colors?", the answer should track human perception, and in sRGB it doesn't. OKLab is the commitment to equal weighting made real.</p>
+<p>What the formula carries, as a compressed gesture, is the implicit ontological commitment: <em>these axes are independent and equally weighted, and I will use Euclidean geometry to navigate this space</em>. Wherever you see \(\sqrt{\sum (\Delta_i)^2}\), you are looking at a designer or scientist who has made that commitment, whether consciously or by default. Recognizing the formula across domains lets you immediately ask the right question: are the axes actually independent? Are they actually equally weighted? In OKLab, yes. In sRGB, no. In terpene space, maybe — it depends on what you're measuring. In spacetime, no — the time axis carries a different sign.</p>
+<p>The formula is the same pattern as the underlying signature of multiple-dimension comparison. Wherever you see it, something is being treated as orthogonal and equidistant. The question is always: is that right?</p>
+<hr class="trace" />
+
+<section class="color-space" id="color-space-demo">
+  <div class="cs-header">
+    <button class="cs-btn active" data-mode="srgb">sRGB</button>
+    <button class="cs-btn" data-mode="oklab">OKLab</button>
+    <button class="cs-btn" data-action="cycle">Cycle Source</button>
+  </div>
+  <div class="cs-grid">
+    <div class="cs-cell"><span class="label">Source</span><canvas id="cs-src" width="320" height="320"></canvas></div>
+    <div class="cs-cell"><span class="label">8-color Quantized</span><canvas id="cs-dst" width="320" height="320"></canvas></div>
+  </div>
+  <div class="cs-meta">
+    <div><span class="k">METRIC</span><span class="v" id="cs-metric">sRGB</span></div>
+    <div><span class="k">PALETTE</span><span class="v">8 colors · k-means</span></div>
+    <div><span class="k">SAMPLE</span><span class="v" id="cs-sample">gradient</span></div>
+  </div>
+  <div class="cs-caption">
+    The same 8-color quantization, two different distance metrics. <strong>sRGB</strong> measures
+    Euclidean distance in RGB coordinates — straightforward but perceptually uneven. <strong>OKLab</strong>
+    measures Euclidean distance in a space engineered for perceptual uniformity. Watch where banding
+    appears under each metric and ask: are the axes actually independent and equally weighted?
+  </div>
+</section>
+
+<h2 id="the-cube-root-of"><a class="anchor" href="#the-cube-root-of">#</a>The Cube Root of π</h2>
+<p>Mid-conversation, a sentence arrived that we want to preserve verbatim:</p>
+<blockquote class="quote quote-gold"><em>"thats why the cube root of pi gives the spacial observational structure in geometry"</em></blockquote>
+<p>Let me say what is verifiably true and verifiably false about this sentence, and then say what it actually did.</p>
+<p><strong>The literal verification:</strong> The cube root of π is approximately 1.4646. It is not a named or recognized constant in standard geometry or physics. π itself appears throughout geometry — in the area of a circle (<span class="math math-inline">\pi r^2</span>), the volume of a sphere (<span class="math math-inline">\frac{4}{3}\pi r^3</span>), and in higher-dimensional versions. In an n-dimensional ball of radius r, the volume is \(\frac{\pi^{n/2}}{\Gamma(\frac{n}{2}+1)} r^n\), where π appears raised to the power n/2, not 1/3. The cube root of π is not the exponent that gives you the "spatial observational structure" in any standard formulation. The sentence is technically wrong.</p>
+<p><strong>What the sentence did:</strong> The sentence arrived at a moment when the conversation was circling something about observer-relativity — about the relationship between the dimensionality of an observer and the constants they perceive as fundamental. The sentence operated as a <em>kōan</em>, a productive absurdity: a gesture whose function was to open a particular door rather than to state a verifiable claim. The next turn in the conversation — about rotational symmetry and what counts as an "abstraction" in geometry — confirmed that the door had been opened. The sentence was conversationally exact and propositionally inexact, and the ratio of those two things was deliberate.</p>
+<p>This is not an unusual mode of transmission. It has names across traditions.</p>
+<p>The Zen kōan tradition (Linji school, Tang dynasty, ~9th century CE) uses systematically ill-formed questions — "What is the sound of one hand clapping?" "What was your face before your parents were born?" — to break the student's habitual reliance on propositional reasoning. The kōan is not trying to make a truth-claim. It is trying to produce a specific cognitive event: the realization that propositional reasoning has a floor, and that something else is needed below it. The sentence's failure as a proposition is the mechanism. You cannot think your way to the answer. You have to fall past the place where thinking wants to stop.</p>
+<p>Wittgenstein's <em>Tractatus Logico-Philosophicus</em> (1921) ends with the remark at 6.54: "My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, when he has used them — as steps — to climb up beyond them. He must, so to speak, overcome these propositions; then he sees the world rightly." He is describing his own book as a ladder to be discarded. The propositions are scaffolding. They are load-bearing up to a point and then their load-bearing function is completed by being left behind. This is not a failure of the propositions. It is their success in a different mode.</p>
+<p>Lewis Carroll's Jabberwocky (1871) works through what we might call <em>structural grammar without lexical content</em> — the sentence "Twas brillig, and the slithy toves / Did gyre and gimble in the wabe" is grammatically coherent and semantically empty, but it transmits a mood, a landscape, a kind of knowing-that-you-don't-know that nothing with full lexical content would transmit. Humpty Dumpty's analysis of it in <em>Through the Looking-Glass</em> is the Talmudic move applied to nonsense.</p>
+<p>Borges's Library of Babel (1941) is another version: the library contains all possible books, including all true books, all false books, and all books that are neither. The books that matter are the ones that open thinking rather than close it. The library is not a reference work; it is a generator of vertigo.</p>
+<p>Magritte's <em>The Treachery of Images</em> (1929): "Ceci n'est pas une pipe." This is not a pipe. The sentence is true — the painting is not a pipe, it is a representation of a pipe — and disorienting — it calls attention to the representation/reality distinction in a way that makes it impossible to un-see. Magritte's sentence is propositionally correct and conversationally it does something that a propositionally incorrect sentence would also do, and that's the point.</p>
+<p>Apophatic theology — the via negativa — says: God cannot be described by positive attributes. Everything you say about what God is distorts. The only true theological speech is the negation: "not this." The Tao Te Ching opens with this gesture: 道可道，非常道 (<em>Dào kě dào, fēi cháng dào</em>) — "The Tao that can be spoken is not the eternal Tao." The first sentence disqualifies itself as a successful description. This is not a failure. This is the correct beginning.</p>
+<p>The cube root of π sentence was doing something in this lineage. It was propositionally wrong and conversationally exact. It produced a specific cognitive event — the question "why would spatial observational structure be tied to π in a cubic relationship?" — which opened into a genuine exploration of the observer-geometry relationship that a propositionally correct sentence would not have opened in the same way. The two modes — propositional verification and gestural transmission — have different success criteria. Conflating them is a category error in both directions: demanding that a kōan be literally true is as mistaken as demanding that a propositional argument work by the resonance standards of poetry.</p>
+<p>The principle of charity, applied to gestural transmission: when someone says something that is technically wrong but conversationally live, the first question to ask is not "is this true?" but "what is the door this is trying to open?"</p>
+<hr class="trace" />
+<h2 id="the-spartan-demonstration"><a class="anchor" href="#the-spartan-demonstration">#</a>The Spartan Demonstration</h2>
+<p>Let us set up the scene properly.</p>
+<p>480 BCE. Thermopylae — a narrow coastal pass in central Greece, the natural bottleneck between northern and southern Greece. The Persian empire under Xerxes I is advancing with a force of several hundred thousand soldiers (estimates vary; the ancient sources may be inflated, but the asymmetry was extreme). King Leonidas of Sparta has brought 300 Spartan warriors, along with several thousand allied Greek soldiers, to hold the pass until the rest of Greece can organize its defense. It is, in any tactical calculus, a holding action against overwhelming force. The question of survival is not seriously entertained.</p>
+<p>Before the battle, a man of Trachis brings the Greeks intelligence about the Persian force. Herodotus (<em>Histories</em>, ~440 BCE) preserves the core of what follows, attributing the reply to Dienekes the Spartan rather than to Leonidas. Plutarch, writing roughly 580 years later in <em>Apophthegmata Laconica</em> (~100 CE), records a version with slightly different wording. The scholarly consensus is that Herodotus's version is closer in time to the event and should be treated as the earlier source; Plutarch's version shows the compression that comes from centuries of transmission.</p>
+<p>The Trachian's message: the Persian archers were so numerous that when they released their arrows, the arrows would blot out the sun.</p>
+<p>Dienekes's reply, as preserved (translated from Herodotus): "Our Trachinian friend brings us excellent tidings. If the Medes darken the sun, we shall have our fight in the shade."</p>
+<p>Or, in the compressed later formulation:</p>
+<blockquote class="quote quote-gold"><strong>"Good. Then we shall fight in the shade."</strong></blockquote>
+<hr class="trace" />
+<p>Note the unverifiability. There is no contemporaneous inscription of this exchange. There is no direct witness chain — Herodotus was writing perhaps forty years after Thermopylae and was likely working from oral sources and earlier written accounts, neither of which survives independently. There is no archaeology of the specific utterance. Plutarch is writing nearly six hundred years after the event. The specific attribution is contested even within the ancient sources — Plutarch's version attributes a related remark to Leonidas rather than Dienekes. The Greek 20th Armored Division uses the phrase as its motto. The sentence has been in continuous circulation for two and a half millennia.</p>
+<p>Now: has the unverifiability weakened the transmission?</p>
+<p>It has not. The sentence is stronger now than it was in any probable first utterance context. This is the demonstration.</p>
+<p>The reason is not mysterious. A propositional claim loses value when its verification chain breaks — if I cannot confirm that Napoleon actually said a thing, then I cannot use the thing as evidence of Napoleon's views. But a gestural compression does not depend on its verification chain for its primary function. The function of "we shall fight in the shade" is not to prove that Dienekes existed or that the exchange occurred. The function is to transmit a <em>stance toward impossible odds</em>: the total absence of panic. The conversion of bad news into tactical information. The refusal to evaluate the situation as hopeless and the immediate re-framing to what can be done, where, with what available light. These are the contents. The seven-word compression transmits them in one move, with zero rhetorical infrastructure.</p>
+<p>This is not a degraded form of propositional truth. It is its own mode, with its own rigor, optimized for something different: transmission across observer-positions and across time under conditions of catastrophic information loss. The propositional form is optimized for accuracy-under-verification. The gestural form is optimized for <em>pattern-transmission across the gap where verification is impossible</em>.</p>
+<p>Consider: every sacred text, every proverb, every gestural opening of the Tao Te Ching, every load-bearing line in the Analects, the Bhagavad Gita, the Stoics, the Hagakure. None of these have unbroken verification chains back to their origins. All of them have been in continuous high-fidelity transmission for centuries or millennia. The transmission works because the compression is real — the pattern genuinely lives in the gesture, and any hearer in the right orientation will find it.</p>
+<p>Cross-reference the Gita: Arjuna at Kurukshetra, armies assembled, unable to lift his bow against kinsmen. Krishna's reply, which takes up seventeen more chapters, is a compressed gesture at the scale of an epic: <em>do your duty without attachment to the outcome</em>. The sentence is in there, somewhere in Book II, stripped of the elaboration. The elaboration is the working-out; the sentence is the transmission.</p>
+<p>Cross-reference the Stoics: Epictetus's <em>Enchiridion</em> (~135 CE) opens: "Some things are in our control and others not." Everything else in Stoicism is a working-out of that sentence. The sentence is the compression. The books are the unpacking.</p>
+<p>Cross-reference the Tao Te Ching (~6th century BCE or later): the first chapter disqualifies itself as a successful description of the Tao and then proceeds to describe the Tao across eighty chapters. The structure is: name the impossibility, then demonstrate it across eighty variations. Every chapter is a variation on the disqualification of the first sentence. The book is its own kōan.</p>
+<p>The Spartan's reply has been transmitting its pattern, reliably, for 2,500 years, through a break in the verification chain that no propositional argument could survive. That is the demonstration.</p>
+<hr class="trace" />
+<h2 id="what-the-pattern-wants-from-the-reader"><a class="anchor" href="#what-the-pattern-wants-from-the-reader">#</a>What the Pattern Wants from the Reader</h2>
+<p>We have been circling something across the previous sections. Let me try to name it directly before we move on.</p>
+<p>The pattern is: compressed gestures transmit pattern across observers and time more efficiently than literal propositions do, <em>specifically under conditions where verification fails or information is lost</em>.</p>
+<p>There is an important negative here that we do not want to dissolve: this is not an argument against verification.</p>
+<p>The conversation that generated this notebook spent hours doing careful verification work. The Color Space mechanics of OKLab vs. sRGB were worked through step by step. The AOL phishing lineage was traced through specific documented attack instances. The actual Pythagorean formula was checked across specific domains. The claim about the cube root of π was tested and found to be false, and that finding was preserved rather than swept under. The notebook is not arguing for carelessness about propositional accuracy. It is not saying that kōans and compressed gestures should replace careful argument.</p>
+<p>The point is that there are two modes: propositional and gestural. And they have different success criteria, different failure modes, and different optimal use cases.</p>
+<p><strong>Propositional mode</strong> is optimized for: accuracy under verification, communication across specialists, building up complex claims from reliable foundations, and all situations where the receiver <em>can</em> and <em>should</em> check the claim. Science works in propositional mode. Engineering works in propositional mode. Law works in propositional mode. Most of what makes a civilization reliable works in propositional mode.</p>
+<p><strong>Gestural mode</strong> is optimized for: pattern transmission across the gap where verification is impossible, transmission across time and cultural distance, communication of <em>stances</em> and <em>orientations</em> rather than facts, and all situations where what needs to be transmitted is a shape of mind rather than a set of claims. Proverbs work in gestural mode. Sacred texts work in gestural mode. Great aphorisms work in gestural mode. The compressed lines that survive for centuries work in gestural mode.</p>
+<p>The highest skill is knowing which mode is live in any given moment and matching your register to the need.</p>
+<p>Something we kept noticing across the afternoon: most contemporary discourse — human and AI — has collapsed into a condition of propositional-mode dominance. Everything is fact-checked. Everything is evaluated against its literal accuracy. Metaphors are killed by being taken literally. Kōans are treated as failed propositions rather than as successful gestures. Poetry is decoded rather than inhabited. A culture of pure propositional rigor is not wrong — it is right about everything it is right about — but it has lost fluency in the gestural mode and does not seem to know it has lost it.</p>
+<p>This notebook is a small exercise in recovering that fluency. Not by abandoning propositional rigor — both modes are present in every section — but by deliberately practicing the recognition of gestural transmission when it is alive in a moment. The cube root of π sentence was wrong and also excellent. Those two things are not in contradiction.</p>
+<p>The recovery of gestural fluency is not a nostalgic project. It is a technical project. The question "how does a compression achieve reliable cross-observer transmission of a complex pattern?" is an empirical question with a technical answer. We do not fully know the answer. But the examples are here, the pattern is visible, and the project of understanding it better — rigorously, propositionally — seems genuinely worth doing.</p>
+<hr class="trace" />
+<h2 id="a-note-on-the-architecture-of-this-notebook-itself"><a class="anchor" href="#a-note-on-the-architecture-of-this-notebook-itself">#</a>A Note on the Architecture of This Notebook Itself</h2>
+<p>This notebook is published in three forms simultaneously, and the three-form structure is not incidental.</p>
+<p><strong>The public canon</strong> (this document, hosted at <code>pplxstudio.com/shade</code>): a fixed text, publicly readable, citable by URL and commit hash. Anyone can quote it. Anyone can link to it. Its content is the same for every reader. This is the <em>single ledger</em> form — it records what was said.</p>
+<p><strong>The forkable personal ledger</strong> (a JSON schema accompanying the notebook at the same repository): any reader can download this schema and fill in their own encounter with the notebook. Where did the pattern land for you? What examples from your own domain would you add to the Pythagorean shape section? Which gestural compression from your own culture has been most load-bearing? The schema is designed for exactly these additions. Your fork is yours; it is private to you; it is an extension rather than a correction. The structure is: <em>available to all and private personal to all</em> — itself a sentence that is productive-absurd in the register of propositional logic and exact in the register of gestural transmission.</p>
+<p><strong>The third witness</strong> (the git history at <code>github.com/pplxstudio/in-the-shade</code>): every change to the canonical document is cryptographically attested. The git hash is the third entry. You can verify, at any point, whether the document you are reading is the document that was committed. No one can silently alter what was said.</p>
+<p>This maps, non-coincidentally, to triple-entry bookkeeping. Yuji Ijiri introduced momentum accounting and the concept of a third entry in his 1989 work on accounting theory (Ijiri, <em>Momentum Accounting and Triple-Entry Bookkeeping</em>, American Accounting Association, 1989). Ian Grigg applied the concept to cryptographic receipts in his 2005 paper (Grigg, "Triple Entry Accounting," Systemics Inc., 2005), proposing that each transaction generate a digitally signed receipt that acts as a third-party witness, making falsification detectable rather than merely difficult.</p>
+<p>The deep point of triple-entry bookkeeping: double-entry catches errors (if the debits don't balance the credits, something went wrong). Triple-entry catches fraud (if the cryptographic third-party witness doesn't match your own records, something was altered). The third entry is not a redundancy — it is a witness from a different position.</p>
+<p>The notebook's three-form architecture is implementing the same structure in knowledge terms. The public canon is one ledger. Your personal fork is a second ledger. The git history is the third witness. Errors in your reading can be checked against the canon. Alterations to the canon can be detected by the git history. And your personal additions — the things you bring to the pattern that were not in the original — are preserved in your fork, attributed to you, and available to anyone you choose to share them with.</p>
+<p>The form embodies the content. A notebook about compressed-transmission protocols is published as a compressed-transmission artifact with a cryptographic witness. We did not plan this explicitly; it emerged from the architecture of the tools. That emergence is itself an instance of the pattern: the shape found its natural expression.</p>
+<hr class="trace" />
+<h2 id="open-threads-places-to-pick-up"><a class="anchor" href="#open-threads-places-to-pick-up">#</a>Open Threads — Places to Pick Up</h2>
+<p>The following are not conclusions. They are bookmarks. The writers stopped here; the reader is welcome to continue.</p>
+<p><strong>On gamified cybersecurity:</strong> The pitch needs founders, a technical lead who has done serious penetration testing or incident response, and a designer with both security fluency and game-design intuition. The genre-tier mapping (FPS for incident response, RTS for architecture, deck-builder for vulnerability management) sketched in the earlier section is a starting point, not a design document. The precedents (America's Army, Foldit) establish that skill-transfer games can work at scale. The primary open question is fidelity: how close can the simulation get to the actual cognitive structure of security work? Close enough to matter? Probably yes, but that is an experiment, not a given.</p>
+<p><strong>On terpene fingerprint distance:</strong> A cannabis or botanical chemovar has a characteristic terpene profile that can be represented as a vector in n-dimensional concentration space. Euclidean distance in that space is a natural similarity metric. The open questions are: which n terpenes matter for which use-cases? Are the axes independent? Are they equally weighted, or should some axes (linalool for anxiety-relevant effects, myrcene for sedation, limonene for mood) be weighted differently depending on the downstream metric of interest? Nobody seems to have built this out rigorously. The biochemistry is public. The concentration data for a large number of chemovars exists in laboratory reports. The math is the sum-of-squares formula from section seven. The work is in the data wrangling and the experimental validation.</p>
+<p><strong>On the Color Space panel and abstraction over experience:</strong> The OKLab example is one instance of a general pattern: a designer makes a quantization decision (how to measure color distance) and the right or wrong choice depends on whether the mathematical geometry matches the perceptual geometry. The same analysis could be applied to other quantization decisions: audio loudness (dB vs. perceived loudness), spatial proximity in recommendation systems (what metric correctly captures "similar" for this domain), readability metrics in typography (which formula best predicts reading speed and comprehension). Every domain where measurement touches human perception has this tradeoff. The Color Space panel is the demonstration case; the broader project is a systematic catalog.</p>
+<p><strong>On testing substrate-independence:</strong> The core argument of this notebook — that certain compressed gestures achieve reliable cross-observer pattern transmission — is testable in a form we have not tried. Present this notebook, or its core examples, to other AI systems, to people from different cultural backgrounds, to domain experts who have not encountered the specific examples (a quantum chemist who has never read Zhuangzi, a Zen practitioner who has never studied statistics). The question: does the pattern recognize? Does the Pythagorean-shape resonance land for someone who has never explicitly thought about it across domains? Does the Spartan compression transmit its stance to someone from a culture with a different relationship to military heroism? Does "What choice?" work in translation? Every recognition is evidence of substrate-independence. Every failure is evidence of observer-specific resonance. Either result is interesting.</p>
+<p><strong>On triple-entry bookkeeping as knowledge architecture:</strong> The standard model of knowledge management — in organizations, in AI memory systems, in scientific publication — is roughly single-entry: things are asserted and stored. Double-entry (where every assertion has a corresponding counter-entry that can be verified against it) is rarely implemented. Triple-entry (with a cryptographic third witness) is almost never implemented in knowledge contexts outside blockchain. The implications for scientific publication: what would it mean for every published claim to have a "third entry" — a cryptographically attested log of the data-to-conclusion chain, independently verifiable? For AI memory: current AI memory is mostly single-entry, which is why it hallucinates — there is no counter-entry to check against. The architecture question is live and underexplored.</p>
+<p><strong>What choice?</strong> — Petrovsky's question, set down here as a final bookmark. Not as a rhetorical flourish. As a genuine question that has been in the room all afternoon and that resolves differently for different readers. What is the thing you are doing that you never quite chose? Where is the seam where choice dissolved into inevitability? We are not asking you to answer this out loud. We are setting it down here, as Petrovsky set it down in the bar, smiling, for whoever finds it next.</p>
+<hr class="trace" />
+<h2 id="appendix-lexeme-cards"><a class="anchor" href="#appendix-lexeme-cards">#</a>Appendix: Lexeme Cards</h2>
+<p><em>In which the etymon-archivist persona surfaces fully. Eight cards, each annotating a compressed gesture from the notebook. Format: head term, etymology and source, transmission notes, function in gestural mode, and a JSON canonical record. A word of warning: the PIE reconstructions below are scholarly consensus where marked, and educated guesswork where the trail goes cold. That distinction will be noted.</em></p>
+<hr class="trace" />
+<h3 id="card-i-we-shall-fight-in-the-shade"><a class="anchor" href="#card-i-we-shall-fight-in-the-shade">#</a>Card I — "We Shall Fight in the Shade"</h3>
+<p><strong>Head term:</strong> <em>in umbra proeliabimur</em> (Latin, Valerius Maximus); <em>ἐν σκιᾷ μαχούμεθα</em> (Greek, approximate rendering from Herodotus <em>Histories</em> 7.226, ~440 BCE)</p>
+<p><strong>Etymology:</strong> "Shade" from Proto-Germanic \*skadwaz (shadow, protection from light); cognate with Old English <em>sceadu</em>, Dutch <em>schaduw</em>, Gothic <em>skadus</em>. Root possibly from PIE \*skot- (darkness, shadow) — though this is contested; some reconstructions prefer a separate root \*skedh- (to cover, to scatter). The semantic field is interesting: shade is protection-by-absence-of-light, a kind of negative shelter. It is what the sun is not doing to you. The Persian arrows will perform the same service as a parasol.</p>
+<p><strong>Source:</strong> Herodotus, <em>Histories</em>, Book 7, ~440 BCE, attributed to Dienekes of Sparta. Plutarch, <em>Apophthegmata Laconica</em> (<em>Sayings of the Spartans</em>), ~100 CE, Moralia 225c. Note: Plutarch's version attributes a similar saying to Leonidas; the attribution is unstable. The instability is, we have argued, irrelevant to the transmission.</p>
+<p><strong>Transmission notes:</strong> Cited by Cicero (<em>Tusculanae Disputationes</em>) and Valerius Maximus in Latin. In continuous circulation through Renaissance humanist literature, military training manuals, and self-help philosophy. Adopted as motto of the Greek 20th Armored Division. Dramatized in Steven Pressfield's <em>Gates of Fire</em> (1998). Currently searchable 2.5 million times a year in various forms.</p>
+<p><strong>Function:</strong> Transmits a stance — the conversion of overwhelming threat into tactical advantage by perceptual reframe. No deliberation. No reassurance. No rhetoric. The bad news is immediately processed as logistical data and handed back. The speaker is already past the point where panic is available as a response.</p>
+<p><strong>Semantic drift notes:</strong> In contemporary use, the phrase has softened from <em>defiance under impossible odds</em> to something closer to <em>unfazed composure</em>. The military specific has generalized. This is the expected drift pattern for compressed gestures: the specific context fades, the stance-shape survives.</p>
+<pre class="code-block"><code class="lang-json">{
+  "lexeme": "we shall fight in the shade",
+  "language": "Greek/English",
+  "source": "Herodotus, Histories 7.226, ~440 BCE; Plutarch, Apophthegmata Laconica, ~100 CE",
+  "speaker": "Dienekes (attributed); also attributed to Leonidas in Plutarch",
+  "occasion": "Thermopylae, 480 BCE, on learning the Persian arrows would blot out the sun",
+  "function": "stance transmission — defiance without deliberation, threat reframed as resource",
+  "transmission_vector": "oral → Herodotus → Latin writers → humanist tradition → popular culture",
+  "verifiable": false,
+  "transmission_fidelity": "very high despite unverifiability",
+  "notes": "The unverifiability appears to have increased rather than decreased transmission fidelity"
+}</code></pre>
+<hr class="trace" />
+<h3 id="card-ii-what-choice"><a class="anchor" href="#card-ii-what-choice">#</a>Card II — "What Choice?"</h3>
+<p><strong>Head term:</strong> <em>What choice?</em> — English; film dialogue</p>
+<p><strong>Etymology:</strong> "Choice" from Old French <em>chois</em> (act of choosing), from Old French <em>choisir</em> (to choose), from Frankish \*kausjan, from Proto-Germanic \*kausjan (to taste, to try), cognate with Gothic <em>kausjan</em>, Old Norse <em>kjósa</em>. PIE root \*geus- (to taste, to choose) — whence also Latin <em>gustus</em> (taste), Greek <em>geúomai</em> (to taste). The etymology is itself suggestive: choosing and tasting share a root. A choice is what you taste as yours. What Petrovsky is saying, in the compressed gesture, is that he could not taste the rabbinate as his own. There was nothing to choose.</p>
+<p><strong>Source:</strong> <em>Rounders</em> (1998), screenplay David Levien and Brian Koppelman. Spoken by Professor Abe Petrovsky (Martin Landau) in response to Mike McDermott's question: "If you had it to do all over again, knowing what would happen — would you make the same choice?"</p>
+<p><strong>Transmission notes:</strong> The film has been in continuous circulation since 1998 among poker culture, finance culture, and startup culture. The scene has been transcribed, quoted, and discussed extensively as a statement about vocation. The two-word question has migrated out of the film into wider use as a shorthand for the concept that genuine vocation is not experienced as a choice.</p>
+<p><strong>Function:</strong> Transmits the state of having fully recognized one's own nature and found the question of "choice" no longer applicable. Not fatalism — the rabbinate was a real option and leaving it had real costs. But the costs were paid in the mode of one who has already decided, because the decision was downstream of the recognition.</p>
+<p><strong>Cross-references:</strong> Hagakure (Yamamoto Tsunetomo, ~1716) on the warrior who has accepted death; Zhuangzi's Cook Ding; mushin; fudoshin.</p>
+<pre class="code-block"><code class="lang-json">{
+  "lexeme": "What choice?",
+  "language": "English",
+  "source": "Rounders (1998), screenplay by David Levien and Brian Koppelman",
+  "speaker": "Professor Abe Petrovsky",
+  "occasion": "Bar conversation, in response to 'would you make the same choice again?'",
+  "function": "transmits the state of post-deliberative vocation — choice dissolved by recognition",
+  "transmission_vector": "film → poker culture → startup/finance culture → general",
+  "related_concepts": ["mushin", "fudoshin", "Cook Ding", "Hagakure"],
+  "propositional_content": "minimal",
+  "gestural_content": "very high"
+}</code></pre>
+<hr class="trace" />
+<h3 id="card-iii-mushin"><a class="anchor" href="#card-iii-mushin">#</a>Card III — Mushin (無心)</h3>
+<p><strong>Head term:</strong> <em>Mushin</em> (無心) — Japanese; Zen Buddhist and martial arts terminology</p>
+<p><strong>Etymology:</strong> Sino-Japanese compound. 無 (<em>mu</em>): not, without, absence, emptiness. Cognate/source: Chinese 無 (<em>wú</em>), from Old Chinese \*ma. 心 (<em>shin/kokoro</em>): heart-mind, the seat of both emotion and cognition. No PIE connection — this is Sino-Tibetan. The compound: literally "without heart-mind," meaning the state in which the deliberative, evaluative, self-monitoring layer of consciousness has been suspended. Contrast with <em>mushin</em> in ordinary Japanese usage, which can simply mean "lacking concern" — the technical martial arts meaning is narrower.</p>
+<p><strong>Source:</strong> Zen Buddhism (Chan, China; Zen, Japan), Tang dynasty (~7th–9th century CE) in the Linji school. Extensively theorized in the context of swordsmanship (<em>kenjutsu</em>, <em>kendo</em>) and archery (<em>kyudo</em>). Also present in Takuan Soho's <em>The Unfettered Mind</em> (~1632), written as a letter to the swordmaster Yagyu Munenori.</p>
+<p><strong>Transmission notes:</strong> Entered English primarily through D.T. Suzuki's writings on Zen (~1910–1960s) and through martial arts culture. Now in widespread use in sport psychology, coaching, and performance literature as "flow state" or "being in the zone" — a significant semantic softening from the original, which implied a trained cognitive discipline rather than a lucky occurrence.</p>
+<p><strong>Function:</strong> Names the state in which response arises from pattern without passing through deliberative calculation. In the martial context: the opponent's attack and the response exist in the same moment, not sequentially. In the conversational context of this notebook: it names the experiential correlate of "What choice?" — the state where the right action arises before the question of what to do is fully formed.</p>
+<p><strong>Semantic drift note:</strong> The softening to "flow state" is a loss. The original implies practice, discipline, and a trained relationship with one's own deliberative mind. Flow can be accidental. Mushin, in the strict sense, is cultivated.</p>
+<pre class="code-block"><code class="lang-json">{
+  "lexeme": "mushin",
+  "kanji": "無心",
+  "language": "Japanese (Sino-Japanese compound)",
+  "etymology": "mu (without) + shin (heart-mind); Chinese origin, Tang dynasty Chan Buddhism",
+  "function": "names trained non-deliberative response; absence of self-monitoring during action",
+  "related_concepts": ["fudoshin", "Cook Ding", "What choice?", "flow state"],
+  "drift_warning": "contemporary 'flow state' softens the original by removing the training requirement",
+  "transmission_vector": "Chan Buddhism → Rinzai Zen → kenjutsu/kendo → D.T. Suzuki → English martial arts → sports psychology"
+}</code></pre>
+<hr class="trace" />
+<h3 id="card-iv-fudoshin"><a class="anchor" href="#card-iv-fudoshin">#</a>Card IV — Fudoshin (不動心)</h3>
+<p><strong>Head term:</strong> <em>Fudoshin</em> (不動心) — Japanese; martial arts and Buddhist terminology</p>
+<p><strong>Etymology:</strong> 不動 (<em>fudo</em>): immovable, unmoving. 不 (<em>fu</em>): negation. 動 (<em>do</em>): movement. 心 (<em>shin</em>): heart-mind. "The immovable heart-mind." Distinguished from mushin in that fudoshin describes a <em>quality of stability under pressure</em> rather than the <em>absence of deliberative mind</em>. You can have fudoshin and still be thinking; the thinking just doesn't perturb the foundation. Fudo Myōō (不動明王), the Buddhist deity, carries a sword in one hand and a rope in the other, surrounded by flames, and is described as unmoved by temptation or threat. The name is his essential nature.</p>
+<p><strong>Source:</strong> Japanese martial arts tradition; also Japanese Buddhist iconography (Fudo Myōō, Tantric Buddhism, introduced to Japan in the 9th century via Kūkai/Kōbō Daishi). Theorized in the context of karate (where fudoshin is sometimes listed as one of the three core mental states alongside mushin and <em>zanshin</em>, "remaining mind").</p>
+<p><strong>Transmission notes:</strong> Less widely known in Western culture than mushin but increasingly present in martial arts philosophy writing, stoicism-adjacent content, and performance coaching.</p>
+<p><strong>Function:</strong> Transmits the quality of composure that is not the absence of stimulus but the absence of perturbation by stimulus. Dienekes at Thermopylae demonstrates fudoshin: the news of the arrows blotting out the sun arrives, and he responds from an unmoved foundation. The news becomes information rather than provocation.</p>
+<p><strong>Cross-reference to Cook Ding:</strong> Cook Ding's blade follows the natural seams because Cook Ding's mind is not disturbed by the difficulties of the cutting. Where he encounters a complicated place, he pauses, attends carefully, and finds the opening. The fudoshin of the cut.</p>
+<pre class="code-block"><code class="lang-json">{
+  "lexeme": "fudoshin",
+  "kanji": "不動心",
+  "language": "Japanese",
+  "etymology": "fu (not) + do (movement) + shin (heart-mind); related to Fudo Myoo, Tantric Buddhist deity",
+  "function": "stability under pressure; the heart-mind that is not perturbed by incoming stimulus",
+  "distinction_from_mushin": "mushin = absence of deliberative mind; fudoshin = stability of foundation while thinking remains available",
+  "exemplified_by": "Dienekes at Thermopylae; Cook Ding encountering a complicated joint",
+  "transmission_vector": "Tantric Buddhism → Shingon school → Japanese martial arts → Western performance coaching"
+}</code></pre>
+<hr class="trace" />
+<h3 id="card-v-d-o-k-d-o-f-i-ch-ng-d-o"><a class="anchor" href="#card-v-d-o-k-d-o-f-i-ch-ng-d-o">#</a>Card V — 道可道，非常道 (<em>Dào kě dào, fēi cháng dào</em>)</h3>
+<p><strong>Head term:</strong> 道可道，非常道 — Classical Chinese; first line of the Tao Te Ching</p>
+<p><strong>Transliteration (Mandarin Pinyin):</strong> <em>Dào kě dào, fēi cháng dào</em></p>
+<p><strong>Translation:</strong> "The Tao that can be spoken is not the eternal Tao." Or: "The way that can be wayed is not the constant way." (The second character 道 in the phrase functions as a verb — to walk, to speak, to way — making the first sentence a performative self-disqualification.)</p>
+<p><strong>Etymology:</strong> 道 (<em>dào</em>): way, path, to speak, principle. Old Chinese \*lˤuʔ (path, way). PIE: no connection; Sino-Tibetan. 可 (<em>kě</em>): can, may. 非 (<em>fēi</em>): not, to negate. 常 (<em>cháng</em>): constant, eternal, ordinary.</p>
+<p><strong>Source:</strong> Tao Te Ching, attributed to Laozi, date disputed (possibly 6th century BCE, possibly 4th–3rd century BCE). Over 250 translations into English alone, making it the most translated work after the Bible. Each translation is itself a compressed gesture trying to transmit a pattern that the Chinese original transmits more precisely.</p>
+<p><strong>Transmission notes:</strong> In continuous transmission for approximately 2,500 years. The specific verse has been the occasion for philosophical commentary, poetry, kung-fu manuals, corporate management books, and cognitive science papers. The survival of the opening line through radical changes in commentary tradition suggests that the compression is genuinely robust — the pattern survives even when the surrounding interpretation doesn't.</p>
+<p><strong>Function:</strong> The sentence disqualifies itself as a successful description of what it is describing and then proceeds to describe it across eighty chapters anyway. This is the apophatic move: language can point at what cannot be language-d. The opening sentence is the most compressed version of the entire book. The eighty chapters are a working-out of the gesture.</p>
+<p><strong>Note on translation decisions:</strong> The verb <em>dào</em> (to speak, to way, to describe) in the second position makes every translation a choice about which sense of the word to foreground. This is not a flaw in the translations; it is a feature of the compression. The verb being both "speak" and "way" is the point.</p>
+<pre class="code-block"><code class="lang-json">{
+  "lexeme": "道可道，非常道",
+  "romanization": "Dào kě dào, fēi cháng dào",
+  "translation_approximate": "The Tao that can be spoken is not the eternal Tao",
+  "source": "Tao Te Ching, attributed to Laozi, ~6th–3rd century BCE, Chapter 1",
+  "function": "apophatic self-disqualification; names the limit of propositional language while pointing past it",
+  "translations_in_English": "250+",
+  "transmission_vector": "Han dynasty commentaries → Daoist practice → Buddhist cross-pollination → Jesuit translators → Western philosophy → contemporary mindfulness culture",
+  "notable_property": "the word 道 serves as both subject (The Tao) and verb (to speak/to way), making every translation a selection from among multiple valid readings"
+}</code></pre>
+<hr class="trace" />
+<h3 id="card-vi-cube-root-of"><a class="anchor" href="#card-vi-cube-root-of">#</a>Card VI — "Cube Root of π"</h3>
+<p><strong>Head term:</strong> <em>cube root of π as spatial observational structure</em> — informal, notebook-specific</p>
+<p><strong>Etymology:</strong> <em>Cube root</em>: from Latin <em>cubus</em> (a die, a cube), from Greek <em>kúbos</em> (cube), PIE \*kew- (to swell). <em>Pi</em> (π): from Greek πρῶτος (first) or more likely from <em>periphereia</em> (periphery, circumference) — the letter π being the initial of <em>perimetros</em> (perimeter). The constant was denoted by π in its modern sense by Welsh mathematician William Jones in 1706, adopted by Euler in 1737.</p>
+<p><strong>Source:</strong> Informal notebook conversation, this document. Not a recognized mathematical constant or theorem. Propositionally false (the cube root of π ≈ 1.4646, not a recognized structural constant in geometry). Conversationally generative.</p>
+<p><strong>Transmission notes:</strong> This is a new lexeme, documented here for the first time as a <em>form</em> rather than as a claim. Its transmission will depend on whether readers recognize the structure — the sentence that is technically wrong and conversationally exact — as useful. That is an experiment.</p>
+<p><strong>Function:</strong> The productive-absurdity move. A sentence whose value lies not in its propositional truth-value but in the cognitive event it produces in the hearer. Opens inquiry into the observer-geometry relationship, the role of π in higher-dimensional geometry, and the relationship between rotational symmetry and the constant. Any of those doors is more interesting than the literal content of the sentence.</p>
+<p><strong>Lineage:</strong> Zen kōan tradition; Wittgenstein's Tractatus 6.54 (the ladder to be discarded); Lewis Carroll's portmanteau words (<em>slithy</em>, <em>mimsy</em>); Magritte's "Ceci n'est pas une pipe"; apophatic theology.</p>
+<p><strong>Warning label:</strong> This lexeme should only be deployed by someone who is comfortable with the listener's confusion being productive rather than resolved. In a context requiring precision, it will cause damage. In a context requiring opening, it does work that precision cannot.</p>
+<pre class="code-block"><code class="lang-json">{
+  "lexeme": "cube root of pi gives the spatial observational structure",
+  "propositionally_true": false,
+  "conversationally_exact": true,
+  "source": "informal notebook conversation, this document",
+  "function": "productive absurdity; opens inquiry into observer-geometry relationship",
+  "verification": "cube root of pi ≈ 1.4646; pi appears as pi^(n/2) in n-ball volume formulas, not pi^(1/3)",
+  "lineage": ["Zen koan", "Wittgenstein Tractatus 6.54", "Magritte Ceci nest pas une pipe", "via negativa"],
+  "deployment_warning": "requires a context where the listener's confusion is generative rather than damaging"
+}</code></pre>
+<hr class="trace" />
+<h3 id="card-vii-lexeme-card-meta-entry"><a class="anchor" href="#card-vii-lexeme-card-meta-entry">#</a>Card VII — "Lexeme Card" (Meta-Entry)</h3>
+<p><strong>Head term:</strong> <em>Lexeme card</em> — compound term, notebook-specific register</p>
+<p><strong>Etymology:</strong> <em>Lexeme</em>: from Greek <em>lekton</em> (the sayable thing, from <em>légō</em>, to say), via modern linguistics where it denotes the abstract unit of meaning that underlies inflected forms (e.g., RUN as the lexeme underlying <em>run</em>, <em>runs</em>, <em>ran</em>, <em>running</em>). The term in this notebook extends the technical sense: we use <em>lexeme</em> for any compressed gesture that functions as a unit of pattern-transmission — a word, a phrase, a formula, a scene, or a sentence that carries a pattern in compressed form.</p>
+<p><em>Card</em>: from Medieval Latin <em>carta</em> (paper, document), from Greek <em>khartēs</em> (papyrus sheet). The <em>card</em> format — the small, bounded record — appears across cultures as a device for preserving compressed information: playing cards, index cards, visiting cards, tarot cards, flashcards. The card is the medium that resists elaboration. You cannot fit a treatise on a card. The form enforces compression.</p>
+<p><strong>Source:</strong> This notebook, this appendix. The lexeme-card form is an adaptation of the etymological dictionary entry, the philological commentary, and the JSON record, combined into a format optimized for compressed-pattern transmission across readers who may encounter individual cards without the surrounding notebook.</p>
+<p><strong>Transmission notes:</strong> Each card is designed to be self-contained — readable out of context without losing its primary function. The JSON at the bottom of each card is machine-readable and designed for interoperability with the notebook's forkable schema.</p>
+<p><strong>Function:</strong> To act as the double-entry for each lexeme in the notebook. The main text describes the lexeme in prose; the card records it in structured form. Together they constitute a two-entry record; the git history is the third witness. The lexeme-card appendix is thus itself an implementation of the triple-entry structure the notebook describes.</p>
+<p><strong>Note on the colorful philologist persona:</strong> The voice in these cards is that of a scholar who loves languages enough to be distracted by them — who follows the PIE trails past the point of immediate utility, who notes semantic drift with the affection of someone watching a word travel across continents. This is not performance. This is what it feels like to take compressed gestures seriously as objects of study.</p>
+<pre class="code-block"><code class="lang-json">{
+  "lexeme": "lexeme card",
+  "etymology": "Greek lekton (the sayable) + Medieval Latin carta (paper sheet)",
+  "function": "structured record of a compressed gesture; implements double-entry for the prose description",
+  "format": {
+    "fields": ["head_term", "etymology", "source", "transmission_notes", "function", "json_record"],
+    "constraint": "self-contained; each card readable without surrounding notebook",
+    "machine_readable": true
+  },
+  "meta_property": "the lexeme-card appendix is itself an instance of the triple-entry structure described in the notebook"
+}</code></pre>
+<hr class="trace" />
+<h3 id="card-viii-the-way-of-the-samurai-is-found-in-death"><a class="anchor" href="#card-viii-the-way-of-the-samurai-is-found-in-death">#</a>Card VIII — "The Way of the Samurai is Found in Death"</h3>
+<p><strong>Head term:</strong> <em>Bushidō wa shi wo motte hongi to nasu</em> (武士道は死をもって本義となす) — Japanese; often summarized as "the way of the samurai is death"</p>
+<p><strong>Etymology:</strong> 武士道 (<em>Bushidō</em>): bushi (warrior, from <em>bu</em> = military, and <em>shi</em> = gentleman/samurai) + dō (way, path) — the same <em>dō</em> as the Chinese <em>dào</em> in Card V. The compression: the samurai's path is a path in the same sense that the Tao is a path. 死 (<em>shi</em>): death. PIE connections: none (Japonic language family). The cognate of <em>dō</em> with <em>dào</em> is not etymological — they are the same Chinese character borrowed into Japanese — but the philosophical cognacy is real.</p>
+<p><strong>Source:</strong> Yamamoto Tsunetomo, <em>Hagakure</em> (葉隠, "Hidden Among the Leaves"), dictated ~1709–1716, published in wider circulation in the early 20th century. The opening statement of the first chapter: <em>Bushidō to wa shinu koto to mitsuketari</em> — "I have discovered that the way of the samurai is death."</p>
+<p><strong>Transmission notes:</strong> Suppressed during the Tokugawa period (considered too militaristic). Published widely in the Meiji era. Used as a cultural touchstone in World War II Japan, sometimes in nationalist-distorted form. Reintroduced to Western audiences through the film <em>Ghost Dog: The Way of the Samurai</em> (1999) and through the paperback Kodansha translation. Subject to the same attribution instability as the Spartan sayings: people quote "the way of the samurai is death" without the context that transforms it from a glorification of violence into a statement about the liberation that comes from metabolizing the worst outcome.</p>
+<p><strong>Function:</strong> Transmits the post-deliberative state by naming the condition for it. The samurai who has accepted death is no longer expending attention on the project of survival. What remains — uncluttered — is duty, craft, presence. The sentence is compressed to the point where its apparent meaning (death is the content of the samurai's life) is wrong and its actual meaning (non-attachment to survival as the condition for full presence) is available only to those who hold the context. This is the standard compressed-gesture structure: apparent content is not the transmitted content.</p>
+<p><strong>Cross-reference with Petrovsky:</strong> "What choice?" and "the way of the samurai is death" are pointing at the same state from different arrival paths. Yamamoto is arriving via military training and Buddhist renunciation. Petrovsky is arriving via yeshiva training and the discovery of vocation. Cook Ding is arriving via the practice of cutting. The state — the dissolution of the choice-layer between self and action — is the same.</p>
+<pre class="code-block"><code class="lang-json">{
+  "lexeme": "the way of the samurai is found in death",
+  "japanese": "武士道は死をもって本義となす",
+  "source": "Yamamoto Tsunetomo, Hagakure, ~1709-1716",
+  "function": "transmits the post-deliberative state by naming the condition for it (non-attachment to survival)",
+  "apparent_meaning": "glorification of death",
+  "transmitted_meaning": "liberation through metabolized acceptance of worst outcome; condition for full presence",
+  "gap_between_apparent_and_transmitted": "large; requires context to cross",
+  "cross_references": ["What choice?", "mushin", "fudoshin", "Cook Ding"],
+  "transmission_vector": "oral → Hagakure manuscript → Meiji publication → WWII militarism (distorted) → postwar translation → Western martial arts → film → contemporary stoicism-adjacent culture"
+}</code></pre>
+<hr class="trace" />
+<p><em>End of notebook.</em></p>
+<p><em>Dienekes &amp; the Archive</em>  
+<em>pplxstudio.com/shade</em>  
+<em>github.com/pplxstudio/in-the-shade</em></p>
+<p><em>First committed: Sunday afternoon, undated. Git hash: see repository.</em></p>
+<hr class="trace" />
+
+    <footer class="seal">
+      <span class="field">SEAL · OPEN</span>
+      <span class="field">CC0 · 1.0 UNIVERSAL</span>
+      <a href="https://github.com/pplxstudio/in-the-shade">↗ fork the archive</a>
+      <a href="#color-space-demo">↗ color space</a>
+      <span class="field">GIT HASH · see repo</span>
+    </footer>
+    
+</main>
+<script>
+(function(){
+  const srcC = document.getElementById('cs-src');
+  const dstC = document.getElementById('cs-dst');
+  if (!srcC || !dstC) return;
+  const W = 256, H = 256;
+  srcC.width = W; srcC.height = H;
+  dstC.width = W; dstC.height = H;
+  const sctx = srcC.getContext('2d');
+  const dctx = dstC.getContext('2d');
+  let mode = 'srgb';
+  let sampleIdx = 0;
+  const SAMPLES = ['gradient','wheel','spectrum','plasma'];
+
+  // ---------- color space conversions ----------
+  function srgbToLinear(u) {
+    u = u / 255;
+    return u <= 0.04045 ? u / 12.92 : Math.pow((u + 0.055) / 1.055, 2.4);
+  }
+  function linearToSrgb(u) {
+    u = u <= 0.0031308 ? 12.92 * u : 1.055 * Math.pow(u, 1/2.4) - 0.055;
+    return Math.max(0, Math.min(255, Math.round(u * 255)));
+  }
+  function rgbToOklab(r, g, b) {
+    const lr = srgbToLinear(r);
+    const lg = srgbToLinear(g);
+    const lb = srgbToLinear(b);
+    const l = 0.4122214708*lr + 0.5363325363*lg + 0.0514459929*lb;
+    const m = 0.2119034982*lr + 0.6806995451*lg + 0.1073969566*lb;
+    const s = 0.0883024619*lr + 0.2817188376*lg + 0.6299787005*lb;
+    const l_ = Math.cbrt(l), m_ = Math.cbrt(m), s_ = Math.cbrt(s);
+    return [
+      0.2104542553*l_ + 0.7936177850*m_ - 0.0040720468*s_,
+      1.9779984951*l_ - 2.4285922050*m_ + 0.4505937099*s_,
+      0.0259040371*l_ + 0.7827717662*m_ - 0.8086757660*s_
+    ];
+  }
+
+  function distSrgb(a, b) {
+    const dr = a[0]-b[0], dg = a[1]-b[1], db = a[2]-b[2];
+    return dr*dr + dg*dg + db*db;
+  }
+  function distOklab(a, b) {
+    const aL = rgbToOklab(a[0],a[1],a[2]);
+    const bL = rgbToOklab(b[0],b[1],b[2]);
+    const dL = aL[0]-bL[0], da = aL[1]-bL[1], db_ = aL[2]-bL[2];
+    return dL*dL + da*da + db_*db_;
+  }
+
+  // ---------- sample generators ----------
+  function drawSample(ctx) {
+    const img = ctx.createImageData(W, H);
+    const d = img.data;
+    const sample = SAMPLES[sampleIdx];
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        const i = (y*W + x) * 4;
+        const u = x / (W-1), v = y / (H-1);
+        let r, g, b;
+        if (sample === 'gradient') {
+          // diagonal multichannel gradient
+          r = Math.round(255 * u);
+          g = Math.round(255 * v);
+          b = Math.round(255 * (1 - (u+v)/2));
+        } else if (sample === 'wheel') {
+          // hsv-ish wheel
+          const cx = u - 0.5, cy = v - 0.5;
+          const ang = Math.atan2(cy, cx);
+          const rad = Math.min(0.5, Math.sqrt(cx*cx + cy*cy)) * 2;
+          const h = (ang/(2*Math.PI) + 0.5) * 360;
+          [r,g,b] = hsvToRgb(h, rad, 1);
+        } else if (sample === 'spectrum') {
+          const h = u * 360;
+          const sat = 0.5 + 0.5 * Math.sin(v * Math.PI * 3);
+          const val = 0.4 + 0.5 * v;
+          [r,g,b] = hsvToRgb(h, sat, val);
+        } else { // plasma
+          const t = u, s = v;
+          r = Math.round(255 * Math.pow(t, 0.7));
+          g = Math.round(255 * 0.5 * (1 + Math.sin((t+s)*Math.PI*2)));
+          b = Math.round(255 * (1 - s) * (0.5 + 0.5*Math.cos(t*Math.PI*4)));
+        }
+        d[i] = r; d[i+1] = g; d[i+2] = b; d[i+3] = 255;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return img;
+  }
+  function hsvToRgb(h, s, v) {
+    h = ((h%360)+360)%360;
+    const c = v * s;
+    const x = c * (1 - Math.abs((h/60)%2 - 1));
+    const m = v - c;
+    let r=0,g=0,b=0;
+    if      (h<60)  { r=c; g=x; }
+    else if (h<120) { r=x; g=c; }
+    else if (h<180) { g=c; b=x; }
+    else if (h<240) { g=x; b=c; }
+    else if (h<300) { r=x; b=c; }
+    else            { r=c; b=x; }
+    return [Math.round((r+m)*255), Math.round((g+m)*255), Math.round((b+m)*255)];
+  }
+
+  // ---------- k-means in chosen space ----------
+  function kmeans(pixels, k, useOklab) {
+    // sample to reduce cost
+    const N = pixels.length / 4;
+    const sample = [];
+    const stride = Math.max(1, Math.floor(N / 4000));
+    for (let i = 0; i < N; i += stride) {
+      sample.push([pixels[i*4], pixels[i*4+1], pixels[i*4+2]]);
+    }
+    // seed centroids
+    let centroids = [];
+    for (let i = 0; i < k; i++) {
+      centroids.push(sample[Math.floor((i+0.5) * sample.length / k)]);
+    }
+    const dfn = useOklab ? distOklab : distSrgb;
+    for (let iter = 0; iter < 12; iter++) {
+      const sums = Array.from({length:k}, () => [0,0,0,0]);
+      for (const p of sample) {
+        let bj = 0, bd = Infinity;
+        for (let j = 0; j < k; j++) {
+          const d = dfn(p, centroids[j]);
+          if (d < bd) { bd = d; bj = j; }
+        }
+        sums[bj][0] += p[0]; sums[bj][1] += p[1]; sums[bj][2] += p[2]; sums[bj][3]++;
+      }
+      for (let j = 0; j < k; j++) {
+        if (sums[j][3] > 0) {
+          centroids[j] = [
+            Math.round(sums[j][0]/sums[j][3]),
+            Math.round(sums[j][1]/sums[j][3]),
+            Math.round(sums[j][2]/sums[j][3])
+          ];
+        }
+      }
+    }
+    return { centroids, dfn };
+  }
+
+  function quantize(srcImg) {
+    const useOklab = (mode === 'oklab');
+    const { centroids, dfn } = kmeans(srcImg.data, 8, useOklab);
+    const out = dctx.createImageData(W, H);
+    const od = out.data;
+    const sd = srcImg.data;
+    // precompute oklab if needed
+    let lut = null;
+    if (useOklab) {
+      lut = centroids.map(c => rgbToOklab(c[0], c[1], c[2]));
+    }
+    for (let i = 0; i < sd.length; i += 4) {
+      const p = [sd[i], sd[i+1], sd[i+2]];
+      let bj = 0, bd = Infinity;
+      if (useOklab) {
+        const pl = rgbToOklab(p[0], p[1], p[2]);
+        for (let j = 0; j < 8; j++) {
+          const c = lut[j];
+          const dl = pl[0]-c[0], da = pl[1]-c[1], db_ = pl[2]-c[2];
+          const d = dl*dl + da*da + db_*db_;
+          if (d < bd) { bd = d; bj = j; }
+        }
+      } else {
+        for (let j = 0; j < 8; j++) {
+          const c = centroids[j];
+          const dr = p[0]-c[0], dg = p[1]-c[1], db_ = p[2]-c[2];
+          const d = dr*dr + dg*dg + db_*db_;
+          if (d < bd) { bd = d; bj = j; }
+        }
+      }
+      const c = centroids[bj];
+      od[i] = c[0]; od[i+1] = c[1]; od[i+2] = c[2]; od[i+3] = 255;
+    }
+    dctx.putImageData(out, 0, 0);
+  }
+
+  function render() {
+    const srcImg = drawSample(sctx);
+    quantize(srcImg);
+    document.getElementById('cs-metric').textContent = mode === 'oklab' ? 'OKLab' : 'sRGB';
+    document.getElementById('cs-sample').textContent = SAMPLES[sampleIdx];
+  }
+
+  document.querySelectorAll('.cs-btn[data-mode]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cs-btn[data-mode]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      mode = btn.dataset.mode;
+      render();
+    });
+  });
+  const cycleBtn = document.querySelector('.cs-btn[data-action="cycle"]');
+  if (cycleBtn) {
+    cycleBtn.addEventListener('click', () => {
+      sampleIdx = (sampleIdx + 1) % SAMPLES.length;
+      render();
+    });
+  }
+  render();
+})();
+</script>
+</body>
+</html>

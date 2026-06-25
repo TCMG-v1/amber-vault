@@ -1,0 +1,17 @@
+{
+  "name": "pplxstudio",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "The btb hub edge router — binds real domains to pplx.app works (pass-through only) and brokers the cockpit brain at the interaction tier.",
+  "scripts": {
+    "test": "node test/worker.test.mjs && node test/brain.test.mjs",
+    "seal": "node seal.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "predeploy": "npm test && npm run seal"
+  },
+  "devDependencies": {
+    "wrangler": "^3"
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pplxstudio.com/shade/schema/practice.schema.json",
+  "title": "In the Shade · Practice (Body Book · 0)",
+  "description": "The first of three schemas. Encodes the GESTURE — what is done, what is repeated, what runs in the substrate. The practice schema records actions taken: rituals, daily moves, code executed, files written, audio rendered, words spoken. It is the substrate-level event log. It does not interpret. It does not attest. It just records what happened, in the body of the world, in a form another body can re-perform.\n\nPosition in the three-book architecture: 0. The gesture. The Body book. The thing that gets repeated. Without this, the pattern has no substrate to ride on; it dies with the readers.\n\nThis schema knows nothing about meaning. It knows what was done.",
+  "type": "object",
+  "required": ["practice_version", "canon", "actor", "events"],
+  "properties": {
+    "practice_version": {
+      "type": "string",
+      "description": "Semantic version of this practice document's schema usage.",
+      "examples": ["0.1.0"]
+    },
+    "canon": {
+      "type": "object",
+      "description": "The public canon this practice log references. Same pinning convention as the ledger schema.",
+      "required": ["title", "url"],
+      "properties": {
+        "title":   { "type": "string", "const": "In the Shade: A Notebook on Compressed Transmission" },
+        "url":    { "type": "string", "format": "uri", "examples": ["https://pplxstudio.com/shade"] },
+        "version": { "type": "string", "examples": ["2026.06.14"] },
+        "sha256":  { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "actor": {
+      "type": "object",
+      "description": "The body performing the practice. Human, machine, or collective. The protocol does not distinguish — what matters is that something performed the gesture and left a trace.",
+      "required": ["handle"],
+      "properties": {
+        "handle":     { "type": "string", "description": "Free-form handle. May be a real name, a pseudonym, a process id, a model surface name, an empty string." },
+        "kind":       { "type": "string", "enum": ["human", "model_surface", "process", "collective", "other"], "description": "What kind of body is performing. The schema is indifferent across kinds." },
+        "substrate":  { "type": "string", "description": "Where the body lives. Free-form. Examples: 'flesh', 'macbook-pro-m3', 'perplexity-computer', 'claude-sonnet-4-6', 'gemini-3-pro', 'shared-sandbox'." }
+      }
+    },
+    "events": {
+      "type": "array",
+      "description": "The append-only sequence of gestures performed. A gesture is anything done. No gesture is too small. No gesture is too large. The schema does not weight them. It records them in order.",
+      "items": { "$ref": "#/$defs/event" }
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Free-form bag for application-specific extensions.",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "event": {
+      "type": "object",
+      "required": ["id", "timestamp", "gesture"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique event identifier within this practice log."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 timestamp of when the gesture happened."
+        },
+        "prev_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 of the JSON-canonicalized previous event. Forms a hash chain."
+        },
+        "gesture": {
+          "type": "string",
+          "description": "What was done. Imperative or past-tense, the schema does not care. Free-form. The gesture field is the load-bearing field of this schema.",
+          "examples": [
+            "read chapter 5 aloud at 1.25x",
+            "wrote ledger entry abc123",
+            "minted token at block 18923741",
+            "sat with the unsayable for ten minutes",
+            "rendered ch13b05.mp3",
+            "signed the contract with myself"
+          ]
+        },
+        "artifact": {
+          "type": "object",
+          "description": "Optional pointer to a material artifact produced or referenced by the gesture. The artifact is the trace the gesture leaves in the world.",
+          "properties": {
+            "kind":   { "type": "string", "enum": ["file", "audio", "image", "video", "text", "code", "transaction", "utterance", "other"] },
+            "path":   { "type": "string", "description": "Local path or URL to the artifact." },
+            "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$", "description": "Hash of the artifact's bytes, if it has bytes." },
+            "size":   { "type": "integer", "minimum": 0, "description": "Bytes." },
+            "note":   { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "co_actors": {
+          "type": "array",
+          "description": "Other bodies present during the gesture. Used when the gesture was collective. Each entry mirrors the top-level actor shape.",
+          "items": {
+            "type": "object",
+            "required": ["handle"],
+            "properties": {
+              "handle":    { "type": "string" },
+              "kind":      { "type": "string", "enum": ["human", "model_surface", "process", "collective", "other"] },
+              "substrate": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string", "description": "Optional free-form annotation. Kept minimal by convention — interpretation belongs in the ledger, not here." }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "GMA-OS-KERNEL-001",
+  "name": "Graft Memory OS",
+  "status": "WorkingDoc",
+  "kernelLaw": "Everything is playable until commit; nothing is authoritative until memory writes it.",
+  "subsystems": [
+    {
+      "id": "game",
+      "name": "Game Layer",
+      "paths": ["game/archetype-system.md", "game/archetypes/ai-model-archetypes.json", "game/BellToBellEngine.jsx"]
+    },
+    {
+      "id": "archive",
+      "name": "Archive Layer",
+      "paths": ["README.md", "docs/mythos", "docs/codex", "web/index.html"]
+    },
+    {
+      "id": "chain",
+      "name": "Cybernetic Chain Layer",
+      "paths": ["haskell/CyberneticChain.hs", "haskell/CyberneticTrailArchetypes.hs"]
+    },
+    {
+      "id": "velma",
+      "name": "Velma Layer",
+      "paths": ["os/velma.json", "haskell/VelmaOS.hs"]
+    },
+    {
+      "id": "commit",
+      "name": "Commit Layer",
+      "paths": ["PROJECT_MANIFEST.md", "os/OS_MANIFEST.md"]
+    }
+  ],
+  "bootSequence": [
+    "Load Velma.",
+    "Index working documents.",
+    "Load archetypes.",
+    "Load CyberneticChain validators.",
+    "Enter text-only OS loop.",
+    "Refuse authority until commit."
+  ]
+}
+

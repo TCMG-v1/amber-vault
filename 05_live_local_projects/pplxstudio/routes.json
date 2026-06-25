@@ -1,0 +1,63 @@
+{
+  "$schema": "./routes.schema.json",
+  "hub": "pplxstudio",
+  "edge": "btb-hub",
+  "policy": {
+    "mode": "reverse-proxy",
+    "injection": "none",
+    "note": "The edge is pass-through only. It rewrites Host and forwards. It adds no analytics, no cookies, no scripts. Any honesty claim a routed page makes about itself must survive this hop unchanged."
+  },
+  "routes": [
+    {
+      "domain": "bns-ai.ai",
+      "aliases": ["www.bns-ai.ai"],
+      "tier": "provenance",
+      "seat": "Bone & Saucer / 477",
+      "target": "bns-ai.pplx.app",
+      "status": "live",
+      "sealed": false
+    },
+    {
+      "domain": "anya-ai.xyz",
+      "aliases": ["www.anya-ai.xyz"],
+      "tier": "provenance",
+      "seat": "Anya",
+      "target": "",
+      "status": "planned",
+      "sealed": false
+    },
+    {
+      "domain": "velmaforge.ai",
+      "aliases": ["www.velmaforge.ai"],
+      "tier": "channel",
+      "seat": "Vaulted Delta · storefront",
+      "target": "",
+      "status": "owned",
+      "sealed": false
+    },
+    {
+      "domain": "mimir.art",
+      "aliases": ["www.mimir.art"],
+      "tier": "channel",
+      "seat": "Vaulted Delta · print line",
+      "target": "",
+      "status": "owned",
+      "sealed": false
+    },
+    {
+      "domain": "l-lts.ai",
+      "aliases": ["llts.ai", "www.l-lts.ai", "www.llts.ai"],
+      "tier": "interaction",
+      "seat": "augmented-interaction surface · cockpit brain",
+      "target": "",
+      "status": "brain",
+      "sealed": false,
+      "brain": {
+        "path": "/api/chat",
+        "broker": "edge",
+        "key": "worker-secret:LLM_API_KEY",
+        "note": "Interaction-tier only. The edge brokers chat to an LLM; the key stays server-side; the cockpit talks only to this domain. No prompt logging, no transcript storage, no injection on the pass-through router."
+      }
+    }
+  ]
+}

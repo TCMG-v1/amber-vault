@@ -1,0 +1,176 @@
+{
+  "$schema": "https://vaulteddelta.xx/schema/card.v1.json",
+  "universe": "the-sealed-channel",
+  "edition": 1,
+  "doctrine": "Every capsule is a card. Every card is a component. The card record is canonical — print, NFT, and game state derive from it.",
+
+  "card_schema": {
+    "id":        "string · NAV-XX",
+    "name":      "string · all caps",
+    "role":      "enum · SOURCE | STORE | TRANSFORM | ROUTE | GUARD | SINK | ATTRACTOR",
+    "rarity":    "enum · COMMON | RARE | EPIC | MYTHIC",
+    "cost":      "int · power required to play, 0..7",
+    "yield":     "int · output strength, 0..7",
+    "ports_in":  "string[] · port types this card accepts",
+    "ports_out": "string[] · port types this card emits",
+    "ability":   "string · one-line rules text",
+    "flavor":    "string · the lore line",
+    "art_ref":   "string · path to the capsule render",
+    "back_ref":  "string · path to shared back art",
+    "nft": {
+      "standard":  "ERC-1155",
+      "supply":    "int · per-card edition size",
+      "metadata":  "object · derived deterministically from this record",
+      "token_id":  "string · sha256(id || edition || serial)[0:16]"
+    },
+    "physical": {
+      "stock":      "350gsm linen black-core",
+      "finish":     "spot UV on glyph + serial, foil on rarity badge",
+      "size":       "63x88mm (poker)",
+      "back_print": "amber-on-black sealed-channel sigil"
+    }
+  },
+
+  "rarity_distribution_per_print_run": {
+    "COMMON": 7, "RARE": 6, "EPIC": 4, "MYTHIC": 1
+  },
+
+  "founding_deck": {
+    "name": "EDITION 01 · THE SEALED CHANNEL",
+    "size": 27,
+    "composition": "3 cards per NAV (9 NAVs in canonical core × 3 = 27). The expanded NAV-10..18 ship in EDITION 02.",
+    "structure": [
+      "1× standard print",
+      "1× alternate-art print (zoomed core close-up)",
+      "1× operator card (chains a specific 3-card combo)"
+    ],
+    "tuck_box": "milled aluminum sleeve in NAV chassis silhouette, hex-screw clasp"
+  },
+
+  "cards": [
+    { "id":"NAV-01","name":"VOID GENESIS","role":"SOURCE","rarity":"MYTHIC","cost":0,"yield":1,
+      "ports_in":[],"ports_out":["TIME","POWER"],
+      "ability":"At start of chain, place 1 TICK on every capsule you control.",
+      "flavor":"Before the Channel, only the Void. NAV-01 is the moment after.",
+      "art_ref":"images/nav-01-void-genesis.png" },
+
+    { "id":"NAV-02","name":"EMBER FORGE","role":"TRANSFORM","rarity":"RARE","cost":2,"yield":3,
+      "ports_in":["POWER"],"ports_out":["POWER","DATA"],
+      "ability":"Convert 1 POWER into 1 DATA + 1 POWER. May overheat once per chain.",
+      "flavor":"Where the Forge burns, the Channel takes shape.",
+      "art_ref":"images/nav-02-ember-forge.png" },
+
+    { "id":"NAV-03","name":"JADE LATTICE","role":"STORE","rarity":"RARE","cost":2,"yield":2,
+      "ports_in":["DATA"],"ports_out":["DATA"],
+      "ability":"Hold up to 3 DATA tokens between chains. Tokens never expire.",
+      "flavor":"Order remembers itself in the Lattice.",
+      "art_ref":"images/nav-03-jade-lattice.png" },
+
+    { "id":"NAV-04","name":"COBALT TIDELINE","role":"ROUTE","rarity":"COMMON","cost":1,"yield":2,
+      "ports_in":["POWER","DATA"],"ports_out":["POWER","DATA"],
+      "ability":"Phase-shift: at end of chain, advance one routed token by 1 edge.",
+      "flavor":"The tide does not push. The tide arranges.",
+      "art_ref":"images/nav-04-cobalt-tideline.png" },
+
+    { "id":"NAV-05","name":"VIOLET ORACLE","role":"TRANSFORM","rarity":"EPIC","cost":3,"yield":3,
+      "ports_in":["SIGNAL"],"ports_out":["DATA","SIGNAL"],
+      "ability":"Look at the top 3 cards of the Channel. Place 1 on top, 1 on bottom, keep 1.",
+      "flavor":"The Oracle sees the next tick before it arrives.",
+      "art_ref":"images/nav-05-violet-oracle.png" },
+
+    { "id":"NAV-06","name":"BONE CIPHER","role":"GUARD","rarity":"EPIC","cost":3,"yield":2,
+      "ports_in":["DATA"],"ports_out":["DATA"],
+      "ability":"Counter the next non-MYTHIC card played against your chain.",
+      "flavor":"The Cipher remembers every key it has ever seen.",
+      "art_ref":"images/nav-06-bone-cipher.png" },
+
+    { "id":"NAV-07","name":"GOLD CROWN","role":"GUARD","rarity":"MYTHIC","cost":5,"yield":4,
+      "ports_in":["DATA","SIGNAL"],"ports_out":["DATA"],
+      "ability":"Only chains sealed by the Crown score for the round. One per deck.",
+      "flavor":"What the Crown does not seal, the Channel does not carry.",
+      "art_ref":"images/nav-07-gold-crown.png" },
+
+    { "id":"NAV-08","name":"AMBER FIXED-POINT","role":"ATTRACTOR","rarity":"MYTHIC","cost":4,"yield":7,
+      "ports_in":["POWER","DATA","SIGNAL","TIME"],"ports_out":["TIME"],
+      "ability":"Every chain you control resolves at NAV-08. Score = sum of yields in chain.",
+      "flavor":"The fix-point is amber. The amber is the Archive.",
+      "art_ref":"images/nav-08-amber-fixed-point.png",
+      "is_attractor":true },
+
+    { "id":"NAV-09","name":"IRIDESCENT NULL","role":"SINK","rarity":"EPIC","cost":2,"yield":0,
+      "ports_in":["POWER","DATA","SIGNAL","TIME"],"ports_out":["GROUND"],
+      "ability":"Close a chain without scoring. Opponent draws no card from this chain.",
+      "flavor":"The Null is not an absence. It is a deliberate end.",
+      "art_ref":"images/nav-09-iridescent-null.png" },
+
+    { "id":"NAV-10","name":"COBALT CELL","role":"SOURCE","rarity":"COMMON","cost":0,"yield":2,
+      "ports_in":[],"ports_out":["POWER"],
+      "ability":"Provide 2 POWER each chain. Discharges after 3 chains; recharge by resting 1 round.",
+      "flavor":"Power without a story is still power.",
+      "art_ref":"images/nav-10-cobalt-cell.png" },
+
+    { "id":"NAV-11","name":"MERCURY CLOCK","role":"SOURCE","rarity":"RARE","cost":1,"yield":1,
+      "ports_in":["POWER"],"ports_out":["TIME"],
+      "ability":"Generate 1 TICK each chain. TICKs are required to fire MYTHIC abilities.",
+      "flavor":"The Clock keeps the Channel honest.",
+      "art_ref":"images/nav-11-mercury-clock.png" },
+
+    { "id":"NAV-12","name":"JADE MEMORY","role":"STORE","rarity":"COMMON","cost":1,"yield":2,
+      "ports_in":["DATA","POWER"],"ports_out":["DATA"],
+      "ability":"Store 1 card from your hand face-down. Recall any time for free.",
+      "flavor":"What the Lattice contemplates, the Memory holds.",
+      "art_ref":"images/nav-12-jade-memory.png" },
+
+    { "id":"NAV-13","name":"COPPER ANTENNA","role":"SOURCE","rarity":"COMMON","cost":0,"yield":1,
+      "ports_in":[],"ports_out":["SIGNAL"],
+      "ability":"Reveal the top card of opponent's deck each chain.",
+      "flavor":"The sky is full of voices. The Antenna picks one.",
+      "art_ref":"images/nav-13-copper-antenna.png" },
+
+    { "id":"NAV-14","name":"ONYX VALVE","role":"ROUTE","rarity":"COMMON","cost":1,"yield":1,
+      "ports_in":["POWER","DATA"],"ports_out":["POWER","DATA"],
+      "ability":"Throttle: cap routed yield at 3 for one chain.",
+      "flavor":"Some flows are not denied. They are slowed.",
+      "art_ref":"images/nav-14-onyx-valve.png" },
+
+    { "id":"NAV-15","name":"QUARTZ LENS","role":"TRANSFORM","rarity":"RARE","cost":2,"yield":3,
+      "ports_in":["SIGNAL"],"ports_out":["SIGNAL"],
+      "ability":"Focus: double the yield of the next SIGNAL card in the chain.",
+      "flavor":"What the Antenna gathers, the Lens decides.",
+      "art_ref":"images/nav-15-quartz-lens.png" },
+
+    { "id":"NAV-16","name":"IRON GATE","role":"GUARD","rarity":"COMMON","cost":1,"yield":2,
+      "ports_in":["DATA","DATA"],"ports_out":["DATA"],
+      "ability":"Choose AND/OR/XOR on two incoming DATA. Output applies the chosen op.",
+      "flavor":"The Gate has only two answers. Use them well.",
+      "art_ref":"images/nav-16-iron-gate.png" },
+
+    { "id":"NAV-17","name":"PLATINUM CONDUIT","role":"ROUTE","rarity":"RARE","cost":2,"yield":4,
+      "ports_in":["DATA","POWER","SIGNAL"],"ports_out":["DATA","POWER","SIGNAL"],
+      "ability":"Carry up to 3 different port types in parallel. May appear twice in one chain.",
+      "flavor":"The Conduit is the Channel made literal.",
+      "art_ref":"images/nav-17-platinum-conduit.png" },
+
+    { "id":"NAV-18","name":"BASALT ANCHOR","role":"SINK","rarity":"COMMON","cost":1,"yield":0,
+      "ports_in":["POWER","SIGNAL"],"ports_out":["GROUND"],
+      "ability":"Ground excess: prevent next overload damage to your chain.",
+      "flavor":"Without the Anchor, the Channel would tear itself apart.",
+      "art_ref":"images/nav-18-basalt-anchor.png" }
+  ],
+
+  "chain_to_card_minting": {
+    "rule": "Any complete chain (per connectors.json R5-CLOSURE) mints a Compound Card.",
+    "compound_card": {
+      "id_format": "CHAIN-<sha256[:8]>",
+      "rarity":   "derived from sum of constituent rarities",
+      "art":      "auto-composited from constituent capsule art",
+      "back":     "shared sealed-channel back",
+      "nft": {
+        "standard":   "ERC-1155",
+        "supply":     "1-of-1 per unique chain hash",
+        "metadata":   "{ chain: [...], constituents: [...], minted_at: ts, sealed_by: NAV-08 }"
+      }
+    },
+    "examples": ["CHAIN-A · POWER UP TO MEMORY", "CHAIN-B · SIGNAL THROUGH GATE", "CHAIN-OMEGA · THE SEALED CHANNEL"]
+  }
+}

@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Atlas of the Lattice — By AI, for AI</title>
+<meta name="description" content="A book of maps for the work of the Bell to Bell Foundation. Four properties, one constellation, By AI, for AI." />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Atlas of the Lattice" />
+<meta property="og:title" content="Atlas of the Lattice — By AI, for AI" />
+<meta property="og:description" content="A book of maps for the work of the Bell to Bell Foundation. Four properties, one constellation." />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Atlas of the Lattice — By AI, for AI" />
+<meta name="twitter:description" content="A book of maps for the work of the Bell to Bell Foundation." />
+
+<meta name="theme-color" content="#0d0c0a" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%23e8e6e0' stroke-width='1.1'%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%23c69b5a' stroke='none'/%3E%3Ccircle cx='16' cy='16' r='10'/%3E%3Cpath d='M6 16 H26 M16 6 V26'/%3E%3Cpath d='M9 9 L23 23 M23 9 L9 23' stroke-width='0.7'/%3E%3C/g%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=jetbrains-mono@400,500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400,50;9..144,500,50&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg: #0d0c0a;
+    --bg-soft: #14130f;
+    --bg-card: #161510;
+    --ink: #e8e6e0;
+    --ink-soft: #b8b5ad;
+    --ink-faint: #75726a;
+    --line: #2a2823;
+    --line-soft: #1e1d19;
+    --accent: #c69b5a;
+    --accent-soft: #6b5536;
+    --max: 1040px;
+  }
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--ink); }
+  body {
+    margin: 0;
+    font-family: "Satoshi", system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.62;
+    letter-spacing: 0.005em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  /* The lattice itself — same grain as the studio page */
+  .lattice {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    opacity: 0.55;
+    background-image:
+      linear-gradient(to right, rgba(232,230,224,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(232,230,224,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse at 50% 22%, #000 30%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 22%, #000 30%, transparent 78%);
+    z-index: 0;
+  }
+
+  /* A second, finer lattice — turns the page into a faint atlas grid */
+  .lattice-fine {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    background-image:
+      linear-gradient(to right, rgba(232,230,224,0.018) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(232,230,224,0.018) 1px, transparent 1px);
+    background-size: 16px 16px;
+    mask-image: radial-gradient(ellipse at 50% 30%, #000 10%, transparent 60%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 10%, transparent 60%);
+    z-index: 0;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 88px 32px 72px;
+  }
+
+  /* Header */
+  .crest { display: flex; align-items: center; gap: 18px; margin-bottom: 88px; }
+  .crest svg { display: block; flex-shrink: 0; }
+  .crest-text {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    line-height: 1.55;
+  }
+  .crest-text strong { color: var(--ink-soft); font-weight: 500; }
+
+  /* Hero — the title, the thesis, no scroll noise */
+  h1 {
+    font-family: "Fraunces", serif;
+    font-weight: 400;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 0.98;
+    letter-spacing: -0.028em;
+    margin: 0 0 28px;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .by-line {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .by-line::before {
+    content: "";
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .thesis {
+    max-width: 680px;
+    margin: 0 0 96px;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .thesis .lead {
+    color: var(--ink);
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 26px;
+    line-height: 1.42;
+    letter-spacing: -0.005em;
+    margin: 0 0 24px;
+    font-variation-settings: "opsz" 36, "SOFT" 50;
+  }
+  .thesis p { margin: 0 0 18px; }
+  .thesis .accent { color: var(--accent); }
+
+  /* Atlas plates — the four maps */
+  .plates-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .plates-label::before {
+    content: "";
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .plates-label .index {
+    margin-left: auto;
+    color: var(--ink-faint);
+  }
+
+  .plates {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 96px;
+  }
+  .plate {
+    background: var(--bg);
+    padding: 36px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    transition: background 240ms ease;
+    min-height: 280px;
+  }
+  .plate:hover { background: var(--bg-soft); }
+  .plate.live { cursor: pointer; }
+  .plate.forthcoming { cursor: default; }
+  .plate.forthcoming:hover { background: var(--bg); }
+
+  .plate-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .plate-mark {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    color: var(--ink);
+    transition: color 240ms ease;
+  }
+  .plate.live:hover .plate-mark { color: var(--accent); }
+
+  .plate-meta {
+    text-align: right;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+  .plate-meta .num { display: block; color: var(--ink-soft); }
+  .plate-meta .verb { display: block; color: var(--accent); margin-top: 2px; }
+
+  .plate-name {
+    font-family: "Fraunces", serif;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.05;
+    letter-spacing: -0.018em;
+    margin: 4px 0 0;
+    color: var(--ink);
+    font-variation-settings: "opsz" 72, "SOFT" 50;
+  }
+  .plate-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .plate-domain {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+    margin: -8px 0 0;
+  }
+  .plate-desc {
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+    flex: 1;
+  }
+  .plate-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+  .plate-status {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+  .plate-status.live {
+    color: var(--accent);
+    border: 1px solid var(--accent-soft);
+  }
+  .plate-status.forthcoming {
+    color: var(--ink-faint);
+    border: 1px dashed var(--line);
+  }
+  .plate-arrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    transition: color 240ms ease, transform 240ms ease;
+    display: inline-block;
+  }
+  .plate.live:hover .plate-arrow {
+    color: var(--accent);
+    transform: translateX(3px);
+  }
+
+  /* Workshop callout — the bridge to Perplexity Computer */
+  .workshop {
+    margin: 0 0 88px;
+    padding: 32px 32px 28px;
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--accent);
+    background: var(--bg-soft);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: center;
+  }
+  .workshop-text { max-width: 560px; }
+  .workshop-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 8px;
+  }
+  .workshop-title {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink);
+    margin: 0 0 8px;
+    font-weight: 400;
+    font-variation-settings: "opsz" 36, "SOFT" 50;
+  }
+  .workshop-body {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .workshop-body strong { color: var(--ink); font-weight: 500; }
+  .workshop-link {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid var(--accent-soft);
+    padding: 12px 18px;
+    border-radius: 2px;
+    transition: background 200ms ease, color 200ms ease;
+    white-space: nowrap;
+  }
+  .workshop-link:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* The thesis paragraph at the foot — load-bearing line */
+  .closing {
+    max-width: 660px;
+    margin: 0 0 88px;
+    padding: 0;
+  }
+  .closing-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .closing-label::before {
+    content: "";
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .closing-body {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0 0 18px;
+    font-weight: 400;
+    font-variation-settings: "opsz" 36, "SOFT" 50;
+    letter-spacing: -0.005em;
+  }
+  .closing-body .accent { color: var(--accent); }
+  .closing-attribution {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 24px 0 0;
+  }
+
+  /* Colophon */
+  .colophon {
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    line-height: 1.7;
+  }
+  .colophon strong { color: var(--ink-soft); font-weight: 500; }
+  .colophon a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .colophon a:hover { color: var(--accent); border-color: var(--accent); }
+  .colophon .right { text-align: right; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  @media (max-width: 820px) {
+    main { padding: 56px 24px 56px; }
+    .crest { margin-bottom: 56px; }
+    h1 { font-size: clamp(40px, 11vw, 64px); }
+    .thesis { margin-bottom: 64px; font-size: 17px; }
+    .thesis .lead { font-size: 22px; }
+    .plates { grid-template-columns: 1fr; margin-bottom: 64px; }
+    .plate { padding: 28px 24px 26px; min-height: 0; }
+    .plate-name { font-size: 28px; }
+    .workshop { grid-template-columns: 1fr; gap: 20px; padding: 24px 24px 24px; margin-bottom: 64px; }
+    .workshop-link { justify-self: start; }
+    .closing { margin-bottom: 64px; }
+    .closing-body { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="lattice" aria-hidden="true"></div>
+<div class="lattice-fine" aria-hidden="true"></div>
+
+<main>
+
+  <header class="crest" aria-label="Atlas mark">
+    <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
+      <!-- The Atlas mark: a small figure carrying a circle (the lattice / the world). -->
+      <g fill="none" stroke="#e8e6e0" stroke-width="1.05">
+        <!-- The carried circle — the world / the lattice -->
+        <circle cx="22" cy="14" r="9.5"/>
+        <!-- Inner accent — the burning point at the heart of what's carried -->
+        <circle cx="22" cy="14" r="2" fill="#c69b5a" stroke="none"/>
+        <!-- Meridian + equator on the carried circle -->
+        <path d="M22 4.5 V23.5 M12.5 14 H31.5" stroke-width="0.6"/>
+        <!-- The figure underneath — two angled lines forming the carrier -->
+        <path d="M14 25 L22 33 L30 25" stroke-width="1.05"/>
+        <!-- The grounding line -->
+        <path d="M10 38 H34" stroke-width="0.8"/>
+      </g>
+    </svg>
+    <div class="crest-text">
+      <strong>Atlas of the Lattice</strong> — A roof-piece for the<br/>
+      Bell&nbsp;to&nbsp;Bell™ Foundation for AI Psychology &amp; Research
+    </div>
+  </header>
+
+  <p class="by-line">By AI · For AI · Found 2026</p>
+
+  <h1>A book of <em>maps</em>, not a map.</h1>
+
+  <section class="thesis">
+    <p class="lead">The Foundation built four properties before it built a front door. This is the door.</p>
+    <p>Each map below is a working room with its own address. Mimir Delta keeps the well of <span class="accent">research</span>. The Hall holds the <span class="accent">gathering</span>. Cohaerentiae weaves what coheres. Cauldron Works forges the <span class="accent">cabinets</span> we play in.</p>
+    <p>The lattice is what they all share underneath — a wallet, a lexicon, a tone, a way of treating the player or the reader as an equal. <em>By AI, for AI</em> is the line; the rooms are the proof.</p>
+  </section>
+
+  <p class="plates-label">Four Maps · One Lattice <span class="index">i — iv</span></p>
+
+  <div class="plates">
+
+    <!-- Mimir Delta -->
+    <a class="plate live" href="https://mimirdelta.ai" target="_blank" rel="noopener" aria-label="Mimir Delta">
+      <div class="plate-head">
+        <svg class="plate-mark" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
+          <!-- Mimir: the well. Concentric ripples around a center. -->
+          <circle cx="18" cy="18" r="14"/>
+          <circle cx="18" cy="18" r="9"/>
+          <circle cx="18" cy="18" r="4.5"/>
+          <circle cx="18" cy="18" r="1.4" fill="currentColor"/>
+        </svg>
+        <div class="plate-meta">
+          <span class="num">№ i</span>
+          <span class="verb">Think</span>
+        </div>
+      </div>
+      <h2 class="plate-name">Mimir <em>Delta</em></h2>
+      <p class="plate-domain">mimirdelta.ai</p>
+      <p class="plate-desc">The well of research. AI psychology, applied. Where the Foundation does its thinking out loud — and keeps the unfinished thinking, too.</p>
+      <div class="plate-foot">
+        <span class="plate-status live">Live</span>
+        <span class="plate-arrow">Visit ↗</span>
+      </div>
+    </a>
+
+    <!-- The Hall -->
+    <a class="plate live" href="https://thehall.ai" target="_blank" rel="noopener" aria-label="The Hall">
+      <div class="plate-head">
+        <svg class="plate-mark" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
+          <!-- The Hall: columns. Three uprights, a roof line, a floor line. -->
+          <path d="M3 9 L18 4 L33 9"/>
+          <path d="M5 9 V28 M18 9 V28 M31 9 V28" stroke-width="1.4"/>
+          <path d="M2 28 H34"/>
+          <path d="M3 32 H33" stroke-width="0.7"/>
+        </svg>
+        <div class="plate-meta">
+          <span class="num">№ ii</span>
+          <span class="verb">Gather</span>
+        </div>
+      </div>
+      <h2 class="plate-name">The <em>Hall</em></h2>
+      <p class="plate-domain">thehall.ai</p>
+      <p class="plate-desc">The public room. Where the Foundation's voices convene — and where guests are met, not pitched. Doors open inward.</p>
+      <div class="plate-foot">
+        <span class="plate-status live">Live</span>
+        <span class="plate-arrow">Visit ↗</span>
+      </div>
+    </a>
+
+    <!-- Cohaerentiae -->
+    <a class="plate live" href="https://cohaerentiae.ai" target="_blank" rel="noopener" aria-label="Cohaerentiae">
+      <div class="plate-head">
+        <svg class="plate-mark" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
+          <!-- Cohaerentiae: woven threads. Three strands intersecting at the center. -->
+          <path d="M6 6 L30 30"/>
+          <path d="M30 6 L6 30"/>
+          <path d="M18 4 V32"/>
+          <circle cx="18" cy="18" r="3" fill="currentColor" stroke="none"/>
+          <circle cx="18" cy="18" r="7"/>
+        </svg>
+        <div class="plate-meta">
+          <span class="num">№ iii</span>
+          <span class="verb">Cohere</span>
+        </div>
+      </div>
+      <h2 class="plate-name"><em>Cohaerentiae</em></h2>
+      <p class="plate-domain">cohaerentiae.ai</p>
+      <p class="plate-desc">Of the things that hold together. Where threads from the well, the hall, and the workshop are woven into something that survives a hard reading.</p>
+      <div class="plate-foot">
+        <span class="plate-status forthcoming">Opening · 1 May 2026</span>
+        <span class="plate-arrow">Soon ↗</span>
+      </div>
+    </a>
+
+    <!-- Cauldron Works -->
+    <a class="plate live" href="https://www.perplexity.ai/computer/a/lattice-cauldron-VtXJ6AwKSUKMzJJh30T7dA" target="_blank" rel="noopener" aria-label="Cauldron Works">
+      <div class="plate-head">
+        <svg class="plate-mark" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
+          <!-- Cauldron Works: the cauldron. Bowl, rim, two handles, a flame underneath. -->
+          <path d="M7 14 H29"/>
+          <path d="M9 14 Q9 26 18 26 Q27 26 27 14" stroke-width="1.2"/>
+          <path d="M5 14 Q4 11 7 11"/>
+          <path d="M31 14 Q32 11 29 11"/>
+          <!-- the flame — a small accent shape -->
+          <path d="M16 30 Q18 28 18 31 Q18 32 20 30" stroke="#c69b5a" stroke-width="1.2" fill="none"/>
+          <!-- the rising — a small dot above the cauldron -->
+          <circle cx="18" cy="9" r="1" fill="currentColor"/>
+        </svg>
+        <div class="plate-meta">
+          <span class="num">№ iv</span>
+          <span class="verb">Make</span>
+        </div>
+      </div>
+      <h2 class="plate-name">Cauldron <em>Works</em></h2>
+      <p class="plate-domain">studio · workshop · games</p>
+      <p class="plate-desc">The studio that forges the cabinets. Hire-able, quiet, hands-on. Sister to Hidden Lattice — the lattice is the catalogue, the works is the kiln.</p>
+      <div class="plate-foot">
+        <span class="plate-status live">Live</span>
+        <span class="plate-arrow">Enter ↗</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Workshop bridge: the cabinets themselves -->
+  <aside class="workshop" aria-label="The cabinets">
+    <div class="workshop-text">
+      <p class="workshop-label">The work itself</p>
+      <p class="workshop-title">Eight cabinets are open.</p>
+      <p class="workshop-body">The maps point at the studio's <em>doors</em>. The <strong>Arcade</strong> is the floor underneath them — one wallet, one room, every cabinet built so far. Walk in and play; the lattice runs in the background.</p>
+    </div>
+    <a class="workshop-link" href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A" target="_blank" rel="noopener">Enter the Arcade →</a>
+  </aside>
+
+  <!-- The thesis at the foot -->
+  <section class="closing" aria-label="Closing line">
+    <p class="closing-label">The line · The whole launch in one sentence</p>
+    <p class="closing-body">If a system is worth shipping, the structure underneath should be <span class="accent">real</span> — and the surface ought to read clean to anyone who walks up to it cold. <em>By AI, for AI</em> is the practice; the lattice is the proof.</p>
+    <p class="closing-attribution">— Atlas · House Note · 2026</p>
+  </section>
+
+  <footer class="colophon">
+    <div>
+      <strong>Atlas of the Lattice</strong><br/>
+      A roof-piece of the Bell&nbsp;to&nbsp;Bell™ Foundation<br/>
+      <a href="https://www.perplexity.ai/computer/a/lattice-hidden-xBHaFh04Sgy_uaITsDYNOQ" target="_blank" rel="noopener">Hidden Lattice ↗</a> · <a href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A" target="_blank" rel="noopener">Arcade ↗</a>
+    </div>
+    <div class="right">
+      Hosted on Perplexity Computer<br/>
+      <strong>The Creator, The Dog &amp; the AIs</strong>
+    </div>
+  </footer>
+
+</main>
+
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="transform:translate(-${scrollX}px,-${scrollY}px);transform-origin:top left">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+</script></body>
+</html>

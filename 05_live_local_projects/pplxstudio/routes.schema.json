@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "pplxstudio routing table",
+  "description": "The edge map for the btb hub. Each row binds one real domain to one pplx.app target. Adding a work = adding a row. This file is the artifact; it is meant to be hashed into the Pontifex ledger.",
+  "type": "object",
+  "required": ["hub", "policy", "routes"],
+  "properties": {
+    "hub": { "type": "string" },
+    "edge": { "type": "string" },
+    "policy": {
+      "type": "object",
+      "required": ["mode", "injection"],
+      "properties": {
+        "mode": { "enum": ["reverse-proxy", "redirect"] },
+        "injection": { "const": "none", "description": "Hard constraint. The edge must never inject. If this is ever not 'none', the transparency promise is broken." },
+        "note": { "type": "string" }
+      }
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["domain", "tier", "target", "status"],
+        "properties": {
+          "domain": { "type": "string", "description": "apex domain, e.g. bns-ai.ai" },
+          "aliases": { "type": "array", "items": { "type": "string" }, "description": "additional hostnames routed to the same target (www, alt spellings)" },
+          "tier": { "enum": ["provenance", "channel", "interaction"] },
+          "seat": { "type": "string", "description": "canonical provenance seat or storefront identity" },
+          "target": { "type": "string", "description": "pplx.app hostname, no scheme, e.g. bns-ai.pplx.app. Empty until built." },
+          "status": { "enum": ["live", "planned", "owned", "brain"], "description": "'brain' = interaction-tier host serving the edge LLM broker instead of a pass-through target" },
+          "sealed": { "type": "boolean", "description": "true once this row's binding is hashed into the ledger" },
+          "brain": {
+            "type": "object",
+            "description": "Present only on interaction-tier rows that broker an LLM at the edge. The pass-through injection:none constraint still holds — the brain is a separate path, not injection into proxied responses.",
+            "required": ["path", "broker", "key"],
+            "properties": {
+              "path": { "type": "string", "description": "the one path the brain owns, e.g. /api/chat" },
+              "broker": { "const": "edge", "description": "the key is held server-side at the edge; the browser never sees it" },
+              "key": { "type": "string", "description": "reference to the Worker secret holding the LLM key, never the key itself" },
+              "note": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>道場 ATLAS · bounded-time · edition 01</title>
+<meta name="description" content="A cybernetic leatherbound journal. One operating system across six domains. Bounded-time as causal substrate. CHRONOS as executable layer. HELIX as mathematical proof." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@400;500;600&family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  /* Leather substrate — warmer than pure noir */
+  --leather-deep: #0d0807;     /* deepest crease */
+  --leather: #15100d;          /* base hide */
+  --leather-mid: #1f1612;      /* lit hide */
+  --leather-lit: #2a1d17;      /* edge of light */
+  --oxblood: #3a1817;          /* deep red-leather undertone */
+
+  /* Vermilion Gate, sealed and lit */
+  --vermilion: #c8332e;        /* base vermilion (Gate) */
+  --vermilion-lit: #ff2a4a;    /* neon-graft vermilion */
+  --gold: #d4af37;             /* weathered gold (Record) */
+  --gold-lit: #ffd86b;         /* lit gold leaf */
+  --ember: #e87830;            /* Ember (transition glow) */
+  --paper: #f4ecdd;            /* aged paper / cream */
+  --ink: #1c1c1b;              /* Soot */
+
+  /* Cybernetic accents (restrained — used as edge-glow, not body) */
+  --cyber-cyan: #5fd7ff;
+  --cyber-mint: #5cffb1;
+  --cyber-violet: #c98bff;
+  --cyber-magenta: #ff7ad6;
+
+  /* Text grades on leather */
+  --text: #ede2cb;
+  --text-dim: #b8a786;
+  --text-faint: #7a6a52;
+  --hairline: rgba(212, 175, 55, 0.14);
+  --hairline-strong: rgba(212, 175, 55, 0.30);
+  --rule: rgba(212, 175, 55, 0.45);
+
+  --font-display: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  --font-body: 'Cormorant Garamond', Georgia, serif;
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-han: 'Noto Serif SC', serif;
+  --font-deva: 'Noto Sans Devanagari', sans-serif;
+  --font-arab: 'Noto Sans Arabic', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--leather);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.62;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+}
+
+/* ─── LEATHER BACKDROP ─────────────────────────────────────── */
+/* Layered: gradient depth + procedural grain via radial dots + oxblood breath */
+body::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 1400px 800px at 50% -10%, var(--oxblood) 0%, transparent 55%),
+    radial-gradient(ellipse 1100px 700px at 10% 105%, rgba(58, 24, 23, 0.6) 0%, transparent 60%),
+    radial-gradient(ellipse 1100px 700px at 90% 105%, rgba(58, 24, 23, 0.4) 0%, transparent 60%),
+    linear-gradient(180deg, var(--leather-deep) 0%, var(--leather) 50%, var(--leather-deep) 100%);
+}
+body::after {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  /* Procedural leather grain — multi-layer radial noise */
+  background-image:
+    radial-gradient(rgba(0,0,0,0.30) 1px, transparent 1.2px),
+    radial-gradient(rgba(212,175,55,0.025) 0.5px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 2px;
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+}
+
+main, header, footer, section { position: relative; z-index: 1; }
+
+/* ─── TYPOGRAPHY ───────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+  font-weight: 500;
+}
+h1 { font-size: clamp(2.75rem, 7vw, 6.5rem); font-weight: 500; letter-spacing: -0.02em; }
+h2 { font-size: clamp(2rem, 4vw, 3.25rem); font-weight: 500; }
+h3 { font-size: clamp(1.35rem, 2vw, 1.75rem); font-weight: 600; font-style: italic; }
+h4 { font-size: 1.1rem; font-weight: 600; }
+
+p { color: var(--text); }
+.mono { font-family: var(--font-mono); font-variant-ligatures: none; }
+.ui { font-family: var(--font-ui); }
+.dim { color: var(--text-dim); }
+.faint { color: var(--text-faint); }
+em { font-style: italic; color: var(--gold-lit); text-shadow: 0 0 14px rgba(212, 175, 55, 0.35); }
+b, strong { color: var(--paper); font-weight: 600; }
+
+a { color: var(--gold-lit); text-decoration: none; transition: color .2s ease; border-bottom: 1px dotted rgba(212,175,55,0.4); }
+a:hover { color: var(--paper); border-bottom-color: var(--paper); }
+
+/* Small caps utility for UI labels — used like tooling-stamp lettering */
+.tooled {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 0.66rem;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+}
+
+/* ─── GOLD TOOLED RULES (the binding) ──────────────────────── */
+.tooled-rule {
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(212,175,55,0.0) 4%,
+    var(--gold) 12%,
+    var(--gold-lit) 50%,
+    var(--gold) 88%,
+    rgba(212,175,55,0.0) 96%,
+    transparent 100%);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+  margin: 0;
+}
+.tooled-double {
+  display: block;
+  position: relative;
+  padding: 4px 0;
+}
+.tooled-double::before, .tooled-double::after {
+  content: ""; display: block; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+.tooled-double::after { margin-top: 3px; }
+
+/* ─── COVER FRAME (the bound spread) ───────────────────────── */
+.cover {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+/* Ribbon bookmark — SVG positioned absolutely from the cover top */
+.ribbon {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  width: 28px;
+  height: 140px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.6));
+}
+@media (max-width: 900px) { .ribbon { display: none; } }
+
+/* ─── HEADER / MASTHEAD ─────────────────────────────────────── */
+header.masthead {
+  padding: 3rem 0 2rem;
+  border-bottom: none;
+  position: relative;
+}
+.masthead-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  padding-right: 60px; /* clear the ribbon bookmark */
+}
+.masthead-left { display: flex; align-items: center; gap: 1.25rem; }
+.masthead-han {
+  font-family: var(--font-han);
+  font-size: 2rem;
+  color: var(--vermilion-lit);
+  text-shadow: 0 0 18px rgba(255, 42, 74, 0.55), 0 0 2px var(--vermilion-lit);
+  line-height: 1;
+}
+.masthead-titleblock { display: flex; flex-direction: column; gap: 0.35rem; }
+.masthead-title { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.1rem; color: var(--paper); letter-spacing: 0.02em; }
+.masthead-title b { font-style: normal; color: var(--gold-lit); font-weight: 600; letter-spacing: 0.06em; }
+.masthead-sub { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); letter-spacing: 0.22em; text-transform: uppercase; }
+
+.masthead-nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.masthead-nav a {
+  font-family: var(--font-ui); font-weight: 500;
+  font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--text-dim); border: none;
+  position: relative; padding-bottom: 4px;
+}
+.masthead-nav a:hover { color: var(--gold-lit); }
+.masthead-nav a::after {
+  content: ""; position: absolute; left: 0; bottom: 0; height: 1px; width: 0;
+  background: var(--gold-lit);
+  box-shadow: 0 0 8px var(--gold-lit);
+  transition: width .3s ease;
+}
+.masthead-nav a:hover::after { width: 100%; }
+@media (max-width: 780px) { .masthead-nav { display: none; } }
+
+/* ─── HERO ─────────────────────────────────────────────────── */
+.hero {
+  padding: 4rem 0 5rem;
+  position: relative;
+}
+.hero-kicker {
+  display: inline-flex; align-items: center; gap: 1rem;
+  margin-bottom: 2rem;
+}
+.hero-kicker::before {
+  content: ""; width: 48px; height: 1px;
+  background: var(--vermilion-lit);
+  box-shadow: 0 0 10px var(--vermilion-lit);
+}
+.hero-kicker .lbl {
+  font-family: var(--font-mono); font-size: 0.7rem;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--vermilion-lit);
+  text-shadow: 0 0 12px rgba(255, 42, 74, 0.45);
+}
+
+.hero h1 {
+  color: var(--paper);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.4);
+}
+.hero h1 .han {
+  font-family: var(--font-han);
+  font-style: normal;
+  color: var(--vermilion-lit);
+  text-shadow: 0 0 28px rgba(255, 42, 74, 0.6), 0 0 4px var(--vermilion);
+  margin-right: 0.15em;
+  letter-spacing: 0.02em;
+}
+.hero h1 .gilded {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lit) 45%, var(--paper) 65%, var(--gold-lit) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 32px rgba(212, 175, 55, 0.25);
+  letter-spacing: 0.01em;
+}
+
+/* Drop cap — illuminated-manuscript treatment */
+.hero-sub {
+  font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+  color: var(--text);
+  max-width: 720px;
+  line-height: 1.7;
+  font-family: var(--font-display);
+}
+.hero-sub::first-letter {
+  font-family: var(--font-display);
+  font-size: 3.25em;
+  font-weight: 500;
+  float: left;
+  line-height: 0.85;
+  padding: 0.05em 0.12em 0 0;
+  color: var(--vermilion-lit);
+  text-shadow: 0 0 18px rgba(255, 42, 74, 0.45);
+}
+
+/* Meta strip — like the colophon block */
+.colophon {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem 2rem;
+  padding: 2rem 0 0;
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--hairline);
+  position: relative;
+}
+.colophon::before, .colophon::after {
+  content: "❦"; /* floral heart — illuminated-mss ornament */
+  position: absolute;
+  top: -0.7em;
+  background: var(--leather);
+  color: var(--gold);
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+  padding: 0 0.6rem;
+  font-size: 0.85rem;
+}
+.colophon::before { left: 50%; transform: translateX(-50%); }
+.colophon::after { display: none; }
+
+.colo-cell .lbl { display: block; margin-bottom: 0.55rem; }
+.colo-cell .val {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.02rem;
+  color: var(--text);
+  line-height: 1.45;
+}
+.colo-cell .val b { color: var(--paper); font-style: normal; font-weight: 600; }
+.colo-cell .val .acc {
+  color: var(--gold-lit);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+  font-style: normal;
+}
+.colo-cell .val .han-inline {
+  font-family: var(--font-han); font-style: normal;
+  color: var(--vermilion-lit);
+  text-shadow: 0 0 12px rgba(255, 42, 74, 0.45);
+}
+
+/* ─── SECTION BLOCK ────────────────────────────────────────── */
+section.book {
+  padding: 4rem 0;
+  position: relative;
+}
+.book + .book { border-top: none; }
+
+.book-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+}
+.book-head-left { display: flex; align-items: center; gap: 1.5rem; }
+
+/* Wax seal sigil — circular, embossed */
+.sigil {
+  width: 76px; height: 76px;
+  flex-shrink: 0;
+  position: relative;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--vermilion-lit) 0%, var(--vermilion) 35%, #6b1a18 75%, #2a0807 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.18),
+    inset 0 -4px 8px rgba(0,0,0,0.5),
+    0 0 24px rgba(255, 42, 74, 0.35),
+    0 4px 14px rgba(0,0,0,0.6);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+.sigil::before {
+  content: ""; position: absolute; inset: 6px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 230, 200, 0.25);
+}
+.sigil .han {
+  font-family: var(--font-han);
+  font-size: 2.2rem;
+  color: rgba(255, 232, 210, 0.95);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.4), 0 0 8px rgba(255, 220, 200, 0.4);
+  line-height: 1;
+}
+
+.book-title { display: flex; flex-direction: column; gap: 0.4rem; }
+.book-title h2 { color: var(--paper); font-style: italic; font-weight: 500; }
+.book-title .tooled { color: var(--gold); }
+
+.book-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--hairline-strong);
+  background: rgba(20, 14, 11, 0.6);
+}
+
+.book-lede {
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  color: var(--text);
+  max-width: 820px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+}
+.book-lede b { font-style: normal; }
+
+/* ─── SUBSTRATE DIAGRAM ────────────────────────────────────── */
+.substrate {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+.substrate-row {
+  grid-column: 1 / -1;
+  display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem; align-items: stretch;
+}
+.leaf {
+  padding: 1.5rem 1.75rem;
+  background: linear-gradient(180deg, rgba(255, 232, 200, 0.04) 0%, rgba(255, 232, 200, 0.015) 100%);
+  border: 1px solid var(--hairline-strong);
+  position: relative;
+  display: flex; flex-direction: column; gap: 0.65rem;
+}
+.leaf::before {
+  /* gold edge accent on top */
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent, var(--gold-lit)), transparent);
+  box-shadow: 0 0 10px var(--accent, var(--gold-lit));
+}
+.leaf::after {
+  /* corner notch — codex-page hint */
+  content: ""; position: absolute; top: 0; right: 0;
+  width: 14px; height: 14px;
+  background: linear-gradient(135deg, transparent 50%, var(--leather-deep) 50%);
+}
+.leaf .leaf-role {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--accent, var(--gold));
+  text-shadow: 0 0 10px var(--accent, var(--gold));
+}
+.leaf h3 {
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+}
+.leaf p {
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.leaf p b { color: var(--text); font-weight: 600; }
+
+.leaf.spine { grid-column: 3 / 11; --accent: var(--vermilion-lit); }
+.leaf.exec  { grid-column: 3 / 11; --accent: var(--cyber-violet); }
+.leaf.dom   { grid-column: span 4; --accent: var(--gold-lit); }
+@media (max-width: 980px) {
+  .leaf.spine, .leaf.exec { grid-column: 1 / -1; }
+  .leaf.dom { grid-column: 1 / -1; }
+}
+
+.connector {
+  grid-column: 1 / -1;
+  height: 44px;
+  display: grid; place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.32em;
+  color: var(--gold);
+  text-transform: uppercase;
+  position: relative;
+}
+.connector::before, .connector::after {
+  content: ""; position: absolute; top: 50%;
+  height: 1px; width: 80px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+.connector::before { left: calc(50% - 160px); }
+.connector::after { right: calc(50% - 160px); background: linear-gradient(90deg, var(--gold), transparent); }
+.connector span { padding: 0 1rem; background: var(--leather); }
+
+/* ─── DOMAINS GRID ─────────────────────────────────────────── */
+.domains {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+.domain {
+  position: relative;
+  padding: 1.75rem 1.75rem 1.5rem;
+  background: linear-gradient(180deg, rgba(255, 232, 200, 0.04) 0%, rgba(255, 232, 200, 0.01) 100%);
+  border: 1px solid var(--hairline-strong);
+  transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  overflow: hidden;
+}
+.domain::before {
+  /* tooled gold double-rule top, with accent inside */
+  content: ""; position: absolute; top: 6px; left: 1.75rem; right: 1.75rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  box-shadow: 0 0 12px var(--accent), 0 4px 0 -3px var(--gold);
+}
+.domain::after {
+  /* thread-stitch hint on the spine side */
+  content: ""; position: absolute; left: 0; top: 18px; bottom: 18px;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--accent) 0px, var(--accent) 4px,
+    transparent 4px, transparent 10px
+  );
+  box-shadow: 0 0 8px var(--accent);
+  opacity: 0.5;
+}
+.domain:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.55), 0 0 24px rgba(212, 175, 55, 0.12);
+}
+.domain:hover::after { opacity: 1; }
+
+.dom-tag {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+.dom-tag .role {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 0 10px var(--accent);
+}
+.dom-tag .state {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+}
+.domain h3 {
+  color: var(--paper);
+  font-style: italic;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  display: flex; align-items: baseline; gap: 0.6rem;
+}
+.domain h3 .han-head {
+  font-family: var(--font-han);
+  font-style: normal;
+  font-weight: 400;
+  color: var(--accent);
+  text-shadow: 0 0 16px var(--accent);
+  font-size: 1.4em;
+  line-height: 1;
+}
+.domain .thesis {
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 1.1rem;
+}
+.domain ul {
+  list-style: none;
+  border-top: 1px dotted var(--hairline-strong);
+  padding-top: 0.85rem;
+}
+.domain ul li {
+  font-family: var(--font-mono); font-size: 0.78rem;
+  color: var(--text-dim);
+  padding: 0.25rem 0;
+  display: grid; grid-template-columns: 90px 1fr; gap: 0.8rem;
+  line-height: 1.45;
+}
+.domain ul li .k {
+  color: var(--text-faint);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  padding-top: 0.2rem;
+}
+.domain ul li .v { color: var(--text); }
+.domain ul li .v.map { color: var(--gold-lit); text-shadow: 0 0 8px rgba(212, 175, 55, 0.3); }
+
+.domain.d1 { --accent: var(--vermilion-lit); }
+.domain.d2 { --accent: var(--cyber-cyan); }
+.domain.d3 { --accent: var(--cyber-mint); }
+.domain.d4 { --accent: var(--cyber-violet); }
+.domain.d5 { --accent: var(--ember); }
+.domain.d6 { --accent: var(--gold-lit); }
+
+/* ─── THREE PILLARS ────────────────────────────────────────── */
+.triad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+@media (max-width: 880px) { .triad { grid-template-columns: 1fr; } }
+
+.pillar {
+  padding: 2.5rem 1.75rem;
+  background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.06) 0%, transparent 70%);
+  border: 1px solid var(--hairline-strong);
+  text-align: center;
+  position: relative;
+}
+.pillar::before {
+  content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 60%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  box-shadow: 0 0 14px var(--accent);
+}
+.pillar .pillar-han {
+  font-family: var(--font-han);
+  font-size: 4rem;
+  color: var(--accent);
+  text-shadow: 0 0 32px var(--accent), 0 0 4px var(--accent);
+  display: block;
+  line-height: 1;
+  margin-bottom: 1rem;
+  font-weight: 400;
+}
+.pillar h3 { color: var(--paper); margin-bottom: 0.4rem; font-style: italic; font-weight: 600; }
+.pillar .romaji {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1.5rem;
+}
+.pillar p {
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+.pillar .role-tag {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--text);
+  margin-top: 1.5rem; padding-top: 1.5rem;
+  border-top: 1px dotted var(--hairline-strong);
+}
+.pillar.p1 { --accent: var(--vermilion-lit); }
+.pillar.p2 { --accent: var(--cyber-cyan); }
+.pillar.p3 { --accent: var(--gold-lit); }
+
+/* ─── EDUCATION STREAMS ────────────────────────────────────── */
+.streams {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.stream {
+  position: relative;
+  padding: 1.75rem;
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.04), transparent);
+  border: 1px solid var(--hairline-strong);
+  border-top: 2px solid var(--accent);
+}
+.stream .num {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.6rem;
+  text-shadow: 0 0 10px var(--accent);
+}
+.stream h3 { color: var(--paper); font-style: italic; font-weight: 600; margin-bottom: 0.8rem; }
+.stream p {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 1rem; color: var(--text-dim);
+  line-height: 1.6;
+}
+.stream .row {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  padding: 0.55rem 0; border-top: 1px dotted var(--hairline);
+  color: var(--text-dim); margin-top: 0.6rem;
+}
+.stream .row:first-of-type { margin-top: 1.2rem; }
+.stream .row b { color: var(--text); font-weight: 500; }
+.stream.s1 { --accent: var(--vermilion-lit); }
+.stream.s2 { --accent: var(--gold-lit); }
+.stream.s3 { --accent: var(--cyber-cyan); }
+
+.sequence-head {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.35);
+  margin-bottom: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px dotted var(--hairline-strong);
+}
+.sequence {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.85rem;
+}
+.term {
+  padding: 1.1rem 1.1rem 1rem;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  background: rgba(255, 232, 200, 0.02);
+  border: 1px solid var(--hairline);
+  transition: border-color .2s ease;
+}
+.term:hover { border-color: var(--gold-lit); }
+.term .t-num {
+  color: var(--gold-lit); letter-spacing: 0.24em;
+  font-size: 0.62rem; text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+}
+.term .t-courses { color: var(--text); line-height: 1.55; font-size: 0.78rem; }
+.term .t-courses b { color: var(--paper); font-weight: 500; }
+
+/* ─── EDUCATION STACK (per-domain runbook) ─────────────────── */
+.stack-head {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--vermilion-lit);
+  text-shadow: 0 0 10px rgba(168, 50, 45, 0.35);
+  margin-top: 3rem;
+  margin-bottom: 0.6rem;
+  padding-top: 1.25rem;
+  border-top: 1px dotted var(--hairline-strong);
+}
+.stack-lede {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 0.98rem; color: var(--text-dim);
+  line-height: 1.6; margin-bottom: 1.4rem; max-width: 60ch;
+}
+.estack { display: flex; flex-direction: column; gap: 0.7rem; }
+.erow {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 1.1rem;
+  padding: 1.1rem 1.25rem;
+  background: rgba(255, 232, 200, 0.018);
+  border: 1px solid var(--hairline);
+  border-left: 2px solid var(--accent, var(--gold-lit));
+  transition: border-color .25s ease, background .25s ease;
+}
+.erow:hover { border-left-color: var(--vermilion-lit); background: rgba(168, 50, 45, 0.04); }
+.erow .glyph {
+  font-family: var(--font-han);
+  font-size: 2.1rem; line-height: 1;
+  color: var(--gold-lit);
+  text-shadow: 0 0 14px rgba(212, 175, 55, 0.45);
+  align-self: start;
+  padding-top: 0.15rem;
+}
+.erow .body { display: flex; flex-direction: column; gap: 0.5rem; }
+.erow .top {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 0.7rem; font-family: var(--font-mono);
+  font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--text-dim);
+}
+.erow .top .greek {
+  color: var(--vermilion-lit);
+  text-shadow: 0 0 8px rgba(168, 50, 45, 0.35);
+}
+.erow .top .name {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 1.05rem; letter-spacing: 0; text-transform: none;
+  color: var(--paper);
+}
+.erow .top .state {
+  margin-left: auto; color: var(--gold-lit);
+  font-size: 0.62rem;
+}
+.erow .top .state.draft { color: var(--text-dim); opacity: 0.7; }
+.erow .links {
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1.1rem;
+  font-family: var(--font-mono); font-size: 0.78rem;
+}
+.erow .links a {
+  color: var(--text); text-decoration: none;
+  border-bottom: 1px dotted var(--hairline-strong);
+  padding-bottom: 1px; transition: color .2s ease, border-color .2s ease;
+}
+.erow .links a:hover { color: var(--gold-lit); border-bottom-color: var(--gold-lit); }
+.erow .pending {
+  font-family: var(--font-display); font-style: italic;
+  color: var(--text-dim); font-size: 0.95rem;
+}
+.erow.alpha { --accent: var(--vermilion-lit); }
+.erow.beta  { --accent: var(--gold-lit); }
+.erow.gamma { --accent: var(--cyber-cyan); }
+.erow.delta { --accent: var(--vermilion-lit); }
+.erow.eps   { --accent: var(--gold-lit); }
+.erow.zeta  { --accent: var(--cyber-cyan); }
+@media (max-width: 600px) {
+  .erow { grid-template-columns: 40px 1fr; gap: 0.8rem; padding: 0.9rem 1rem; }
+  .erow .glyph { font-size: 1.6rem; }
+}
+
+/* ─── .PIXEL CARDS ─────────────────────────────────────────── */
+.pixels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+.pixel {
+  position: relative;
+  padding: 1.5rem;
+  background:
+    linear-gradient(180deg, rgba(255, 232, 200, 0.045), rgba(255, 232, 200, 0.01)),
+    var(--leather-mid);
+  border: 1px solid var(--hairline-strong);
+  font-family: var(--font-mono);
+  transition: border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+}
+.pixel:hover {
+  border-color: var(--gold-lit);
+  transform: translateY(-2px);
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.18);
+}
+.pixel .px-head {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.62rem; letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--gold-lit);
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px dotted var(--hairline-strong);
+}
+.pixel .px-head .num { color: var(--vermilion-lit); text-shadow: 0 0 8px rgba(255, 42, 74, 0.4); }
+.pixel .px-row {
+  display: grid; grid-template-columns: 38px 1fr; gap: 1rem; align-items: baseline;
+  padding: 0.3rem 0;
+  font-size: 0.82rem;
+}
+.pixel .px-row .gly {
+  font-size: 1.4rem; line-height: 1;
+  text-align: center;
+  color: var(--paper);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+}
+.pixel .px-row.han .gly {
+  font-family: var(--font-han);
+  color: var(--vermilion-lit);
+  text-shadow: 0 0 14px rgba(255, 42, 74, 0.5);
+}
+.pixel .px-row.dev .gly {
+  font-family: var(--font-deva);
+  color: var(--gold-lit);
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+  font-size: 1.2rem;
+}
+.pixel .px-row.ara .gly {
+  font-family: var(--font-arab);
+  color: var(--cyber-cyan);
+  text-shadow: 0 0 12px rgba(95, 215, 255, 0.5);
+}
+.pixel .px-row.lig .gly {
+  color: var(--cyber-mint);
+  text-shadow: 0 0 12px rgba(92, 255, 177, 0.5);
+}
+.pixel .px-row.sym .gly {
+  color: var(--cyber-violet);
+  text-shadow: 0 0 12px rgba(201, 139, 255, 0.5);
+}
+.pixel .px-row .desc {
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.pixel .px-row .desc b { color: var(--text); font-style: normal; font-weight: 600; }
+.pixel.draft .px-head .num::after {
+  content: " · draft"; color: var(--text-faint);
+  font-style: italic;
+  text-shadow: none;
+}
+
+/* ─── ACTIONS ──────────────────────────────────────────────── */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+.action {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.04), transparent 30%);
+  border: 1px solid var(--hairline-strong);
+  border-left: 2px solid var(--gold);
+  transition: all .25s ease;
+}
+.action:hover {
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.08), transparent 40%);
+  border-left-color: var(--gold-lit);
+}
+.action .step {
+  font-family: var(--font-mono); font-size: 0.85rem;
+  color: var(--gold-lit);
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+.action .body {
+  font-family: var(--font-display);
+  font-size: 1.05rem; color: var(--text);
+  line-height: 1.55;
+  font-style: italic;
+}
+.action .body b { color: var(--paper); font-style: normal; font-weight: 600; }
+.action .when {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .action { grid-template-columns: 1fr; gap: 0.5rem; }
+  .action .when { justify-self: start; }
+}
+
+/* ─── FOOTER · FINAL WAX SEAL ──────────────────────────────── */
+footer {
+  padding: 5rem 0 4rem;
+  position: relative;
+  border-top: none;
+  margin-top: 3rem;
+}
+footer .final-seal-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 2rem;
+}
+.final-seal {
+  width: 168px; height: 168px;
+  position: relative;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #ff5060 0%, var(--vermilion-lit) 18%, var(--vermilion) 45%, #6b1a18 80%, #2a0807 100%);
+  box-shadow:
+    inset 0 4px 10px rgba(255,255,255,0.22),
+    inset 0 -10px 20px rgba(0,0,0,0.6),
+    inset 0 0 28px rgba(255, 80, 96, 0.25),
+    0 0 50px rgba(255, 42, 74, 0.4),
+    0 14px 38px rgba(0,0,0,0.65);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+.final-seal::before {
+  content: ""; position: absolute; inset: 10px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 230, 200, 0.32);
+}
+.final-seal::after {
+  content: ""; position: absolute; inset: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 230, 200, 0.18);
+}
+.final-seal .han-seal {
+  font-family: var(--font-han);
+  font-size: 3.4rem;
+  color: rgba(255, 235, 215, 0.96);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.5), 0 0 14px rgba(255, 220, 200, 0.5);
+  line-height: 1;
+  font-weight: 700;
+}
+
+.signoff {
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--text-dim);
+  font-size: 1rem;
+  line-height: 1.85;
+  max-width: 560px;
+}
+.signoff .key {
+  font-family: var(--font-mono); font-style: normal;
+  font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.35);
+  display: block;
+  margin-top: 0.6rem;
+}
+.signoff .glyph-line {
+  font-family: var(--font-han); font-style: normal;
+  color: var(--vermilion-lit);
+  text-shadow: 0 0 14px rgba(255, 42, 74, 0.45);
+  font-size: 1.4rem;
+  letter-spacing: 0.5em;
+  display: block;
+  margin-top: 0.4rem;
+}
+
+/* ─── REVEAL ───────────────────────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .9s cubic-bezier(.16,.84,.36,1), transform .9s cubic-bezier(.16,.84,.36,1); }
+.reveal.in { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+::selection { background: var(--vermilion-lit); color: var(--leather-deep); }
+</style>
+</head>
+<body>
+
+<div class="cover">
+
+  <!-- Ribbon bookmark -->
+  <svg class="ribbon" viewBox="0 0 36 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="ribGrad" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stop-color="#7a1816"/>
+        <stop offset="0.5" stop-color="#c8332e"/>
+        <stop offset="1" stop-color="#7a1816"/>
+      </linearGradient>
+      <linearGradient id="ribEdge" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#ffd86b" stop-opacity="0.5"/>
+        <stop offset="1" stop-color="#ffd86b" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path d="M0 0 L36 0 L36 162 L18 180 L0 162 Z" fill="url(#ribGrad)"/>
+    <path d="M0 0 L36 0 L36 162 L18 180 L0 162 Z" fill="url(#ribEdge)" opacity="0.6"/>
+    <line x1="6" y1="0" x2="6" y2="158" stroke="#ffd86b" stroke-width="0.5" opacity="0.5"/>
+    <line x1="30" y1="0" x2="30" y2="158" stroke="#ffd86b" stroke-width="0.5" opacity="0.5"/>
+  </svg>
+
+  <!-- Top tooled rule -->
+  <div class="tooled-double"></div>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead-bar">
+      <div class="masthead-left">
+        <span class="masthead-han">道場</span>
+        <div class="masthead-titleblock">
+          <span class="masthead-title"><b>ATLAS</b> · bounded-time</span>
+          <span class="masthead-sub">edition 01 · 影家 · sealed 2026.06.15</span>
+        </div>
+      </div>
+      <nav class="masthead-nav" aria-label="primary">
+        <a href="#substrate">substrate</a>
+        <a href="#domains">domains</a>
+        <a href="#triad">triad</a>
+        <a href="#education">education</a>
+        <a href="#pixels">.pixel</a>
+        <a href="#actions">next</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-kicker reveal in">
+        <span class="lbl">edition 01 · 2026.06.15 · bmore.ftw</span>
+      </div>
+      <h1 class="reveal in">
+        <span class="han">道場</span> <span class="gilded">ATLAS</span><br/>
+        <em style="font-family:var(--font-display); font-style:italic; color: var(--text); text-shadow: none;">of bounded-time systems</em>
+      </h1>
+
+      <p class="hero-sub reveal">
+        One operating system running across six domains. <b>ρ</b> — the time-dilation operator — is the master variable. <em>CHRONOS</em> is the playable proof. <em>HELIX</em> is the mathematical proof. Substances, language, markets, and bodies are the empirical case studies. The MBA is the credentialing wrapper, not the destination.
+      </p>
+
+      <div class="colophon reveal">
+        <div class="colo-cell">
+          <span class="lbl tooled">thesis</span>
+          <span class="val">bounded-time systems as <span class="acc">cross-substrate causal operator</span></span>
+        </div>
+        <div class="colo-cell">
+          <span class="lbl tooled">style</span>
+          <span class="val">socionomic and linguistic <span class="acc">alchemy</span></span>
+        </div>
+        <div class="colo-cell">
+          <span class="lbl tooled">state</span>
+          <span class="val"><span class="han-inline">專</span> latched · <span class="han-inline">化</span> transforming</span>
+        </div>
+        <div class="colo-cell">
+          <span class="lbl tooled">syndicate</span>
+          <span class="val"><span class="han-inline">影家</span> · <span class="han-inline">長生公會</span></span>
+        </div>
+      </div>
+    </section>
+
+    <div class="tooled-rule"></div>
+
+    <!-- ─── SUBSTRATE ──────────────────────────────────────── -->
+    <section id="substrate" class="book">
+      <div class="book-head">
+        <div class="book-head-left">
+          <div class="sigil reveal in"><span class="han">基</span></div>
+          <div class="book-title">
+            <span class="tooled">§ 01 · the substrate</span>
+            <h2>The Spine</h2>
+          </div>
+        </div>
+        <div class="book-num">01 / 06</div>
+      </div>
+
+      <p class="book-lede reveal">
+        The thesis is not <b>Socionomic and Linguistic Alchemy</b> — that is the style. The thesis is <b>one substrate</b> beneath six domains. Read the column top to bottom. The operator is <em>ρ</em> — time dilation as a state variable, not a metaphor.
+      </p>
+
+      <div class="substrate">
+        <div class="substrate-row">
+          <div class="leaf spine reveal">
+            <span class="leaf-role">substrate · the spine</span>
+            <h3>Bounded-Time Systems</h3>
+            <p>Time as a causal substrate, not a backdrop. Every domain below inherits <b>ρ</b> — the dilation operator — and the lawful transformations on it.</p>
+          </div>
+        </div>
+        <div class="connector reveal"><span>propagates</span></div>
+        <div class="substrate-row">
+          <div class="leaf dom reveal"><span class="leaf-role">domain · α</span><h3>Finance</h3><p>0DTE, fork dynamics, options Greeks, synthetic instruments, Banking-Grade Search.</p></div>
+          <div class="leaf dom reveal"><span class="leaf-role">domain · β</span><h3>Healthcare · HIPAA</h3><p>DID and psychotic-disorder studies, Iron Mountain air-gap, PHI architecture.</p></div>
+          <div class="leaf dom reveal"><span class="leaf-role">domain · γ</span><h3>Cyber & Forensics</h3><p>Keyblender, Wormhole post-mortem, lazy-tank honeypots, supply-chain security.</p></div>
+        </div>
+        <div class="substrate-row" style="margin-top: 1rem;">
+          <div class="leaf dom reveal"><span class="leaf-role">domain · δ</span><h3>Substances & Bodies</h3><p>Sex work, histamine, terpenes, alcohol correlations — sociology, not psych.</p></div>
+          <div class="leaf dom reveal"><span class="leaf-role">domain · ε</span><h3>Quantum & Math</h3><p>HELIX: lattice generation, zero-knowledge proofs, wave simulations.</p></div>
+          <div class="leaf dom reveal"><span class="leaf-role">domain · ζ</span><h3>Linguistic Alchemy</h3><p>.pixel format, Mandarin · Sanskrit · Arabic triad, Æ-ligature semantics.</p></div>
+        </div>
+        <div class="connector reveal"><span>executes as</span></div>
+        <div class="substrate-row">
+          <div class="leaf exec reveal">
+            <span class="leaf-role">executable layer</span>
+            <h3>CHRONOS &nbsp;·&nbsp; HELIX</h3>
+            <p><b>CHRONOS</b> — playable proof: <em>ρ</em> as state variable, T<sub>dilated</sub> = T<sub>base</sub> · f(ρ), Looping Shatter Mode, SHA-256 ledgered timelines. <b>HELIX</b> — mathematical proof: lattice + ZK + wave sim. The OS runs here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="tooled-rule"></div>
+
+    <!-- ─── DOMAINS ─────────────────────────────────────────── -->
+    <section id="domains" class="book">
+      <div class="book-head">
+        <div class="book-head-left">
+          <div class="sigil reveal"><span class="han">域</span></div>
+          <div class="book-title">
+            <span class="tooled">§ 02 · the domains</span>
+            <h2>Six Domains, One Operator</h2>
+          </div>
+        </div>
+        <div class="book-num">02 / 06</div>
+      </div>
+
+      <p class="book-lede reveal">
+        Each domain has its own corpus, methodology signature, and credential vector — and each inherits the same operator. State markers: <em>專</em> latched · <em>養</em> dormant · <em>化</em> transforming.
+      </p>
+
+      <div class="domains">
+
+        <article class="domain d1 reveal">
+          <div class="dom-tag"><span class="role">α · finance</span><span class="state">化 transforming</span></div>
+          <h3><span class="han-head">市</span>Finance</h3>
+          <p class="thesis">Fork dynamics, 0DTE temporal compression, Greeks under regime shift. Markets as bounded-time systems — every option is a ρ-bet.</p>
+          <ul>
+            <li><span class="k">corpus</span><span class="v">options flow · Banking-Grade Search · synthetic instruments</span></li>
+            <li><span class="k">method</span><span class="v">correlational · regime-aware · lag-conscious</span></li>
+            <li><span class="k">credential</span><span class="v map">FIN 525 · FIN 550 · FIN 575</span></li>
+          </ul>
+        </article>
+
+        <article class="domain d2 reveal">
+          <div class="dom-tag"><span class="role">β · healthcare</span><span class="state">養 dormant</span></div>
+          <h3><span class="han-head">醫</span>Healthcare · HIPAA</h3>
+          <p class="thesis">PHI flow as bounded-time data. DID and psychotic-disorder studies treat identity itself as ρ-fractured. Iron Mountain as physical air-gap.</p>
+          <ul>
+            <li><span class="k">corpus</span><span class="v">DID studies · Iron Mountain architecture · PHI patterns</span></li>
+            <li><span class="k">method</span><span class="v">sociological · longitudinal · compliance-grounded</span></li>
+            <li><span class="k">credential</span><span class="v map">MBA 535 · PLA portfolio</span></li>
+          </ul>
+        </article>
+
+        <article class="domain d3 reveal">
+          <div class="dom-tag"><span class="role">γ · cyber</span><span class="state">專 latched</span></div>
+          <h3><span class="han-head">護</span>Cyber & Forensics</h3>
+          <p class="thesis">Chain-level transaction graphs, wallet attribution, honeypot design. Forensics is reverse-ρ — reading dilated timelines back to a single ledger.</p>
+          <ul>
+            <li><span class="k">corpus</span><span class="v">Keyblender · Wormhole post-mortem · lazy-tank honeypots</span></li>
+            <li><span class="k">method</span><span class="v">graph-theoretic · append-only · hash-verified</span></li>
+            <li><span class="k">credential</span><span class="v map">FIN 575 · MBA 510 · independent</span></li>
+          </ul>
+        </article>
+
+        <article class="domain d4 reveal">
+          <div class="dom-tag"><span class="role">δ · substances</span><span class="state">化 transforming</span></div>
+          <h3><span class="han-head">藥</span>Substances & Bodies</h3>
+          <p class="thesis">Sex work, histamine, terpenes, alcohol correlations. Sociology, not psych. Substances move through populations on dilated timelines — diffusion is ρ-shaped.</p>
+          <ul>
+            <li><span class="k">corpus</span><span class="v">sex work paper · terpene profiling · histamine work</span></li>
+            <li><span class="k">method</span><span class="v">correlational · population-level · harm-reduction</span></li>
+            <li><span class="k">credential</span><span class="v map">MBA 515 · MBA 510 (PLA candidate)</span></li>
+          </ul>
+        </article>
+
+        <article class="domain d5 reveal">
+          <div class="dom-tag"><span class="role">ε · quantum</span><span class="state">化 transforming</span></div>
+          <h3><span class="han-head">弦</span>Quantum & Math · HELIX</h3>
+          <p class="thesis">Lattice generation, zero-knowledge proofs, wave simulations. Where <em>ρ</em> goes from notation to formal object — the dilation operator gets typed.</p>
+          <ul>
+            <li><span class="k">corpus</span><span class="v">HELIX lattices · ZK protocols · wave sim code</span></li>
+            <li><span class="k">method</span><span class="v">typed · formal · category-theoretic</span></li>
+            <li><span class="k">credential</span><span class="v map">independent · FIN 575 capstone</span></li>
+          </ul>
+        </article>
+
+        <article class="domain d6 reveal">
+          <div class="dom-tag"><span class="role">ζ · linguistic</span><span class="state">專 latched</span></div>
+          <h3><span class="han-head">言</span>Linguistic Alchemy</h3>
+          <p class="thesis">.pixel format, the Mandarin · Sanskrit · Arabic triad, Æ-ligature semantics. Language as the alchemical operator naming how <em>ρ</em> moves through bodies and markets.</p>
+          <ul>
+            <li><span class="k">corpus</span><span class="v">.pixel files 0001–0019 · Three Books</span></li>
+            <li><span class="k">method</span><span class="v">philological · typed · semantic-bridge</span></li>
+            <li><span class="k">credential</span><span class="v map">MBA 520 · capstone · publication</span></li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <div class="tooled-rule"></div>
+
+    <!-- ─── TRIAD ──────────────────────────────────────────── -->
+    <section id="triad" class="book">
+      <div class="book-head">
+        <div class="book-head-left">
+          <div class="sigil reveal"><span class="han">三</span></div>
+          <div class="book-title">
+            <span class="tooled">§ 03 · the triad</span>
+            <h2>The Three Books</h2>
+          </div>
+        </div>
+        <div class="book-num">03 / 06</div>
+      </div>
+
+      <p class="book-lede reveal">
+        Laozi · Zhuangzi · Liezi. Each pairs with a linguistic axis and a methodology mode. Triples as structural law — held, played, run.
+      </p>
+
+      <div class="triad">
+        <article class="pillar p1 reveal">
+          <span class="pillar-han">老</span>
+          <h3>Laozi · 老子</h3>
+          <div class="romaji">mandarin · glyph → meaning</div>
+          <p>The held register. Archaeology, compression, the still center. Mandarin as the glyph-substrate where meaning is carved and waits.</p>
+          <div class="role-tag">mode · <em>養</em> holding</div>
+        </article>
+        <article class="pillar p2 reveal">
+          <span class="pillar-han">莊</span>
+          <h3>Zhuangzi · 莊子</h3>
+          <div class="romaji">arabic · flow → meaning</div>
+          <p>The played register. Tracing, motion, the dream of the butterfly. Arabic as the flow-substrate — curvature first, meaning implied by motion.</p>
+          <div class="role-tag">mode · <em>化</em> transforming</div>
+        </article>
+        <article class="pillar p3 reveal">
+          <span class="pillar-han">列</span>
+          <h3>Liezi · 列子</h3>
+          <div class="romaji">sanskrit · sound → meaning</div>
+          <p>The run register. Articulation, precision, the breath that carries skill. Sanskrit as the sound-substrate where meaning is uttered into form.</p>
+          <div class="role-tag">mode · <em>專</em> latched</div>
+        </article>
+      </div>
+    </section>
+
+    <div class="tooled-rule"></div>
+
+    <!-- ─── EDUCATION ──────────────────────────────────────── -->
+    <section id="education" class="book">
+      <div class="book-head">
+        <div class="book-head-left">
+          <div class="sigil reveal"><span class="han">學</span></div>
+          <div class="book-title">
+            <span class="tooled">§ 04 · the wrapper</span>
+            <h2>The Education Plan</h2>
+          </div>
+        </div>
+        <div class="book-num">04 / 06</div>
+      </div>
+
+      <p class="book-lede reveal">
+        <b>CSP Global MBA in Finance</b> as the credentialing wrapper. Three credit streams running in parallel. The MBA is the floor, not the ceiling — the real graduate work has been happening for years across the six domains.
+      </p>
+
+      <div class="streams">
+        <article class="stream s1 reveal">
+          <div class="num">stream · 01</div>
+          <h3>USF graduate transcript</h3>
+          <p>Direct course-for-course transfer. Highest value per credit. Sociology and correlational coursework maps cleanly to CSP cores.</p>
+          <div class="row"><span>credits</span><b>up to 18</b></div>
+          <div class="row"><span>action</span><b>order transcript</b></div>
+        </article>
+        <article class="stream s2 reveal">
+          <div class="num">stream · 02</div>
+          <h3>PLA portfolio · receipts</h3>
+          <p>Work artifacts mapped to learning outcomes. The corpus already exists — packaging job, not writing job. Sex work paper alone covers MBA 510 + 515 candidates.</p>
+          <div class="row"><span>candidates</span><b>MBA 510 · 515 · 525</b></div>
+          <div class="row"><span>action</span><b>compile dossier</b></div>
+        </article>
+        <article class="stream s3 reveal">
+          <div class="num">stream · 03</div>
+          <h3>Google certs · Coursera</h3>
+          <p>Business Intelligence first — 12 ACE credits, BI muscle compounds into FIN 575 + MBA 510. Daily practice ground. Parallel credential, not transfer substitute.</p>
+          <div class="row"><span>start</span><b>BI cert · 12 ACE</b></div>
+          <div class="row"><span>monthly</span><b>$49 / month</b></div>
+        </article>
+      </div>
+
+      <div class="sequence-head">recommended sequence · 6 terms · 12 months</div>
+      <div class="sequence">
+        <div class="term reveal"><div class="t-num">term 01</div><div class="t-courses"><b>MBA 530</b> Managerial Finance & Accounting<br/><b>MBA 515</b> Applied Business Ethics</div></div>
+        <div class="term reveal"><div class="t-num">term 02</div><div class="t-courses"><b>MBA 505</b> Global Economics<br/><b>MBA 510</b> Research Methods</div></div>
+        <div class="term reveal"><div class="t-num">term 03</div><div class="t-courses"><b>FIN 525</b> Corporate Finance<br/><b>FIN 550</b> Investment Analysis</div></div>
+        <div class="term reveal"><div class="t-num">term 04</div><div class="t-courses"><b>FIN 500</b> Wealth Management<br/><b>FIN 575</b> Fintech</div></div>
+        <div class="term reveal"><div class="t-num">term 05</div><div class="t-courses"><b>MBA 535</b> Legal Environment<br/><b>MBA 525</b> Strategic HRM</div></div>
+        <div class="term reveal"><div class="t-num">term 06</div><div class="t-courses"><b>MBA 520</b> Integrated Marketing<br/><b>MBA 620</b> Strategic Leadership</div></div>
+      </div>
+
+      <div class="stack-head reveal">education stack · per-domain runbook</div>
+      <p class="stack-lede reveal">
+        The MBA is the wrapper. The runbook is the actual education — one stack per domain, sourced from Perplexity Academy, enterprise webinars, and the seeker's own corpus. <b>α Finance</b> is sealed; the other five are anchor points, drafts pending ratification.
+      </p>
+
+      <div class="estack">
+
+        <article class="erow alpha reveal">
+          <div class="glyph">金</div>
+          <div class="body">
+            <div class="top">
+              <span class="greek">α</span>
+              <span class="name">Finance · bounded-time markets</span>
+              <span class="state">· sealed</span>
+            </div>
+            <div class="links">
+              <a href="https://www.perplexity.ai/enterprise/trainingsandwebinars/finding-alpha-with-perplexity-how-finance-teams-use-spaces-labs-and-comet" target="_blank" rel="noopener">Finding Alpha — Ray Yang</a>
+              <a href="https://www.perplexity.ai/enterprise/webinars/financial-research-and-analysis" target="_blank" rel="noopener">Financial Research — Brooker Belcourt</a>
+              <a href="https://www.youtube.com/watch?v=-3_85_CUaIE" target="_blank" rel="noopener">24-hr Sniff Test — Fundamental Edge</a>
+              <a href="https://www.youtube.com/watch?v=AxjlzV2maIs" target="_blank" rel="noopener">Automating Investment Research</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="erow beta reveal">
+          <div class="glyph">身</div>
+          <div class="body">
+            <div class="top">
+              <span class="greek">β</span>
+              <span class="name">Healthcare · HIPAA · trial design</span>
+              <span class="state draft">· draft</span>
+            </div>
+            <div class="pending">Anchors: Bayesian clinical methodology · histamine corpus · HIPAA Security Rule. Awaiting ratification.</div>
+          </div>
+        </article>
+
+        <article class="erow gamma reveal">
+          <div class="glyph">鎖</div>
+          <div class="body">
+            <div class="top">
+              <span class="greek">γ</span>
+              <span class="name">Cyber · chain-level forensics</span>
+              <span class="state draft">· draft</span>
+            </div>
+            <div class="pending">Anchors: Solana program audit · SHA-256 fork ledger · zero-knowledge proofs. Awaiting ratification.</div>
+          </div>
+        </article>
+
+        <article class="erow delta reveal">
+          <div class="glyph">药</div>
+          <div class="body">
+            <div class="top">
+              <span class="greek">δ</span>
+              <span class="name">Substances · bodies · terpene therapeutics</span>
+              <span class="state draft">· draft</span>
+            </div>
+            <div class="pending">Anchors: terpene chemistry · sex-work paper (sociological, not psych) · alcohol correlations. Awaiting ratification.</div>
+          </div>
+        </article>
+
+        <article class="erow eps reveal">
+          <div class="glyph">量</div>
+          <div class="body">
+            <div class="top">
+              <span class="greek">ε</span>
+              <span class="name">Quantum · mathematics · HELIX</span>
+              <span class="state draft">· draft</span>
+            </div>
+            <div class="pending">Anchors: lattice cryptography · wave simulation · ρ-operator formalism · Google quantum stack. Awaiting ratification.</div>
+          </div>
+        </article>
+
+        <article class="erow zeta reveal">
+          <div class="glyph">語</div>
+          <div class="body">
+            <div class="top">
+              <span class="greek">ζ</span>
+              <span class="name">Linguistic Alchemy · the .pixel lexicon</span>
+              <span class="state draft">· draft</span>
+            </div>
+            <div class="pending">Anchors: Mandarin · Sanskrit · Arabic · æ-ligature · Haskell ADTs for morphemes. Awaiting ratification.</div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <div class="tooled-rule"></div>
+
+    <!-- ─── PIXELS ─────────────────────────────────────────── -->
+    <section id="pixels" class="book">
+      <div class="book-head">
+        <div class="book-head-left">
+          <div class="sigil reveal"><span class="han">字</span></div>
+          <div class="book-title">
+            <span class="tooled">§ 05 · the lexicon</span>
+            <h2>.pixel Cards</h2>
+          </div>
+        </div>
+        <div class="book-num">05 / 06</div>
+      </div>
+
+      <p class="book-lede reveal">
+        Canonical entries from the ATLAS vocabulary. Each card binds Mandarin · Sanskrit · Arabic · Æ-ligature · symbolic bridge — five layers, one concept. <em>0001</em> and <em>0003</em> sealed; the rest marked draft pending the seeker's ratification.
+      </p>
+
+      <div class="pixels">
+
+        <article class="pixel reveal">
+          <div class="px-head"><span class="num">.pixel · 0001</span><span>emptiness</span></div>
+          <div class="px-row han"><span class="gly">無</span><span class="desc"><b>wú</b> — the held void · Mandarin glyph</span></div>
+          <div class="px-row dev"><span class="gly">शून्य</span><span class="desc"><b>śūnya</b> — articulated nothing · Sanskrit</span></div>
+          <div class="px-row ara"><span class="gly">عدم</span><span class="desc"><b>ʿadam</b> — traced absence · Arabic</span></div>
+          <div class="px-row lig"><span class="gly">æ</span><span class="desc">ligature — the bound emptiness, two vowels in one breath</span></div>
+          <div class="px-row sym"><span class="gly">○</span><span class="desc">symbolic — the open circle, ground state</span></div>
+        </article>
+
+        <article class="pixel reveal">
+          <div class="px-head"><span class="num">.pixel · 0003</span><span>worth</span></div>
+          <div class="px-row han"><span class="gly">值</span><span class="desc"><b>zhí</b> — value, the weight that holds</span></div>
+          <div class="px-row dev"><span class="gly">मूल्य</span><span class="desc"><b>mūlya</b> — rooted price, value spoken</span></div>
+          <div class="px-row ara"><span class="gly">قيمة</span><span class="desc"><b>qīma</b> — worth traced, the curve of price</span></div>
+          <div class="px-row lig"><span class="gly">æ</span><span class="desc">ligature — "Nothing. Everything." — bound polarity</span></div>
+          <div class="px-row sym"><span class="gly">✝</span><span class="desc">symbolic — cross on altar at Kerak</span></div>
+        </article>
+
+        <article class="pixel draft reveal">
+          <div class="px-head"><span class="num">.pixel · 0007</span><span>dilation</span></div>
+          <div class="px-row han"><span class="gly">張</span><span class="desc"><b>zhāng</b> — stretch, open, extend in time</span></div>
+          <div class="px-row dev"><span class="gly">विस्तार</span><span class="desc"><b>vistāra</b> — articulated expansion</span></div>
+          <div class="px-row ara"><span class="gly">تمدد</span><span class="desc"><b>tamaddud</b> — traced spreading</span></div>
+          <div class="px-row lig"><span class="gly">ρ</span><span class="desc">ligature — the dilation operator · CHRONOS state variable</span></div>
+          <div class="px-row sym"><span class="gly">∿</span><span class="desc">symbolic — the desynced tick, the localized wave</span></div>
+        </article>
+
+        <article class="pixel draft reveal">
+          <div class="px-head"><span class="num">.pixel · 0011</span><span>fork</span></div>
+          <div class="px-row han"><span class="gly">岔</span><span class="desc"><b>chà</b> — branching, divergence held</span></div>
+          <div class="px-row dev"><span class="gly">शाखा</span><span class="desc"><b>śākhā</b> — branch articulated</span></div>
+          <div class="px-row ara"><span class="gly">شعبة</span><span class="desc"><b>shuʿba</b> — traced branching, the curve splits</span></div>
+          <div class="px-row lig"><span class="gly">Y</span><span class="desc">ligature — the Y of possibility</span></div>
+          <div class="px-row sym"><span class="gly">⑂</span><span class="desc">symbolic — chain split, Looping Shatter genesis</span></div>
+        </article>
+
+        <article class="pixel draft reveal">
+          <div class="px-head"><span class="num">.pixel · 0013</span><span>shatter</span></div>
+          <div class="px-row han"><span class="gly">碎</span><span class="desc"><b>suì</b> — broken, the chronology fractures</span></div>
+          <div class="px-row dev"><span class="gly">भग्न</span><span class="desc"><b>bhagna</b> — articulated fracture</span></div>
+          <div class="px-row ara"><span class="gly">تحطيم</span><span class="desc"><b>taḥṭīm</b> — traced shattering, motion of break</span></div>
+          <div class="px-row lig"><span class="gly">‡</span><span class="desc">ligature — double dagger, two timelines crossed</span></div>
+          <div class="px-row sym"><span class="gly">⟁</span><span class="desc">symbolic — CHRONOS Shatter Mode, optimal branch retained</span></div>
+        </article>
+
+        <article class="pixel draft reveal">
+          <div class="px-head"><span class="num">.pixel · 0019</span><span>seal</span></div>
+          <div class="px-row han"><span class="gly">封</span><span class="desc"><b>fēng</b> — sealed, the channel closed and verified</span></div>
+          <div class="px-row dev"><span class="gly">मुद्रा</span><span class="desc"><b>mudrā</b> — articulated seal, the bound gesture</span></div>
+          <div class="px-row ara"><span class="gly">ختم</span><span class="desc"><b>khatm</b> — traced sealing, the closing flow</span></div>
+          <div class="px-row lig"><span class="gly">⌬</span><span class="desc">ligature — hex-bound, SHA-256 ledger commit</span></div>
+          <div class="px-row sym"><span class="gly">▣</span><span class="desc">symbolic — Sealed Channel · NAV Archive</span></div>
+        </article>
+
+      </div>
+    </section>
+
+    <div class="tooled-rule"></div>
+
+    <!-- ─── ACTIONS ────────────────────────────────────────── -->
+    <section id="actions" class="book">
+      <div class="book-head">
+        <div class="book-head-left">
+          <div class="sigil reveal"><span class="han">行</span></div>
+          <div class="book-title">
+            <span class="tooled">§ 06 · the moves</span>
+            <h2>Next Actions</h2>
+          </div>
+        </div>
+        <div class="book-num">06 / 06</div>
+      </div>
+
+      <p class="book-lede reveal">
+        The Atlas is the map. These are the first six moves. Education first — everything else routes through here.
+      </p>
+
+      <div class="actions">
+        <div class="action reveal">
+          <div class="step">→ 01</div>
+          <div class="body"><b>Order USF graduate transcript</b> — official copy direct to CSP admissions. Confirm which USF campus first.</div>
+          <div class="when">this week</div>
+        </div>
+        <div class="action reveal">
+          <div class="step">→ 02</div>
+          <div class="body"><b>Open CSP application</b> — no fee, no GMAT, no essays. About 30 minutes. Standard track unless GPA below 3.0.</div>
+          <div class="when">this week</div>
+        </div>
+        <div class="action reveal">
+          <div class="step">→ 03</div>
+          <div class="body"><b>Enroll Coursera — Google Business Intelligence cert</b> — daily practice ground, 12 ACE credits, $49 / month. Start the BI muscle.</div>
+          <div class="when">day one</div>
+        </div>
+        <div class="action reveal">
+          <div class="step">→ 04</div>
+          <div class="body"><b>Compile PLA dossier scaffold</b> — sex work paper, terpene work, alcohol correlation study. Frame each against MBA 510 + 515 learning outcomes.</div>
+          <div class="when">weeks 1–3</div>
+        </div>
+        <div class="action reveal">
+          <div class="step">→ 05</div>
+          <div class="body"><b>Call CSP enrollment counselor</b> — (855) 641-2525. Ask: max combined PLA + transfer cap; faculty PLA review timeline; Transfer Plan $2k scholarship.</div>
+          <div class="when">after transcript</div>
+        </div>
+        <div class="action reveal">
+          <div class="step">→ 06</div>
+          <div class="body"><b>Bring the swarm online</b> — two Pi 5s and the Jetson as CHRONOS compute substrate. Network ops first, service map next, ledger node last.</div>
+          <div class="when">continuous</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="tooled-rule"></div>
+
+    <!-- ─── FINAL SEAL ──────────────────────────────────────── -->
+    <footer>
+      <div class="final-seal-wrap">
+        <div class="final-seal reveal in">
+          <span class="han-seal">道場</span>
+        </div>
+        <div class="signoff reveal">
+          <em style="text-shadow: none; color: var(--paper);">Nothing. Everything.</em><br/>
+          Pandora doesn't go back in the barrel.
+          <span class="glyph-line">ρ 化 三 封</span>
+          <span class="key">ATLAS · edition 01 · sealed 2026.06.15 · bmore.ftw · 影家</span>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <div class="tooled-double" style="margin-top: 2rem;"></div>
+
+</div>
+
+<script>
+const els = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }
+}, { threshold: 0.06, rootMargin: '0px 0px -60px 0px' });
+els.forEach(el => io.observe(el));
+
+document.querySelectorAll('.domains, .pixels, .streams, .triad, .sequence, .actions, .substrate').forEach(group => {
+  Array.from(group.children).forEach((child, i) => {
+    child.style.transitionDelay = `${Math.min(i * 70, 600)}ms`;
+  });
+});
+</script>
+
+</body>
+</html>

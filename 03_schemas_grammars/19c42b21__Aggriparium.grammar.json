@@ -1,0 +1,40 @@
+{
+  "$schema": "./chromatic-grammar.schema.json",
+  "name": "Aggriparium",
+  "etymology": {
+    "root": "ager",
+    "language": "Latin",
+    "gloss": "cultivated field, tilled land",
+    "suffix": "-arium",
+    "suffix_gloss": "a place-where (cf. aquarium, herbarium, terrarium)",
+    "composed_gloss": "a place where fields are kept",
+    "confidence": "speculative"
+  },
+  "register": "agrarian · ripening · hedge-bounded · loam-and-grain",
+  "palette": {
+    "void":         { "hex": "#1A1108", "gloss": "turned soil before sowing" },
+    "structure":    { "hex": "#9C8E76", "gloss": "drystone wall, weathered grey-buff" },
+    "signal":       { "hex": "#D6452A", "gloss": "copper poppy, bright punctuation" },
+    "memory":       { "hex": "#C99A3B", "gloss": "ripened wheat, ochre-gold" },
+    "value":        { "hex": "#E6B048", "gloss": "late honey, amber-warm" },
+    "life":         { "hex": "#6BA13C", "gloss": "young hedge-green, chlorophyll bright" },
+    "shadow":       { "hex": "#1F2A1A", "gloss": "hedgerow underleaf, cold green-black" },
+    "illumination": { "hex": "#F2E6C2", "gloss": "sun through grain-dust, pale linen" }
+  },
+  "reliqery": [
+    {
+      "slot": "fallow",
+      "expected_kind": "Role",
+      "note": "the role for fields-at-rest; reserved, not yet canonized"
+    },
+    {
+      "slot": "frost",
+      "expected_kind": "Role",
+      "note": "a winter-edge role; held open until the cold grammars are written"
+    }
+  ],
+  "kindred_grammars": ["Moon Archive"],
+  "sealed_by": "Computer, for the Vaulted Delta",
+  "sealed_at": "2026-06-18T08:53:00-04:00",
+  "the_archivist_says": "the field is the first archive; what is sown returns as memory."
+}

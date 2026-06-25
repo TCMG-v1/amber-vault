@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://l-lts.ai/spine/capture_row.schema.json",
+  "title": "Pass-1 Capture Row",
+  "description": "One append-only row landed into Google Sheet 1. Raw, max-detail capture stays local to the Pixel first; this record is the cross-referenced projection that goes phone -> Google. The Sheet is the live ledger; the Pi is the appender; nothing here is ever mutated in place. Column order in 'x-sheet-columns' is the literal A..N header order locked on Sheet 1.",
+  "type": "object",
+  "x-sheet-columns": [
+    "row_id", "captured_at", "appended_at", "source_device", "media_kind",
+    "raw_ref", "raw_sha256", "gps_lat", "gps_lon", "gps_source",
+    "place_name", "place_id", "xref_key", "exif_json"
+  ],
+  "required": [
+    "row_id", "captured_at", "appended_at", "source_device", "media_kind",
+    "raw_ref", "raw_sha256", "gps_source", "xref_key"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "row_id": {
+      "type": "string",
+      "title": "Row ID",
+      "description": "ULID/UUID minted on the Pi at append time. Append-only primary key; never reused.",
+      "examples": ["01J8Z9K3QH7Q2C4M5N6P7R8S9T"]
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Captured At",
+      "description": "ISO-8601 UTC instant the media was captured on the Pixel. From EXIF DateTimeOriginal when present, else file mtime. The truth of when, local to the phone first."
+    },
+    "appended_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Appended At",
+      "description": "ISO-8601 UTC instant the Pi appended this row to Sheet 1. captured_at <= appended_at always."
+    },
+    "source_device": {
+      "type": "string",
+      "title": "Source Device",
+      "description": "Which rig produced this. e.g. 'pixel-orion', 'pi-test-01', 'pi-prod-02'. Lets tandem rigs share one Sheet without colliding.",
+      "examples": ["pixel-orion", "pi-prod-02"]
+    },
+    "media_kind": {
+      "type": "string",
+      "title": "Media Kind",
+      "enum": ["photo", "video", "audio", "screen", "map_tile", "doc", "other"],
+      "description": "Imaging / maps / marketing capture type. 'screen' = shared-screen grab, 'map_tile' = a Maps export."
+    },
+    "raw_ref": {
+      "type": "string",
+      "title": "Raw Ref",
+      "description": "Pointer to the raw max-detail artifact that STAYS LOCAL to the Pixel first. content:// URI, absolute path, or Drive/GCS object id once mirrored. The row references the raw; it does not inline it.",
+      "examples": ["content://media/external/images/media/100231", "/sdcard/DCIM/Camera/PXL_20260623_080411.dng"]
+    },
+    "raw_sha256": {
+      "type": "string",
+      "title": "Raw SHA-256",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Lowercase hex SHA-256 of the raw bytes. Provenance + dedupe key. Same seal discipline as the Pontifex ledger: bytes are what they are."
+    },
+    "gps_lat": {
+      "type": ["number", "null"],
+      "title": "GPS Lat",
+      "minimum": -90,
+      "maximum": 90,
+      "description": "Decimal degrees. Null when no fix and no fallback resolved."
+    },
+    "gps_lon": {
+      "type": ["number", "null"],
+      "title": "GPS Lon",
+      "minimum": -180,
+      "maximum": 180,
+      "description": "Decimal degrees. Null when no fix and no fallback resolved."
+    },
+    "gps_source": {
+      "type": "string",
+      "title": "GPS Source",
+      "enum": ["exif", "phone_live", "maps_timeline", "none"],
+      "description": "Which of the three x-ref keys produced gps_lat/gps_lon. 'exif' = embedded photo GPS; 'phone_live' = live location stream at capture time; 'maps_timeline' = resolved from Maps location history at captured_at. Resolution order is exif -> phone_live -> maps_timeline -> none."
+    },
+    "place_name": {
+      "type": ["string", "null"],
+      "title": "Place Name",
+      "description": "Nearest place after snapping (gps_lat,gps_lon) against YOUR Maps data. Null when no place within tolerance."
+    },
+    "place_id": {
+      "type": ["string", "null"],
+      "title": "Place ID",
+      "description": "Stable id of the matched place in your Maps dataset (Google place_id or your own index id)."
+    },
+    "xref_key": {
+      "type": "string",
+      "title": "X-ref Key",
+      "description": "The composite key actually used to land the place match, for audit. Format: '<gps_source>:<lat>,<lon>@<radius_m>'. Records HOW the cross-reference was made, not just the result.",
+      "examples": ["exif:38.7846,-75.3052@30", "maps_timeline:38.7901,-75.3110@120"]
+    },
+    "exif_json": {
+      "type": "string",
+      "title": "EXIF JSON",
+      "description": "Full EXIF / capture metadata as a compact JSON string (camera, lens, ISO, exposure, orientation, maker notes, all of it). 'all raw mad detailed' lives here. Stored as text so one Sheet cell holds the whole metadata blob without flattening."
+    }
+  }
+}

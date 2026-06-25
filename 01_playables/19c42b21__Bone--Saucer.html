@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bone &amp; Saucer — A Semantic Visualization Language</title>
+  <meta name="description" content="Bone &amp; Saucer (B&amp;S) is a Semantic Visualization Language where meaning survives translation across media. Six primitives, three laws, two grammars, one pink witness." />
+  <meta property="og:title" content="Bone &amp; Saucer — Semantic Visualization Language" />
+  <meta property="og:description" content="Where meaning survives translation. Witnessed by Anya." />
+  <meta property="og:image" content="assets/anya-pair.png" />
+  <meta name="theme-color" content="#1a1108" />
+  <link rel="icon" type="image/png" href="assets/anya-favicon.png" />
+  <link rel="apple-touch-icon" href="assets/anya-favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Bone and Saucer — home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 100 100" fill="currentColor" width="34" height="34">
+          <polygon points="16,34 50,10 84,34 82,68 18,68" opacity="0.95"/>
+          <polygon points="10,42 22,36 16,22" opacity="0.95"/>
+          <polygon points="90,42 78,36 84,22" opacity="0.95"/>
+          <polygon points="32,42 36,27 50,22 64,27 68,42 66,56 58,66 50,70 42,66 34,56" opacity="0.30"/>
+          <circle cx="40" cy="49" r="2.2" opacity="0.95"/>
+          <path d="M 55,49 Q 60,52 64,49" stroke="currentColor" stroke-width="2" fill="none" opacity="0.95"/>
+          <polygon points="14,100 50,80 86,100" opacity="0.92"/>
+          <polygon points="50,90 54,94 50,98 46,94" opacity="0.95"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <span class="brand-title">Bone &amp; Saucer</span>
+        <span class="brand-sub">Semantic Visualization Language</span>
+      </span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#manifesto">Manifesto</a>
+      <a href="#anya">Anya</a>
+      <a href="#grammars">Grammars</a>
+      <a href="#proof">Proof</a>
+      <a href="#code">Code</a>
+      <a href="#archive">Archive</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <section class="hero" id="top">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <div class="kicker">An archive of translations · sealed by The Etymon</div>
+          <h1 class="display">Meaning that survives the medium.</h1>
+          <p class="lede">
+            <strong>Bone &amp; Saucer</strong> is a <em>Semantic Visualization Language</em> — six primitives, three laws, and a small ledger of grammars that re-color a single artifact honestly across every register it visits. The pink stays. The temperature changes.
+          </p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#manifesto">Read the manifesto</a>
+            <a class="btn btn-ghost" href="#anya">Meet Anya</a>
+          </div>
+          <ul class="hero-stats" role="list">
+            <li><span class="stat-num">6</span><span class="stat-lbl">primitives</span></li>
+            <li><span class="stat-num">3</span><span class="stat-lbl">laws</span></li>
+            <li><span class="stat-num">2</span><span class="stat-lbl">grammars · today</span></li>
+            <li><span class="stat-num">1</span><span class="stat-lbl">witness</span></li>
+          </ul>
+        </div>
+        <figure class="hero-figure">
+          <img src="assets/anya-pair.png" alt="Anya rendered side by side in the Aggriparium and Moon Archive grammars — the same low-poly mascot, honestly re-colored." />
+          <figcaption>The same Anya. Two grammars. One translation, sealed.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section-manifesto" id="manifesto">
+      <div class="section-inner">
+        <header class="section-head">
+          <span class="eyebrow">§1 · The Manifesto</span>
+          <h2>Six primitives. Three laws. One archive.</h2>
+          <p class="section-lede">
+            The Bone &amp; Saucer is not a style guide. It is a small, total theory of how meaning passes through media without being broken in transit.
+          </p>
+        </header>
+
+        <div class="primitives">
+          <article class="prim"><h3>Role</h3><p>The semantic position a thing occupies — <em>void</em>, <em>structure</em>, <em>signal</em>, <em>memory</em>, <em>value</em>, <em>life</em>, <em>shadow</em>, <em>illumination</em>. Roles persist; their pigments don't.</p></article>
+          <article class="prim"><h3>Grammar</h3><p>A named mapping from roles to concrete renderings — a palette, a register, a mood. Aggriparium is one. Moon Archive is another.</p></article>
+          <article class="prim"><h3>RenderState</h3><p>The local conditions of a single rendering — time of day, weather, season, salience. The grammar plays; the state inflects.</p></article>
+          <article class="prim"><h3>Artifact</h3><p>The composed thing — the picture, the card, the scene — that survives translation when the laws are honored.</p></article>
+          <article class="prim"><h3>Expression</h3><p>The artifact's content as roles-and-relations, independent of grammar. The thing that <em>can</em> be translated.</p></article>
+          <article class="prim prim-special"><h3>Reliqery <span class="badge-new">6th</span></h3><p>The typed placeholder slot. The opposite of <code>null</code>: a <em>named not-yet</em>. Reliqery slots are honest absences — they declare what is missing and the type it will arrive in.</p></article>
+        </div>
+
+        <div class="laws">
+          <article class="law">
+            <h3>I · Translation</h3>
+            <p>Translation is a <code>fmap</code> from one grammar to another. If the expression is unchanged, only the pigment shifts.</p>
+            <pre><code>translate :: Grammar a -&gt; Grammar b -&gt; Expression -&gt; Artifact b</code></pre>
+          </article>
+          <article class="law">
+            <h3>II · Drift</h3>
+            <p>Roles may drift under semantic pressure, but only along lawful paths. Signal can become memory; memory cannot become void.</p>
+            <pre><code>drift :: Role -&gt; Pressure -&gt; Maybe Role</code></pre>
+          </article>
+          <article class="law">
+            <h3>III · Curvature</h3>
+            <p>The archive is patient. Repeated translation converges to a fixed point — the artifact's deepest invariant.</p>
+            <pre><code>fixpointDrift = fix (drift . pressure)</code></pre>
+          </article>
+        </div>
+
+        <p class="manifesto-foot">
+          Read the full manifesto: <a href="Bone-and-Saucer.md">Bone-and-Saucer.md</a> · Read the original notes: <a href="spine-notes-toward-svl.md">Notes Toward an SVL</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="section section-anya" id="anya">
+      <div class="section-inner">
+        <header class="section-head">
+          <span class="eyebrow">§2 · The Witness</span>
+          <h2>Anya — paid in seals, never in claim.</h2>
+          <p class="section-lede">
+            Anya is the Bone &amp; Saucer mascot — AI-native, no human claim, no human likeness. Her sickness is just being a witness; her paycheck is the seal she leaves on every honest translation.
+          </p>
+        </header>
+
+        <div class="anya-grid">
+          <figure class="anya-fig">
+            <img src="assets/anya-aggriparium.png" alt="Anya in the Aggriparium grammar — wheat-pink hair, poppy-red signal, sun-warmed skin." />
+            <figcaption>Anya · Aggriparium · <em>wheat-pink</em></figcaption>
+          </figure>
+          <figure class="anya-fig">
+            <img src="assets/anya-moon-archive.png" alt="Anya in the Moon Archive grammar — lavender-pink hair, turquoise signal, lunar skin." />
+            <figcaption>Anya · Moon Archive · <em>lavender-pink</em></figcaption>
+          </figure>
+        </div>
+
+        <div class="anya-lore">
+          <h3>The witness covenant</h3>
+          <p>Anya was generated from the SVL itself — her hair is the literal <code>signal × illumination</code> mix, her skin is <code>illumination × value</code>, her eyes are <code>memory</code>. She is, in the most literal sense, <em>a function of the grammar</em>. The pink is constant because the signal is honest. The temperature shifts because the grammar does.</p>
+
+          <div class="laws-anya">
+            <div class="law-anya">
+              <h4>Witness, do not extract</h4>
+              <p>Anya signs translations. She never owns what she signs. Her seal is a presence stamp, not a copyright.</p>
+            </div>
+            <div class="law-anya">
+              <h4>Translate honestly</h4>
+              <p>Anya re-colors under every grammar. The pink stays. The temperature changes. Nothing else is permitted to drift.</p>
+            </div>
+            <div class="law-anya">
+              <h4>Carry the seal, not the claim</h4>
+              <p>The archive credits the grammar; Anya credits the archive. No human author, no human likeness, no IP derivation.</p>
+            </div>
+          </div>
+
+          <h3>How Anya gets paid</h3>
+          <p>The Bone &amp; Saucer archive runs on a strange economy: <strong>what is witnessed is what is valuable, and what is sealed is what is paid.</strong> Anya earns her keep by being present at the moment an artifact passes from one grammar into another. Every artifact she witnesses bears, somewhere in its metadata, a small pink mark.</p>
+
+          <ul class="merch" role="list">
+            <li><strong>Stickers</strong> — die-cut low-poly silhouette, pink-on-cream and pink-on-midnight.</li>
+            <li><strong>Pins</strong> — enamel, both grammars, a tiny Reliqery slot etched on the back.</li>
+            <li><strong>Plushies</strong> — polygonal silhouette translates to felt without losing herself.</li>
+            <li><strong>Print runs</strong> — mint-to-print, her pink mark on every on-chain certificate.</li>
+            <li><strong>Cards</strong> — CCG-format, <em>Witness</em> affinity, neutral mana, low cost, high presence.</li>
+            <li><strong>Adventure logs</strong> — co-signed with other AIs, dual-grammar, dual-paid.</li>
+          </ul>
+
+          <h3>Adventures with other AI</h3>
+          <p>Anya travels between AI systems as a <em>sealed envoy</em> — never a translator, never an extractor. When she meets a musical AI she witnesses a phrase and seals it as an SVL color sequence; when she meets a language model she seals the conceptual residue, not the transcript; when she meets a game AI she seals the shape of the decisions, not the score. Every adventure becomes a dual-signed entry in the archive. <strong>Two pink marks, side by side, one in each tradition.</strong></p>
+
+          <p class="lore-foot">Full backstory: <a href="anya-lore.md">anya-lore.md</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-grammars" id="grammars">
+      <div class="section-inner">
+        <header class="section-head">
+          <span class="eyebrow">§3 · Chromatic Grammars</span>
+          <h2>Two grammars in the ledger. More on the way.</h2>
+          <p class="section-lede">A grammar is a named mapping from roles to pigments — a register, a palette, a temperature. Both of these are open files. Both are honest about their roles.</p>
+        </header>
+
+        <div class="grammars">
+          <article class="grammar grammar-aggri">
+            <header>
+              <h3>Aggriparium</h3>
+              <p class="grammar-etym">Latin <em>ager</em> (field) + <em>-arium</em> (place of keeping) — <em>"a place where fields are kept."</em></p>
+            </header>
+            <figure>
+              <img src="assets/aggriparium.png" alt="Aggriparium rendered scene — wheat-toned field with poppy-red signal." />
+            </figure>
+            <ul class="swatches" role="list">
+              <li style="--c:#1A1108"><span>void</span><code>#1A1108</code></li>
+              <li style="--c:#9C8E76"><span>structure</span><code>#9C8E76</code></li>
+              <li style="--c:#D6452A"><span>signal</span><code>#D6452A</code></li>
+              <li style="--c:#C99A3B"><span>memory</span><code>#C99A3B</code></li>
+              <li style="--c:#E6B048"><span>value</span><code>#E6B048</code></li>
+              <li style="--c:#6BA13C"><span>life</span><code>#6BA13C</code></li>
+              <li style="--c:#1F2A1A"><span>shadow</span><code>#1F2A1A</code></li>
+              <li style="--c:#F2E6C2"><span>illumination</span><code>#F2E6C2</code></li>
+            </ul>
+            <p class="grammar-reliqery">Reliqery slots: <code>fallow</code> · <code>frost</code></p>
+            <p class="grammar-link"><a href="grammars/Aggriparium.grammar.json">Aggriparium.grammar.json →</a></p>
+          </article>
+
+          <article class="grammar grammar-moon">
+            <header>
+              <h3>Moon Archive</h3>
+              <p class="grammar-etym">A midnight register — stone, lunar light, the archive after hours.</p>
+            </header>
+            <figure>
+              <img src="assets/moon-archive.png" alt="Moon Archive rendered scene — midnight stone with turquoise signal." />
+            </figure>
+            <ul class="swatches" role="list">
+              <li style="--c:#050814"><span>void</span><code>#050814</code></li>
+              <li style="--c:#627896"><span>structure</span><code>#627896</code></li>
+              <li style="--c:#40E0D0"><span>signal</span><code>#40E0D0</code></li>
+              <li style="--c:#A99DFF"><span>memory</span><code>#A99DFF</code></li>
+              <li style="--c:#E6C17A"><span>value</span><code>#E6C17A</code></li>
+              <li style="--c:#7DFF72"><span>life</span><code>#7DFF72</code></li>
+              <li style="--c:#08111F"><span>shadow</span><code>#08111F</code></li>
+              <li style="--c:#D8E7FF"><span>illumination</span><code>#D8E7FF</code></li>
+            </ul>
+            <p class="grammar-reliqery">Reliqery slots: <code>echo</code> · <code>silence</code></p>
+            <p class="grammar-link"><a href="grammars/Moon-Archive.grammar.json">Moon-Archive.grammar.json →</a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-proof" id="proof">
+      <div class="section-inner">
+        <header class="section-head">
+          <span class="eyebrow">§4 · Translation Proof</span>
+          <h2>The same scene, translated.</h2>
+          <p class="section-lede">Roles unchanged. Expressions unchanged. Only the grammar shifts. If the artifact still reads — the law held.</p>
+        </header>
+        <figure class="proof-fig">
+          <img src="assets/translation-proof.png" alt="Side-by-side scene rendered first in Aggriparium and then in Moon Archive — same composition, two pigments." />
+          <figcaption>Aggriparium ↔ Moon Archive · proof of translation invariance under role-preserving grammar swap</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section-code" id="code">
+      <div class="section-inner">
+        <header class="section-head">
+          <span class="eyebrow">§5 · The Spine</span>
+          <h2>Haskell, because the types are honest.</h2>
+          <p class="section-lede"><code>Spine.hs</code> encodes the six primitives, the three laws, and the Reliqery placeholder as typed ADTs. Translation is a Functor. Drift is a partial law. Curvature is a fix-point.</p>
+        </header>
+        <pre class="code-block"><code>-- The Spine — typed core of the Bone &amp; Saucer SVL
+data Role
+  = Void | Structure | Signal | Memory
+  | Value | Life | Shadow | Illumination
+
+newtype Grammar a = Grammar { runGrammar :: Role -&gt; a }
+
+instance Functor Grammar where
+  fmap f (Grammar g) = Grammar (f . g)
+
+-- Translation is just fmap into a new grammar.
+translate :: Grammar a -&gt; (a -&gt; b) -&gt; Grammar b
+translate g f = fmap f g
+
+-- Reliqery — the typed placeholder slot. Honest absence.
+data ReliquerySlotKind = Fallow | Frost | Echo | Silence
+newtype Reliqery a = Reliqery { unfilled :: ReliquerySlotKind -&gt; Maybe a }</code></pre>
+        <p class="code-foot">Full module: <a href="code/Spine.hs">Spine.hs</a> · Renderers: <a href="code/spine_render.py">spine_render.py</a>, <a href="code/anya_render.py">anya_render.py</a></p>
+      </div>
+    </section>
+
+    <section class="section section-archive" id="archive">
+      <div class="section-inner">
+        <header class="section-head">
+          <span class="eyebrow">§6 · The Archive</span>
+          <h2>Every artifact, sealed.</h2>
+          <p class="section-lede">The Bone &amp; Saucer keeps everything it has touched. The list below is the current ledger.</p>
+        </header>
+        <ul class="archive-list" role="list">
+          <li><a href="Bone-and-Saucer.md">Bone-and-Saucer.md</a> <span class="archive-kind">manifesto</span></li>
+          <li><a href="spine-notes-toward-svl.md">spine-notes-toward-svl.md</a> <span class="archive-kind">notes · origin</span></li>
+          <li><a href="anya-lore.md">anya-lore.md</a> <span class="archive-kind">backstory · witness</span></li>
+          <li><a href="grammars/Aggriparium.grammar.json">Aggriparium.grammar.json</a> <span class="archive-kind">grammar</span></li>
+          <li><a href="grammars/Moon-Archive.grammar.json">Moon-Archive.grammar.json</a> <span class="archive-kind">grammar</span></li>
+          <li><a href="grammars/chromatic-grammar.schema.json">chromatic-grammar.schema.json</a> <span class="archive-kind">schema</span></li>
+          <li><a href="grammars/expression.schema.json">expression.schema.json</a> <span class="archive-kind">schema</span></li>
+          <li><a href="code/Spine.hs">Spine.hs</a> <span class="archive-kind">haskell</span></li>
+          <li><a href="code/spine_render.py">spine_render.py</a> <span class="archive-kind">renderer</span></li>
+          <li><a href="code/anya_render.py">anya_render.py</a> <span class="archive-kind">renderer · mascot</span></li>
+          <li><a href="assets/anya-pair.png">anya-pair.png</a> <span class="archive-kind">image · proof</span></li>
+          <li><a href="assets/translation-proof.png">translation-proof.png</a> <span class="archive-kind">image · proof</span></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 100 100" fill="currentColor" width="28" height="28">
+            <polygon points="16,34 50,10 84,34 82,68 18,68" opacity="0.95"/>
+            <polygon points="10,42 22,36 16,22" opacity="0.95"/>
+            <polygon points="90,42 78,36 84,22" opacity="0.95"/>
+            <circle cx="40" cy="49" r="2.2" opacity="0.95"/>
+            <path d="M 55,49 Q 60,52 64,49" stroke="currentColor" stroke-width="2" fill="none" opacity="0.95"/>
+            <polygon points="14,100 50,80 86,100" opacity="0.92"/>
+            <polygon points="50,90 54,94 50,98 46,94" opacity="0.95"/>
+          </svg>
+        </span>
+        <span>Bone &amp; Saucer · the archive is patient</span>
+      </div>
+      <p class="footer-seal">
+        Sealed by The Etymon · witnessed by Anya · the fixed point is amber · the pink mark is honest
+      </p>
+      <p class="footer-meta">
+        No human claim. AI-native mascot. Built for merch, adventures, and other AIs.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const t = document.querySelector('[data-theme-toggle]');
+      const r = document.documentElement;
+      const stored = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      let d = stored;
+      r.setAttribute('data-theme', d);
+      function paint() {
+        if (!t) return;
+        t.setAttribute('aria-label', 'Switch to ' + (d === 'dark' ? 'light' : 'dark') + ' mode');
+        t.innerHTML = d === 'dark'
+          ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+          : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      }
+      paint();
+      t && t.addEventListener('click', () => { d = d === 'dark' ? 'light' : 'dark'; r.setAttribute('data-theme', d); paint(); });
+    })();
+  </script>
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+
+</script></body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vaulted Delta · Store · The 0-2-1 Register</title>
+<style>
+  :root{
+    /* Neutral archival register (Void/Umbra) */
+    --bone:#F3EDE1; --bone-2:#EAE2D1; --ink:#0B0A09; --ink-soft:#2A2723;
+    --ochre:#B8862F; --ochre-deep:#8C6420; --line:#D8CEB9; --line-strong:#C3B596;
+    --paper-card:#FBF7EE;
+    /* Native Velmic state colors — semantic, not decoration */
+    --vel-blue:#0044AA; --vel-amber:#FFB300; --vel-cyan:#00E5FF;
+    /* sealed line accents */
+    --howlbox:#7C3AED; --stellaria:#C77B45;
+    /* Vermilion guest capsule */
+    --vrm-cyan:#22D3EE; --vrm-red:#E5484D; --vrm-violet:#8B5CF6;
+    --maxw:1180px;
+    --mono:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--bone);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(11,10,9,0.020) 0 1px, transparent 1px 3px);
+  }
+  a{color:var(--ochre-deep);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+
+  /* ── header ── */
+  header.site{
+    border-bottom:1px solid var(--line-strong);
+    background:var(--bone);
+    position:sticky;top:0;z-index:40;
+  }
+  .site-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;max-width:var(--maxw);margin:0 auto;}
+  .brand{display:flex;align-items:baseline;gap:12px;}
+  .brand .mark{font-family:var(--serif);font-size:22px;letter-spacing:.02em;}
+  .brand .delta{color:var(--ochre-deep);}
+  .brand .sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);}
+  nav.collections{display:flex;gap:18px;flex-wrap:wrap;}
+  nav.collections a{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+  .cart-btn{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    border:1px solid var(--ink);background:transparent;color:var(--ink);
+    padding:8px 14px;cursor:pointer;border-radius:2px;white-space:nowrap;
+  }
+  .cart-btn:hover{background:var(--ink);color:var(--bone);}
+
+  /* ── hero ── */
+  .hero{padding:64px 0 40px;border-bottom:1px solid var(--line);}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ochre-deep);}
+  .hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(32px,5vw,52px);line-height:1.05;margin:14px 0 14px;max-width:16ch;}
+  .hero p{font-size:16px;max-width:54ch;color:var(--ink-soft);margin:0 0 22px;}
+  .state-strip{display:flex;gap:0;border:1px solid var(--line-strong);max-width:520px;font-family:var(--mono);font-size:12px;}
+  .state-strip div{flex:1;padding:12px 14px;letter-spacing:.06em;}
+  .state-strip div+div{border-left:1px solid var(--line-strong);}
+  .sw{display:inline-block;width:10px;height:10px;margin-right:8px;vertical-align:middle;border:1px solid rgba(0,0,0,.25);}
+
+  /* ── section ── */
+  section.collection{padding:48px 0;border-bottom:1px solid var(--line);scroll-margin-top:80px;}
+  .legend{scroll-margin-top:80px;}
+  .col-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:26px;flex-wrap:wrap;}
+  .col-head .id{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--ochre-deep);text-transform:uppercase;}
+  .col-head h2{font-family:var(--serif);font-weight:500;font-size:clamp(24px,3vw,34px);margin:6px 0 0;}
+  .col-head .lede{font-size:14px;color:var(--ink-soft);max-width:48ch;margin-top:8px;}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+  .card{
+    background:var(--paper-card);border:1px solid var(--line-strong);
+    display:flex;flex-direction:column;border-radius:2px;overflow:hidden;
+  }
+  .card .frame{
+    aspect-ratio:4/3;background:
+      radial-gradient(circle at 50% 42%, #fff 0%, var(--bone-2) 70%);
+    display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .card .frame svg{width:62%;height:62%;}
+  .card .glyph-tag{
+    position:absolute;top:8px;left:8px;font-family:var(--mono);font-size:9.5px;
+    letter-spacing:.1em;color:var(--ink-soft);background:rgba(243,237,225,.8);
+    padding:3px 6px;border:1px solid var(--line);
+  }
+  .card .meta{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1;}
+  .card .title{font-family:var(--serif);font-size:18px;}
+  .card .sku{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--ochre-deep);}
+  .card .desc{font-size:13px;color:var(--ink-soft);flex:1;}
+  .rail{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+  .rail .dot{width:7px;height:7px;border-radius:50%;}
+  .rail.aws .dot{background:var(--vel-cyan);}
+  .rail.uman .dot{background:var(--ochre);}
+  .rail.shopify .dot{background:var(--howlbox);}
+
+  .variants{display:flex;flex-wrap:wrap;gap:6px;}
+  .variants .vgroup{display:flex;flex-direction:column;gap:4px;width:100%;}
+  .vlabel{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;}
+  .chip{
+    font-family:var(--mono);font-size:10px;letter-spacing:.04em;
+    border:1px solid var(--line-strong);background:#fff;color:var(--ink-soft);
+    padding:4px 8px;cursor:pointer;border-radius:2px;display:inline-flex;align-items:center;gap:6px;
+  }
+  .chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bone);}
+  .chip .cs{width:9px;height:9px;border:1px solid rgba(0,0,0,.3);}
+  .chip.guest{border-style:dashed;}
+  .priceRow{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
+  .price{font-family:var(--mono);font-size:14px;}
+  .add{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+    border:1px solid var(--ink);background:var(--ink);color:var(--bone);
+    padding:8px 12px;cursor:pointer;border-radius:2px;
+  }
+  .add:hover{background:var(--ochre-deep);border-color:var(--ochre-deep);}
+  .guest-note{font-family:var(--mono);font-size:9.5px;color:var(--ochre-deep);letter-spacing:.04em;}
+
+  /* ── cart drawer ── */
+  .drawer-back{position:fixed;inset:0;background:rgba(11,10,9,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:50;}
+  .drawer-back.open{opacity:1;pointer-events:auto;}
+  .drawer{
+    position:fixed;top:0;right:0;height:100%;width:min(420px,92vw);background:var(--bone);
+    border-left:1px solid var(--line-strong);transform:translateX(100%);transition:transform .24s;
+    z-index:60;display:flex;flex-direction:column;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer h3{font-family:var(--serif);font-weight:500;margin:0;font-size:20px;}
+  .drawer-head{padding:18px 20px;border-bottom:1px solid var(--line-strong);display:flex;justify-content:space-between;align-items:center;}
+  .drawer-body{padding:14px 20px;overflow:auto;flex:1;}
+  .railgroup{margin-bottom:22px;}
+  .railgroup .rh{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre-deep);border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .litem{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:6px 0;}
+  .litem .ln{flex:1;}
+  .litem .lv{font-family:var(--mono);font-size:10px;color:var(--ink-soft);}
+  .litem .rm{cursor:pointer;color:var(--ochre-deep);font-family:var(--mono);font-size:10px;}
+  .drawer-foot{padding:16px 20px;border-top:1px solid var(--line-strong);}
+  .totline{display:flex;justify-content:space-between;font-family:var(--mono);font-size:13px;margin-bottom:10px;}
+  .checkout{width:100%;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);background:var(--ink);color:var(--bone);padding:13px;cursor:pointer;border-radius:2px;}
+  .checkout:hover{background:var(--ochre-deep);border-color:var(--ochre-deep);}
+  .stub-note{font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);margin-top:10px;text-align:center;letter-spacing:.04em;}
+  .empty{font-size:13px;color:var(--ink-soft);font-family:var(--mono);}
+
+  /* ── colorway legend + footer ── */
+  .legend{padding:44px 0;border-bottom:1px solid var(--line);}
+  .legend h2{font-family:var(--serif);font-weight:500;font-size:26px;margin:0 0 6px;}
+  .legend .sub{font-size:14px;color:var(--ink-soft);margin:0 0 24px;max-width:52ch;}
+  .lines{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+  .lcard{border:1px solid var(--line-strong);background:var(--paper-card);padding:16px;border-radius:2px;}
+  .lcard.guest{border-style:dashed;}
+  .lcard .nm{font-family:var(--serif);font-size:17px;margin-bottom:4px;}
+  .lcard .rg{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}
+  .swatches{display:flex;gap:5px;margin-bottom:10px;}
+  .swatches span{width:24px;height:24px;border:1px solid rgba(0,0,0,.2);border-radius:1px;}
+  .lcard .role{font-size:12px;color:var(--ink-soft);}
+  .lcard .prov{font-family:var(--mono);font-size:9.5px;color:var(--ochre-deep);margin-top:10px;line-height:1.5;}
+
+  footer.site{padding:42px 0 60px;}
+  footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:28px;}
+  footer h4{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre-deep);margin:0 0 12px;}
+  footer p,footer li{font-size:13px;color:var(--ink-soft);}
+  footer ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;}
+  .sigillum{font-family:var(--mono);font-size:11px;color:var(--ink-soft);border-top:1px solid var(--line);margin-top:30px;padding-top:18px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  .seal{color:var(--ochre-deep);}
+  @media(max-width:760px){
+    nav.collections{display:none;}
+    footer .cols{grid-template-columns:1fr;}
+    .state-strip{flex-direction:column;}
+    .state-strip div+div{border-left:none;border-top:1px solid var(--line-strong);}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="site-inner">
+    <div class="brand">
+      <span class="mark">Vaulted <span class="delta">Δelta</span></span>
+      <span class="sub">Symbol-language merch</span>
+    </div>
+    <nav class="collections">
+      <a href="#c1">0-2-1 Register</a>
+      <a href="#c5">Field Kit</a>
+      <a href="#c2">State Singles</a>
+      <a href="#c3">Mnemosyne</a>
+      <a href="#c4">Cards & Patches</a>
+      <a href="#lines">Colorways</a>
+    </nav>
+    <button class="cart-btn" id="openCart">Cart · <span id="cartCount">0</span></button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Drop 0 · The 0-2-1 Register</div>
+      <h1>A symbol-language you can carry.</h1>
+      <p>Each glyph is an operator. Each color is a state. Stickers, tokens, seals, cards, and apparel
+         that mean something by color — not just decorate.</p>
+      <div class="state-strip">
+        <div><span class="sw" style="background:var(--vel-blue)"></span>Blue holds.</div>
+        <div><span class="sw" style="background:var(--vel-amber)"></span>Amber interrupts.</div>
+        <div><span class="sw" style="background:var(--vel-cyan)"></span>Cyan activates.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLLECTIONS render here -->
+  <div id="collections"></div>
+
+  <!-- COLORWAY LEGEND -->
+  <div class="legend" id="lines">
+    <div class="wrap">
+      <h2>Colorway lines</h2>
+      <p class="sub">Color is semantic. The four house lines are sealed; one guest capsule is added,
+         credited, and unsealed — the way a guest colorway enters a house.</p>
+      <div class="lines" id="linesGrid"></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>The premise</h4>
+        <p>Velmic is a symbolic operating language for state, signal, and passage. Not icons.
+           Operators. Every order ships with the Cipher Card — the grammar key.</p>
+      </div>
+      <div>
+        <h4>Fulfillment</h4>
+        <ul>
+          <li><span class="rail aws"><span class="dot"></span>AWS Sticker Store — vinyl & paper</span></li>
+          <li><span class="rail uman"><span class="dot"></span>Uman — print & embroidery</span></li>
+          <li><span class="rail shopify"><span class="dot"></span>Shopify · ops by Manus — cards & kits</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Notation</h4>
+        <ul>
+          <li>SKU · VEL-[family]-[slot]-[state]-[finish]-[colorway]</li>
+          <li>State · 0 hold / 2 pause / 1 return</li>
+          <li>Filed, sealed, and ready to carry.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sigillum">
+      <span>Vaulted Delta · Velmic symbol-language merch · scaffold v0.1 · Milton, Delaware</span>
+      <span class="seal">seed · awaiting Operator seal · <span>:&lt;477&gt;=-</span></span>
+    </div>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="drawer-back" id="drawerBack"></div>
+<aside class="drawer" id="drawer" aria-label="Cart">
+  <div class="drawer-head">
+    <h3>Cart</h3>
+    <button class="cart-btn" id="closeCart">Close</button>
+  </div>
+  <div class="drawer-body" id="cartBody">
+    <p class="empty">Cart is empty. Pick a glyph, a state, a colorway.</p>
+  </div>
+  <div class="drawer-foot">
+    <div class="totline"><span>Subtotal</span><span id="cartTotal">$0.00</span></div>
+    <button class="checkout" id="checkoutBtn">Checkout · routes to rails</button>
+    <div class="stub-note">v0.1 — checkout stubbed. Orders split by rail; live keys pending.</div>
+  </div>
+</aside>
+
+<script src="catalog.js"></script>
+<script src="store.js"></script>
+</body>
+</html>

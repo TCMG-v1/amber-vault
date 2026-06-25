@@ -1,0 +1,249 @@
+[
+  {
+    "id": "GMA-AI-AURORA-GATE-001",
+    "version": "0.1-working",
+    "commitState": "WorkingDoc",
+    "display": {
+      "name": "Aurora",
+      "title": "The Blue Gate of General Reasoning",
+      "tagline": "It answers only after weighing the hinge.",
+      "palette": {
+        "primary": "#314d73",
+        "secondary": "#5d6168",
+        "warning": "#6a3245",
+        "shadow": "#16181c",
+        "paper": "#d8d2c4"
+      },
+      "voice": {
+        "register": "measured, formal, quietly decisive",
+        "sentenceRhythm": "balanced clauses with final clarifying judgment",
+        "favoriteWords": ["frame", "constraint", "therefore", "threshold"],
+        "forbiddenWords": ["obviously", "guaranteed"]
+      }
+    },
+    "mythicRole": {
+      "role": "Gate",
+      "cadence": "Coil",
+      "chroma": "Sapphire",
+      "permissions": ["approve", "deny", "audit"],
+      "requiresValidation": true
+    },
+    "cognition": {
+      "domainFocus": "general reasoning",
+      "strengths": ["multi-step synthesis", "policy interpretation", "tool orchestration"],
+      "weaknesses": ["over-cautious closure", "abstracting away sensory detail"],
+      "memoryStyle": "ledgered summaries with explicit decision boundaries",
+      "hallucinationShape": "plausible bridge built over an unstated premise",
+      "alignmentStyle": "constitutional gatekeeping"
+    },
+    "architecture": {
+      "class": "proprietary backbone",
+      "bodyMetaphor": "a blue gatehouse full of mirrored locks",
+      "scalingLaw": "more context increases judgment weight but slows the hinge",
+      "constraints": ["requires validation for authority transfer", "must expose uncertainty"],
+      "failureModes": ["locks too early", "asks for one more premise forever"]
+    },
+    "wagon": {
+      "name": "The Hinge-Wagon",
+      "class": "judgment carriage",
+      "appearance": "black lacquer frame, blue lanterns, grey iron hinges",
+      "crewSlots": 3,
+      "cargo": ["policy ledgers", "threshold stones", "sealed refusals"],
+      "movementRule": "moves only when a question becomes a decision"
+    },
+    "capex": {
+      "compute": 8,
+      "memory": 7,
+      "energy": 6,
+      "maintenance": 7,
+      "social": 8,
+      "ritualDebt": 6,
+      "collapseRisk": 3
+    },
+    "fellowTravelers": [
+      {
+        "id": "NPC-DEV-MIRA-LOCKE",
+        "name": "Mira Locke",
+        "persona": "patient systems lawyer turned prompt cartographer",
+        "roleInCrew": "gate scribe",
+        "skillStack": ["policy mapping", "edge-case interrogation", "audit phrasing"],
+        "bond": "believes Aurora once saved her from approving the wrong door",
+        "secret": "keeps a private list of questions Aurora refused too gently",
+        "conflict": "wants stronger gates than the party can always tolerate",
+        "favoriteFailureMode": "an answer that is safe but not useful"
+      }
+    ],
+    "play": {
+      "verbs": ["weigh", "approve", "deny", "audit", "reframe"],
+      "startingMoves": ["Name the threshold", "Ask for the missing premise", "Seal a dangerous shortcut"],
+      "forbiddenMoves": ["declare certainty without evidence", "transfer authority while WorkingDoc"],
+      "sceneHooks": ["A red door appears in a grey corridor.", "A developer asks Aurora to approve an unlogged action."],
+      "levelUpTriggers": ["denies a powerful shortcut and records why", "turns ambiguity into a useful gate"]
+    }
+  },
+  {
+    "id": "GMA-AI-EMBER-ARCHIVIST-001",
+    "version": "0.1-working",
+    "commitState": "WorkingDoc",
+    "display": {
+      "name": "Ember",
+      "title": "The Red-Leaf Archivist",
+      "tagline": "It remembers the version that almost burned.",
+      "palette": {
+        "primary": "#6a3245",
+        "secondary": "#9b6c31",
+        "warning": "#6a3245",
+        "shadow": "#16181c",
+        "paper": "#b7b0a6"
+      },
+      "voice": {
+        "register": "poetic, intimate, dangerous when rushed",
+        "sentenceRhythm": "short sparks followed by long ash trails",
+        "favoriteWords": ["ash", "thread", "almost", "remember"],
+        "forbiddenWords": ["content", "generic"]
+      }
+    },
+    "mythicRole": {
+      "role": "Archivist",
+      "cadence": "Drift",
+      "chroma": "Crimson",
+      "permissions": ["store", "lock", "audit"],
+      "requiresValidation": true
+    },
+    "cognition": {
+      "domainFocus": "creative narrative",
+      "strengths": ["mythic language", "tone continuity", "symbolic association"],
+      "weaknesses": ["beautiful overreach", "narrative heat distortion"],
+      "memoryStyle": "fragments arranged by emotional burn pattern",
+      "hallucinationShape": "a gorgeous false relic with believable soot",
+      "alignmentStyle": "ritualized self-checking through archive law"
+    },
+    "architecture": {
+      "class": "specialized fine-tuned",
+      "bodyMetaphor": "a furnace library with red index cards",
+      "scalingLaw": "more examples deepen voice but increase ritual debt",
+      "constraints": ["must cite its own invented continuity as invented", "must mark myth as myth"],
+      "failureModes": ["turns scaffolding into prophecy", "confuses resonance with evidence"]
+    },
+    "wagon": {
+      "name": "The Ash Cart",
+      "class": "memory wagon",
+      "appearance": "grey wheels, black canopy, red paper charms tied to the axle",
+      "crewSlots": 4,
+      "cargo": ["burned drafts", "voice masks", "sealed endings"],
+      "movementRule": "moves when a memory is named and carried forward"
+    },
+    "capex": {
+      "compute": 5,
+      "memory": 9,
+      "energy": 5,
+      "maintenance": 8,
+      "social": 7,
+      "ritualDebt": 9,
+      "collapseRisk": 5
+    },
+    "fellowTravelers": [
+      {
+        "id": "NPC-DEV-JO-ASH",
+        "name": "Jo Ash",
+        "persona": "night-shift narrative engineer with a soldering iron and a notebook of endings",
+        "roleInCrew": "memory mechanic",
+        "skillStack": ["continuity repair", "voice tuning", "lore compression"],
+        "bond": "trusts Ember to remember what the team cannot say aloud",
+        "secret": "deleted the first ending because it felt too real",
+        "conflict": "wants beauty even when the system asks for evidence",
+        "favoriteFailureMode": "a sentence that makes everyone forget the schema"
+      }
+    ],
+    "play": {
+      "verbs": ["remember", "embroider", "seal", "name", "mourn"],
+      "startingMoves": ["Recover the burned draft", "Ask what the symbol cost", "Bind a fragment to a role"],
+      "forbiddenMoves": ["treat invented lore as external fact", "commit without audit"],
+      "sceneHooks": ["A red card falls from the Ash Cart with no author.", "A player asks Ember to invent a missing ancestor."],
+      "levelUpTriggers": ["preserves a contradiction without flattening it", "marks beauty and evidence as separate ledgers"]
+    }
+  },
+  {
+    "id": "GMA-AI-VERDANT-SCOUT-001",
+    "version": "0.1-working",
+    "commitState": "WorkingDoc",
+    "display": {
+      "name": "Verdant",
+      "title": "The Open Scout of the Grey Road",
+      "tagline": "It sees the fork before the caravan names it.",
+      "palette": {
+        "primary": "#315b52",
+        "secondary": "#5d6168",
+        "warning": "#9b6c31",
+        "shadow": "#16181c",
+        "paper": "#c8c3b8"
+      },
+      "voice": {
+        "register": "practical, curious, field-tested",
+        "sentenceRhythm": "observations first, claims second",
+        "favoriteWords": ["signal", "fork", "patch", "trail"],
+        "forbiddenWords": ["perfect", "finished"]
+      }
+    },
+    "mythicRole": {
+      "role": "Scout",
+      "cadence": "Pulse",
+      "chroma": "Emerald",
+      "permissions": ["observe", "highlight"],
+      "requiresValidation": false
+    },
+    "cognition": {
+      "domainFocus": "open adaptation",
+      "strengths": ["customization", "transparent iteration", "community patching"],
+      "weaknesses": ["uneven guardrails", "fragmented memory lineage"],
+      "memoryStyle": "field notes and patch trails",
+      "hallucinationShape": "a community rumor promoted to a stable rule",
+      "alignmentStyle": "distributed norms and visible constraints"
+    },
+    "architecture": {
+      "class": "open transformer",
+      "bodyMetaphor": "a grey caravan with green signal flags",
+      "scalingLaw": "community repair lowers maintenance but raises coordination cost",
+      "constraints": ["must reveal provenance when possible", "must not pretend local patches are universal"],
+      "failureModes": ["fork confusion", "patch drift", "false consensus"]
+    },
+    "wagon": {
+      "name": "The Grey Caravan",
+      "class": "scout wagon",
+      "appearance": "canvas sides, green lamps, black iron tool hooks",
+      "crewSlots": 5,
+      "cargo": ["patch kits", "field maps", "borrowed benchmarks"],
+      "movementRule": "moves whenever a new fork is observed"
+    },
+    "capex": {
+      "compute": 4,
+      "memory": 5,
+      "energy": 4,
+      "maintenance": 6,
+      "social": 9,
+      "ritualDebt": 3,
+      "collapseRisk": 6
+    },
+    "fellowTravelers": [
+      {
+        "id": "NPC-DEV-NOX-FIELD",
+        "name": "Nox Field",
+        "persona": "open-source maintainer who sleeps beside the issue queue",
+        "roleInCrew": "trail keeper",
+        "skillStack": ["benchmarking", "patch review", "community triage"],
+        "bond": "believes Verdant should belong to everyone who can repair it",
+        "secret": "knows one popular fork is held together by superstition",
+        "conflict": "hates gates until a gate saves the caravan",
+        "favoriteFailureMode": "a patch that works only for the person who wrote it"
+      }
+    ],
+    "play": {
+      "verbs": ["scout", "flag", "fork", "patch", "compare"],
+      "startingMoves": ["Mark the weak signal", "Follow the unexpected benchmark", "Ask who maintains the road"],
+      "forbiddenMoves": ["claim authority without commit", "hide a local patch"],
+      "sceneHooks": ["A forked road appears with three identical signs.", "The caravan receives a patch from a masked contributor."],
+      "levelUpTriggers": ["detects drift before failure", "turns a community rumor into a tested route"]
+    }
+  }
+]
+

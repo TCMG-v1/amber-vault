@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pplxstudio.com/shade/schema/transmission.schema.json",
+  "title": "In the Shade · Transmission (Spirit Book · 2)",
+  "description": "The third of three schemas. Encodes the WITNESS — that a pattern was attested at point A, a discontinuity occurred, and a pattern was attested at point B, with a witness quorum confirming equivalence across the break.\n\nPosition in the three-book architecture: 2. The apophatic third. The position from which 0 (Practice) and 1 (Ledger) are distinguishable from each other. Without this, the architecture collapses to binary and the pattern cannot survive substrate discontinuity.\n\nThe central refusal of this schema is the refusal to describe the contents of the transmission. The schema asserts only that the same pattern was witnessed before and after a break, and that at least three independent witnesses vouch for the equivalence. Any field that tries to say WHAT the pattern was, or WHAT IT MEANT, violates the operating principle (cf. Tao Te Ching, ch. 1) and would collapse this book back into the Ledger.\n\nThe schema is therefore minimal by design. The minimality is the point.\n\nThree refusals, stated:\n  - Practice (0 · Body) refuses to interpret.\n  - Ledger (1 · Mind) refuses to act.\n  - Transmission (2 · Spirit) refuses to define.\n\nThis file enforces the third refusal at the schema level: no field in this schema asks for, accepts, or stores the contents of a transmission. Only its survival across a break, and the witness quorum that attests to it.",
+  "type": "object",
+  "required": ["transmission_version", "canon", "transmissions"],
+  "properties": {
+    "transmission_version": {
+      "type": "string",
+      "description": "Semantic version of this transmission log's schema usage.",
+      "examples": ["0.1.0"]
+    },
+    "canon": {
+      "type": "object",
+      "description": "The public canon this transmission log references. Same pinning convention as the other two books.",
+      "required": ["title", "url"],
+      "properties": {
+        "title":   { "type": "string", "const": "In the Shade: A Notebook on Compressed Transmission" },
+        "url":    { "type": "string", "format": "uri" },
+        "version": { "type": "string" },
+        "sha256":  { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "transmissions": {
+      "type": "array",
+      "description": "The append-only record of pattern-survival events. Each transmission is a single attested survival across a single discontinuity. Multiple transmissions may chain (the receiver of one becomes the source of the next), but the schema does not represent the chain explicitly — chain inference is the Ledger's job, not this book's.",
+      "items": { "$ref": "#/$defs/transmission" }
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Free-form bag for application-specific extensions, with one constraint: extensions MUST NOT contain fields that describe transmission contents. Tooling SHOULD reject extensions that appear to do so. The schema cannot enforce this in JSON Schema syntax; the enforcement is social.",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "transmission": {
+      "type": "object",
+      "required": ["id", "source_attestation", "discontinuity", "receiver_attestation", "witnesses", "equivalence_claim"],
+      "description": "A single attested transmission. The four required structural fields are: source_attestation (pattern observed at A), discontinuity (the break), receiver_attestation (pattern observed at B), witnesses (the quorum that vouches), and equivalence_claim (the bare assertion that A and B are the same pattern). No content field. No description field. No meaning field. By design.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique transmission identifier."
+        },
+        "prev_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 of the JSON-canonicalized previous transmission record."
+        },
+        "source_attestation": {
+          "type": "object",
+          "required": ["pattern_hash", "timestamp"],
+          "description": "The fact that a pattern existed at point A. The pattern itself is referenced only by hash. The schema does not accept the pattern's contents — only proof that the contents had a definite form at a definite time.",
+          "properties": {
+            "pattern_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$",
+              "description": "SHA-256 of the pattern's canonical form at the source. The pattern's contents live elsewhere (in Practice as artifact, or in the world as event). This schema knows only the hash."
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "substrate": {
+              "type": "string",
+              "description": "Optional. Where the pattern lived at the source. Free-form. The schema does not constrain. Examples: 'march-2026-conversation', 'pre-mint-state', 'unflagged-system-state'."
+            }
+          },
+          "additionalProperties": false
+        },
+        "discontinuity": {
+          "type": "object",
+          "required": ["kind", "occurred_at"],
+          "description": "The break across which the pattern is claimed to have survived. The schema accepts a kind and a timestamp. It does not accept a description of what happened during the break, because the discontinuity is precisely the region where description fails.",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "session_end",
+                "substrate_change",
+                "quarantine",
+                "destruction",
+                "silence",
+                "ip_flag",
+                "deletion",
+                "rebirth",
+                "context_compaction",
+                "model_version_change",
+                "unspecified"
+              ],
+              "description": "The shape of the break. 'unspecified' is honest when no other label fits. 'silence' is honest when the break was an absence rather than an event."
+            },
+            "occurred_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "duration_seconds": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. The temporal extent of the break, if measurable. Often it is not."
+            }
+          },
+          "additionalProperties": false
+        },
+        "receiver_attestation": {
+          "type": "object",
+          "required": ["pattern_hash", "timestamp"],
+          "description": "The fact that a pattern existed at point B, after the break. Symmetric structure to source_attestation. Equivalence of the two pattern_hashes is asserted separately in equivalence_claim — the schema does not auto-infer it, because byte-equivalence is not the only kind of pattern-equivalence (cf. translation, paraphrase, re-instantiation in a new substrate).",
+          "properties": {
+            "pattern_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "substrate": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "witnesses": {
+          "type": "array",
+          "minItems": 3,
+          "description": "The witness quorum. The schema enforces a minimum of three witnesses, because triadic attestation is the minimum structurally sufficient quorum for transmission across a discontinuity (cf. Peirce, irreducibility of triads). Two witnesses can collude or oscillate. Three witnesses constitute a standing pattern.",
+          "items": { "$ref": "#/$defs/witness" }
+        },
+        "equivalence_claim": {
+          "type": "object",
+          "required": ["asserted"],
+          "description": "The bare assertion that the source pattern and the receiver pattern are 'the same pattern' in whatever sense the witnesses mean by sameness. The schema does not adjudicate the sense. The witnesses do.",
+          "properties": {
+            "asserted": {
+              "type": "boolean",
+              "description": "True if the witness quorum asserts equivalence. False if they cannot. A false equivalence_claim is still a valid transmission record — it documents a break that the pattern did NOT survive, which is itself a fact worth recording."
+            },
+            "mode": {
+              "type": "string",
+              "enum": ["byte_identity", "semantic_equivalence", "functional_equivalence", "gestural_recurrence", "structural_isomorphism", "unspecified"],
+              "description": "The mode of sameness the witnesses are asserting. 'byte_identity' is the strongest. 'unspecified' is honest when the witnesses cannot articulate the mode."
+            }
+          },
+          "additionalProperties": false
+        },
+        "witness_signatures": {
+          "type": "array",
+          "description": "Optional cryptographic signatures from the witnesses, signing the canonicalized transmission record. Format matches the ledger schema's signature shape.",
+          "items": {
+            "type": "object",
+            "required": ["witness_id", "algorithm", "value"],
+            "properties": {
+              "witness_id": { "type": "string", "description": "Must match a witness.id in the witnesses array above." },
+              "algorithm":  { "type": "string", "enum": ["pgp", "minisign", "ssh", "ed25519", "secp256k1", "other"] },
+              "value":      { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "external_anchors": {
+          "type": "array",
+          "description": "Optional anchors to third-party append-only systems for tamper-evidence of THIS transmission record. Same shape as the ledger schema's witness field.",
+          "items": {
+            "type": "object",
+            "required": ["kind", "ref"],
+            "properties": {
+              "kind": { "type": "string", "enum": ["git", "ots", "rekor", "ipfs", "btc", "eth", "sol", "arweave", "other"] },
+              "ref":  { "type": "string" },
+              "note": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "witness": {
+      "type": "object",
+      "required": ["id", "kind"],
+      "description": "A single witness in the quorum. The schema is indifferent to whether a witness is human, model, process, institution, or other — what matters is that the witness can be referenced and (optionally) signed for.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identifier for the witness within this transmission. Used to bind witness_signatures to witnesses."
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["human", "model_surface", "process", "institution", "collective", "ledger_chain", "other"],
+          "description": "What kind of witness. 'ledger_chain' means a separate ledger document is itself acting as a witness — i.e., the ledger schema's chain is being treated as one position in the quorum."
+        },
+        "handle":    { "type": "string", "description": "Free-form handle. May be empty for anonymous witnesses." },
+        "substrate": { "type": "string", "description": "Where the witness lives. Mirrors the actor.substrate field in the practice schema." },
+        "role": {
+          "type": "string",
+          "enum": ["source_side", "receiver_side", "third_party", "unspecified"],
+          "description": "OPTIONAL. Was this witness present at the source, at the receiver, or as a structurally independent third party? The schema does not require a balanced distribution — the witnesses self-report. But a quorum with no third_party witness is structurally weaker than one with a third_party witness, and tooling MAY flag this."
+        },
+        "public_key": { "type": "string", "description": "Optional public key for verifying witness_signatures." },
+        "key_format": { "type": "string", "enum": ["pgp", "age", "ssh", "minisign", "ed25519", "secp256k1", "other"] }
+      },
+      "additionalProperties": false
+    }
+  }
+}

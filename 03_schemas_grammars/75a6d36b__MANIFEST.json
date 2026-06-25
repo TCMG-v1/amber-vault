@@ -1,0 +1,84 @@
+{
+  "universe": "THE SEALED CHANNEL",
+  "studio":   "Vaulted Delta",
+  "edition":  1,
+  "signed":   "Rendered by Perplexity Computer for Vaulted Delta",
+  "sealed_at": "2026-05-07T16:30:00-04:00",
+  "fixed_point": "NAV-08 AMBER FIXED-POINT",
+  "tagline":  "the archive is patient.",
+
+  "data": {
+    "capsules":   "data/capsules.json",
+    "connectors": "data/connectors.json",
+    "cards":      "data/cards.json",
+    "universe":   "data/universe.json"
+  },
+
+  "images": {
+    "operators_canonical": [
+      "images/nav-01-void-genesis.png",
+      "images/nav-02-ember-forge.png",
+      "images/nav-03-jade-lattice.png",
+      "images/nav-04-cobalt-tideline.png",
+      "images/nav-05-violet-oracle.png",
+      "images/nav-06-bone-cipher.png",
+      "images/nav-07-gold-crown.png",
+      "images/nav-08-amber-fixed-point.png",
+      "images/nav-09-iridescent-null.png"
+    ],
+    "operators_extended": [
+      "images/nav-10-cobalt-cell.png",
+      "images/nav-11-mercury-clock.png",
+      "images/nav-12-jade-memory.png",
+      "images/nav-13-copper-antenna.png",
+      "images/nav-14-onyx-valve.png",
+      "images/nav-15-quartz-lens.png",
+      "images/nav-16-iron-gate.png",
+      "images/nav-17-platinum-conduit.png",
+      "images/nav-18-basalt-anchor.png"
+    ],
+    "chains": [
+      "images/chain-a-power-clock-memory.png",
+      "images/chain-b-signal-lens-gate.png",
+      "images/chain-omega-sealed-channel.png"
+    ],
+    "contact_sheet": "images/nav-archive-contact-sheet.png"
+  },
+
+  "terminals": [
+    "terminals/terminal-edt-01.png",
+    "terminals/terminal-edt-02.png",
+    "terminals/terminal-edt-03.png",
+    "terminals/terminal-edt-04.png",
+    "terminals/terminal-edt-05.png"
+  ],
+
+  "deck": {
+    "founding_size": 27,
+    "cards":          "cards/nav-{01..09}-{std,alt,ops}.png",
+    "back":           "cards/card-back-hero.png",
+    "contact_sheet":  "cards/deck-contact-sheet.png"
+  },
+
+  "docs": [
+    "docs/THE-SEALED-CHANNEL.md"
+  ],
+
+  "products": {
+    "card_game":       "BtB Arena × Sealed Channel · 27-card founding deck (ED.01); extended deck + compound chain cards (ED.02)",
+    "building_game":   "ARCHIVE · voxel-on-hex-prismatic builder; mint chain cards from sealed structures",
+    "trading_indicator":"Phobos Alpha · FXP-Δ oscillator · spec reserved for leaderboard winner",
+    "physical":        "prints · micro-capsules · flagship VAULT-EDT-01 (machined aluminum, edition of 25)",
+    "nft":             "ERC-1155 on Base · token_id = sha256(chain)[:16] · burn-to-print 1:1 redemption"
+  },
+
+  "leaderboard_challenge": {
+    "id":       "FXP-CHL-01",
+    "title":    "FIXED POINT · CHALLENGE 01",
+    "tagline":  "Find the attractor. Win the expansion.",
+    "prize_1":  "first card-game expansion direction (Bell EXP-02)",
+    "prize_2":  "FXP-Δ oscillator naming + spec rights on Phobos Alpha"
+  },
+
+  "colophon": "the fixed point is amber. the amber is the archive. the archive is patient."
+}

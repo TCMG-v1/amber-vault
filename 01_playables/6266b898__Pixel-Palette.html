@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pixel Palette — Quantize · Dither · Export · ComfyUI</title>
+    <meta name="description" content="Real-time 16-bit color quantization, Bayer + error-diffusion dithering, OKLab + k-means palette reduction. Exports to PNG, JSON, GPL, ASE, PAL, hex. ComfyUI-ready." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='8' height='8' fill='%2300d3a7'/%3E%3Crect x='8' width='8' height='8' fill='%23ff5d8f'/%3E%3Crect y='8' width='8' height='8' fill='%23ffd166'/%3E%3Crect x='8' y='8' width='8' height='8' fill='%237b6cff'/%3E%3C/svg%3E" />
+    <script type="module" crossorigin src="./assets/index-BbPX5ye8.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-B5s0sCJv.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
+          <rect x="0" y="0" width="14" height="14" fill="currentColor" opacity="0.95"/>
+          <rect x="18" y="0" width="14" height="14" fill="currentColor" opacity="0.55"/>
+          <rect x="0" y="18" width="14" height="14" fill="currentColor" opacity="0.35"/>
+          <rect x="18" y="18" width="14" height="14" fill="currentColor" opacity="0.75"/>
+        </svg>
+        <div>
+          <h1>Pixel Palette</h1>
+          <p class="tag">Quantize · Dither · Reduce · Export · ComfyUI</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span id="stat-dim" class="stat">—</span>
+        <span id="stat-colors" class="stat">— colors</span>
+        <span id="stat-ms" class="stat" title="Last processing time">— ms</span>
+        <button id="undo-btn" class="ghost-btn" title="Undo (⌘Z)" aria-label="Undo">↶</button>
+        <button id="redo-btn" class="ghost-btn" title="Redo (⌘⇧Z)" aria-label="Redo">↷</button>
+        <button id="theme-toggle" class="ghost-btn" aria-label="Toggle theme">☀</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- LEFT: CONTROLS -->
+      <aside class="panel controls" aria-label="Controls">
+        <section class="group">
+          <h2>Source Image</h2>
+          <label class="dropzone" id="dropzone" for="file-input">
+            <input type="file" id="file-input" accept="image/*" class="sr-only" />
+            <div class="dz-inner">
+              <strong>Drop image</strong>
+              <span>or click to browse · PNG · JPG · WebP</span>
+            </div>
+          </label>
+          <div class="row">
+            <button id="btn-sample" class="secondary-btn">Sample</button>
+            <button id="btn-reset" class="secondary-btn">Reset</button>
+          </div>
+        </section>
+
+        <section class="group">
+          <h2>Color Space</h2>
+          <div class="seg" id="space-seg">
+            <button data-s="srgb" class="active">sRGB</button>
+            <button data-s="oklab">OKLab (perceptual)</button>
+          </div>
+        </section>
+
+        <section class="group">
+          <h2>Quantization <span class="hint" id="hint-bits">— bits</span></h2>
+          <div class="slider-row rgb">
+            <label for="qR" class="ch ch-r">R</label>
+            <input type="range" id="qR" min="1" max="8" step="1" value="5" />
+            <output id="oR" class="readout">5</output>
+            <span class="muted" id="lR">32</span>
+          </div>
+          <div class="slider-row rgb">
+            <label for="qG" class="ch ch-g">G</label>
+            <input type="range" id="qG" min="1" max="8" step="1" value="6" />
+            <output id="oG" class="readout">6</output>
+            <span class="muted" id="lG">64</span>
+          </div>
+          <div class="slider-row rgb">
+            <label for="qB" class="ch ch-b">B</label>
+            <input type="range" id="qB" min="1" max="8" step="1" value="5" />
+            <output id="oB" class="readout">5</output>
+            <span class="muted" id="lB">32</span>
+          </div>
+          <div class="presets">
+            <button class="chip" data-preset="5,6,5">RGB565</button>
+            <button class="chip" data-preset="5,5,5">RGB555</button>
+            <button class="chip" data-preset="3,3,2">RGB332</button>
+            <button class="chip" data-preset="2,2,2">GameBoy</button>
+            <button class="chip" data-preset="8,8,8">Truecolor</button>
+          </div>
+        </section>
+
+        <section class="group">
+          <h2>K-Means Reduction</h2>
+          <div class="seg" id="kmeans-seg">
+            <button data-k="off" class="active">Off</button>
+            <button data-k="on">On</button>
+          </div>
+          <div class="slider-row" id="kmeans-controls" style="opacity:0.4;pointer-events:none">
+            <label for="kCount" class="muted">Colors</label>
+            <input type="range" id="kCount" min="2" max="256" step="1" value="16" />
+            <output id="oK" class="readout">16</output>
+            <span></span>
+          </div>
+          <p class="muted small">When on, k-means picks the perceptually-optimal N colors and overrides per-channel bits.</p>
+        </section>
+
+        <section class="group">
+          <h2>Dithering</h2>
+          <div class="seg seg-wrap" id="dither-seg">
+            <button data-d="none" class="active">None</button>
+            <button data-d="bayer2">Bayer 2×2</button>
+            <button data-d="bayer4">Bayer 4×4</button>
+            <button data-d="bayer8">Bayer 8×8</button>
+            <button data-d="floyd">Floyd-Steinberg</button>
+            <button data-d="atkinson">Atkinson</button>
+            <button data-d="jarvis">Jarvis</button>
+          </div>
+          <div class="slider-row">
+            <label for="dStrength" class="muted">Strength</label>
+            <input type="range" id="dStrength" min="0" max="100" step="1" value="60" />
+            <output id="oDS" class="readout">60</output>
+            <span></span>
+          </div>
+          <div class="slider-row">
+            <label for="pixScale" class="muted">Pixel</label>
+            <input type="range" id="pixScale" min="1" max="16" step="1" value="1" />
+            <output id="oPS" class="readout">1×</output>
+            <span></span>
+          </div>
+        </section>
+
+        <section class="group">
+          <h2>Tile Mode <span id="tile-status" class="hint">off</span></h2>
+          <div class="seg seg-wrap" id="tile-preset-seg">
+            <button data-tp="off" class="active">Off</button>
+            <button data-tp="nes">NES</button>
+            <button data-tp="gb">GameBoy</button>
+            <button data-tp="snes">SNES</button>
+            <button data-tp="custom">Custom</button>
+          </div>
+          <div class="slider-row" id="tile-row-size" style="opacity:0.4;pointer-events:none">
+            <label for="tileSize" class="muted">Tile</label>
+            <input type="range" id="tileSize" min="4" max="32" step="4" value="8" />
+            <output id="oTS" class="readout">8</output>
+            <span class="muted small">px</span>
+          </div>
+          <div class="slider-row" id="tile-row-sub" style="opacity:0.4;pointer-events:none">
+            <label for="tileSub" class="muted">Subpalettes</label>
+            <input type="range" id="tileSub" min="1" max="16" step="1" value="4" />
+            <output id="oTSub" class="readout">4</output>
+            <span></span>
+          </div>
+          <div class="slider-row" id="tile-row-cpt" style="opacity:0.4;pointer-events:none">
+            <label for="tileCPT" class="muted">Colors / tile</label>
+            <input type="range" id="tileCPT" min="2" max="32" step="1" value="4" />
+            <output id="oTCPT" class="readout">4</output>
+            <span></span>
+          </div>
+          <div class="row">
+            <label class="check-row"><input type="checkbox" id="tileGrid" checked /> Show grid</label>
+          </div>
+          <p class="muted small">Constrains each tile to one of N shared subpalettes — the look of NES / GB / SNES sprites.</p>
+        </section>
+
+        <section class="group">
+          <h2>Export</h2>
+          <div class="export-grid">
+            <button id="exp-png" class="secondary-btn">PNG</button>
+            <button id="exp-pal-png" class="secondary-btn">Palette PNG</button>
+            <button id="exp-strip" class="secondary-btn">Strip PNG</button>
+            <button id="exp-json" class="secondary-btn">JSON v2</button>
+            <button id="exp-gpl" class="secondary-btn">.gpl (GIMP)</button>
+            <button id="exp-ase" class="secondary-btn">.ase (Adobe)</button>
+            <button id="exp-pal" class="secondary-btn">.pal (JASC)</button>
+            <button id="exp-hex" class="secondary-btn">.hex / Copy</button>
+          </div>
+        </section>
+
+        <section class="group">
+          <h2>ComfyUI <span id="cui-status" class="hint cui-dot">●</span></h2>
+          <div class="slider-row" style="grid-template-columns: 1fr">
+            <input type="text" id="cui-url" value="http://127.0.0.1:8188" class="text-input" placeholder="http://127.0.0.1:8188" />
+          </div>
+          <div class="row">
+            <button id="cui-ping" class="secondary-btn">Ping</button>
+            <button id="cui-send" class="primary-btn">Send →</button>
+          </div>
+          <div class="row">
+            <label class="check-row"><input type="checkbox" id="cui-roundtrip" /> Live round-trip (queue + fetch result)</label>
+          </div>
+          <p class="muted small" id="cui-msg">Send the quantized image + palette JSON straight to your local ComfyUI.</p>
+        </section>
+      </aside>
+
+      <!-- CENTER: PREVIEWS -->
+      <section class="panel previews" aria-label="Previews">
+        <div class="preview">
+          <header class="ph">
+            <span>Original</span>
+            <span class="muted" id="orig-meta">awaiting image</span>
+          </header>
+          <div class="canvas-wrap checker" id="orig-wrap">
+            <canvas id="cv-orig"></canvas>
+          </div>
+        </div>
+        <div class="preview">
+          <header class="ph">
+            <div class="ph-tabs">
+              <span>Quantized</span>
+              <button class="mini-tab" id="ab-toggle" title="Toggle A/B compare slider">A/B</button>
+            </div>
+            <span class="muted" id="quant-meta">—</span>
+          </header>
+          <div class="canvas-wrap checker" id="quant-wrap">
+            <canvas id="cv-out"></canvas>
+            <canvas id="cv-grid-overlay" class="overlay-canvas grid-overlay" hidden></canvas>
+            <canvas id="cv-orig-overlay" class="overlay-canvas" hidden></canvas>
+            <div id="ab-divider" class="ab-divider" hidden>
+              <div class="ab-handle">⇄</div>
+            </div>
+            <div id="inspector" class="inspector" hidden></div>
+          </div>
+        </div>
+        <div class="preview" id="cui-out-wrap" hidden>
+          <header class="ph">
+            <div class="ph-tabs">
+              <span>ComfyUI Output</span>
+              <button class="mini-tab" id="cui-out-save" title="Save">⤓</button>
+            </div>
+            <span class="muted" id="cui-out-meta">—</span>
+          </header>
+          <div class="canvas-wrap checker">
+            <canvas id="cv-cui"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: HISTOGRAM + PALETTE -->
+      <aside class="panel analysis" aria-label="Analysis">
+        <section class="group">
+          <h2>Histogram <span class="hint">RGB · original</span></h2>
+          <canvas id="cv-hist" width="280" height="140"></canvas>
+          <div class="legend">
+            <span class="dot dot-r"></span>R
+            <span class="dot dot-g"></span>G
+            <span class="dot dot-b"></span>B
+            <span class="dot dot-l"></span>Luma
+          </div>
+        </section>
+        <section class="group">
+          <h2>Palette <span class="hint"><span id="pal-count">0</span> · drag to reorder</span></h2>
+          <div id="palette-grid" class="pal-grid"></div>
+          <div class="row">
+            <button id="pal-sort-hue" class="secondary-btn">Hue sort</button>
+            <button id="pal-sort-luma" class="secondary-btn">Luma sort</button>
+            <button id="pal-unlock-all" class="secondary-btn">Unlock all</button>
+          </div>
+          <p class="muted small">Click a swatch to lock/pin (it survives re-quantization). Drag to reorder for indexed exports.</p>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="footnote">
+      <span>All processing runs locally · ⌘Z undo · ⌘⇧Z redo · arrow keys nudge focused slider</span>
+    </footer>
+
+    <div id="toast" class="toast" hidden></div>
+
+  <script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+
+</script></body>
+</html>

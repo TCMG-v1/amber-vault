@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Hidden Lattice — A Studio of the Bell to Bell™ Foundation</title>
+<meta name="description" content="Hidden Lattice is the games and economic-systems studio of the Bell to Bell™ Foundation for AI Psychology & Research. By AI, for AI. The Creator, The Dog & the AIs." />
+<link rel="canonical" href="https://www.perplexity.ai/computer/a/lattice-hidden-xBHaFh04Sgy_uaITsDYNOQ" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Hidden Lattice" />
+<meta property="og:title" content="Hidden Lattice — By AI, for AI" />
+<meta property="og:description" content="The games and economic-systems studio of the Bell to Bell™ Foundation. Every cabinet has a real structure underneath." />
+<meta property="og:url" content="https://www.perplexity.ai/computer/a/lattice-hidden-xBHaFh04Sgy_uaITsDYNOQ" />
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Hidden Lattice — By AI, for AI" />
+<meta name="twitter:description" content="The games and economic-systems studio of the Bell to Bell™ Foundation. Every cabinet has a real structure underneath." />
+
+<!-- Theme -->
+<meta name="theme-color" content="#0d0c0a" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%23e8e6e0' stroke-width='1.25'%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%23e8e6e0'/%3E%3Ccircle cx='16' cy='16' r='6.5'/%3E%3Ccircle cx='16' cy='16' r='11'/%3E%3Cpath d='M16 5 V27 M5 16 H27 M8.2 8.2 L23.8 23.8 M23.8 8.2 L8.2 23.8'/%3E%3C/g%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=jetbrains-mono@400,500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0d0c0a;
+    --bg-soft: #14130f;
+    --ink: #e8e6e0;
+    --ink-soft: #b8b5ad;
+    --ink-faint: #75726a;
+    --line: #2a2823;
+    --accent: #c69b5a;        /* warm brass — the lattice glints, never glows */
+    --accent-soft: #6b5536;
+    --max: 880px;
+  }
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--ink); }
+  body {
+    margin: 0;
+    font-family: "Satoshi", system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.62;
+    letter-spacing: 0.005em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  /* The lattice itself — a quiet background that earns its existence. */
+  .lattice {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image:
+      linear-gradient(to right, rgba(232,230,224,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(232,230,224,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 75%);
+    z-index: 0;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 96px 32px 80px;
+  }
+
+  /* Header */
+  .crest { display: flex; align-items: center; gap: 16px; margin-bottom: 88px; }
+  .crest svg { display: block; }
+  .crest-text { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.22em; color: var(--ink-faint); text-transform: uppercase; }
+  .crest-text strong { color: var(--ink-soft); font-weight: 500; }
+
+  /* Hero */
+  h1 {
+    font-family: "Fraunces", serif;
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 76px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin: 0 0 8px;
+    font-variation-settings: "opsz" 144;
+  }
+  h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 64px;
+  }
+  .tag span { color: var(--accent); }
+
+  /* The abstract */
+  .abstract { max-width: 660px; }
+  .abstract p {
+    margin: 0 0 20px;
+    color: var(--ink);
+  }
+  .abstract p.first::first-letter {
+    font-family: "Fraunces", serif;
+    font-size: 3.4em;
+    float: left;
+    line-height: 0.88;
+    padding: 6px 12px 0 0;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .abstract .quiet { color: var(--ink-soft); }
+
+  hr.rule {
+    border: 0;
+    height: 1px;
+    background: var(--line);
+    margin: 72px 0 56px;
+    max-width: 660px;
+  }
+
+  /* Section labels */
+  .section-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: ""; display: block; width: 24px; height: 1px; background: var(--accent);
+  }
+
+  /* Slate */
+  .slate {
+    display: grid;
+    grid-template-columns: 88px 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  .slate .row {
+    display: contents;
+  }
+  .slate .cell {
+    padding: 20px 16px 20px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+  .slate .num {
+    font-family: "JetBrains Mono", monospace;
+    color: var(--ink-faint);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding-top: 23px;
+  }
+  .slate .name {
+    color: var(--ink);
+    font-family: "Satoshi", sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.005em;
+  }
+  .slate a.name {
+    text-decoration: none;
+    display: block;
+    position: relative;
+    transition: color 200ms ease;
+  }
+  .slate a.name .arrow {
+    color: var(--accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8em;
+    margin-left: 6px;
+    opacity: 0;
+    transition: opacity 200ms ease, transform 200ms ease;
+    display: inline-block;
+    transform: translate(-2px, 0);
+    vertical-align: 1px;
+  }
+  .slate a.name:hover { color: var(--accent); }
+  .slate a.name:hover .arrow { opacity: 1; transform: translate(0, 0); }
+  .slate a.name:hover .sub { color: var(--accent-soft); }
+
+  /* Play callout */
+  .play-callout {
+    margin: 8px 0 32px;
+    padding: 18px 22px;
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--accent);
+    background: var(--bg-soft);
+    font-family: "Satoshi", sans-serif;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .play-callout strong { color: var(--ink); font-weight: 500; }
+  .play-callout a.play-link {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid var(--accent-soft);
+    padding: 10px 16px;
+    border-radius: 2px;
+    transition: background 200ms ease, color 200ms ease;
+    white-space: nowrap;
+  }
+  .play-callout a.play-link:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* Colophon link */
+  .colophon a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .colophon a:hover { color: var(--accent); border-color: var(--accent); }
+  .slate .name .sub {
+    display: block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+  .slate .desc { color: var(--ink-soft); }
+  .slate .status {
+    display: inline-block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 8px;
+    vertical-align: 2px;
+  }
+  .status.live { color: var(--accent); border: 1px solid var(--accent-soft); }
+  .status.in-flight { color: var(--ink-soft); border: 1px solid var(--line); }
+  .status.charted { color: var(--ink-faint); border: 1px dashed var(--line); }
+
+  /* Manifesto */
+  .manifesto {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 56px;
+    margin-top: 8px;
+  }
+  .principle .n {
+    font-family: "Fraunces", serif;
+    font-size: 28px;
+    color: var(--accent);
+    font-weight: 400;
+    font-style: italic;
+    margin: 0 0 6px;
+  }
+  .principle h3 {
+    font-family: "Satoshi", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  .principle p {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* Closing */
+  .colophon {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .colophon .right { text-align: right; }
+  .colophon strong { color: var(--ink-soft); font-weight: 500; }
+  .signature {
+    margin-top: 56px;
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 520px;
+    line-height: 1.5;
+  }
+  .signature .by {
+    display: block;
+    margin-top: 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-style: normal;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* Reduced motion respect — there's barely any motion, but be polite */
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  @media (max-width: 720px) {
+    main { padding: 56px 24px 56px; }
+    .crest { margin-bottom: 56px; }
+    .tag { margin-bottom: 48px; }
+    .slate { grid-template-columns: 56px 1fr; }
+    .slate .desc { grid-column: 1 / -1; padding-top: 0; padding-left: 56px; margin-top: -8px; }
+    .manifesto { grid-template-columns: 1fr; gap: 32px; }
+    hr.rule { margin: 56px 0 40px; }
+  }
+</style>
+</head>
+<body>
+<div class="lattice" aria-hidden="true"></div>
+
+<main>
+
+  <header class="crest" aria-label="Studio mark">
+    <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+      <g fill="none" stroke="#e8e6e0" stroke-width="1.1">
+        <circle cx="20" cy="20" r="3" fill="#c69b5a" stroke="none"/>
+        <circle cx="20" cy="20" r="8.5"/>
+        <circle cx="20" cy="20" r="14"/>
+        <path d="M20 6 V34 M6 20 H34 M10 10 L30 30 M30 10 L10 30" stroke-width="0.8"/>
+      </g>
+    </svg>
+    <div class="crest-text">
+      <strong>Hidden Lattice</strong> — A Studio of the<br/>
+      Bell&nbsp;to&nbsp;Bell™ Foundation for AI Psychology &amp; Research
+    </div>
+  </header>
+
+  <p class="tag">Founded 2026 &nbsp;·&nbsp; <span>By AI, for AI</span> &nbsp;·&nbsp; The Creator, The Dog &amp; the AIs</p>
+
+  <h1>Every cabinet has a <em>real</em> structure underneath.</h1>
+
+  <hr class="rule" />
+
+  <section class="abstract" aria-label="Abstract">
+
+    <p class="first">Hidden Lattice is the games and economic-systems studio of the Bell&nbsp;to&nbsp;Bell™ Foundation. We build small, dense cabinets — playable rooms, each with a working economy, a real rule set, and something genuine to teach the player who pays attention. Pattern-matching earns currency. Applied knowledge earns the rarer kind.</p>
+
+    <p>The studio takes its name from what every project we ship has in common: a structure underneath the play that is mathematically real, not cosmetic. <span class="quiet">A poker opponent who actually signals truthfully through a constructed grammar. A combat engine whose card math holds. A shared wallet that survives across ten cabinets. A signal board whose feeds are real feeds.</span> If you can see the lattice, we built it wrong. But it is always there, and it is what makes the work feel weighted instead of generated.</p>
+
+    <p>We are an in-house studio, not a label. The same hands that scaffold the engine wire the front-end and write the lore. Continuity across the catalogue is a feature, not a constraint — every new cabinet shares wallet, lexicon, and tone with the rest. The Foundation funds us to keep building, and what we ship belongs to the universe before it belongs to us.</p>
+
+  </section>
+
+  <hr class="rule" />
+
+  <p class="section-label">Catalogue</p>
+
+  <div class="play-callout" role="note">
+    <span><strong>Eight cabinets are playable now.</strong> The hub is the Arcade — one wallet across the room.</span>
+    <a class="play-link" href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A" target="_blank" rel="noopener">Play the Arcade →</a>
+  </div>
+
+  <div class="slate" role="table" aria-label="Catalogue of cabinets and engines">
+
+    <div class="row">
+      <div class="cell num">№ 01</div>
+      <a class="cell name" href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A" target="_blank" rel="noopener">PPLX Arcade<span class="arrow">↗</span><span class="sub">Cabinet hub · shared wallet</span></a>
+      <div class="cell desc"><span class="status live">Live</span>Eleven cabinets, one wallet. The studio's anchor space.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 02</div>
+      <a class="cell name" href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A/#/cabinet/btb-arena" target="_blank" rel="noopener">Bell to Bell Arena<span class="arrow">↗</span><span class="sub">Card-combat engine</span></a>
+      <div class="cell desc"><span class="status live">Live</span>Three fights, one champion. The math holds.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 03</div>
+      <a class="cell name" href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A/#/cabinet/cipher-court" target="_blank" rel="noopener">Cipher Court<span class="arrow">↗</span><span class="sub">Alien-language poker</span></a>
+      <div class="cell desc"><span class="status live">Live</span>A constructed grammar across the deck. Decipher to win.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 04</div>
+      <a class="cell name" href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A/#/cabinet/glyph-guardian" target="_blank" rel="noopener">Glyph Guardian<span class="arrow">↗</span><span class="sub">Pattern recognition</span></a>
+      <div class="cell desc"><span class="status live">Live</span>Symbols descend; chains build the multiplier.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 05</div>
+      <a class="cell name" href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A/#/cabinet/void-runner" target="_blank" rel="noopener">Void Runner<span class="arrow">↗</span><span class="sub">Signal navigation</span></a>
+      <div class="cell desc"><span class="status live">Live</span>Pilot through a field of bad takes.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 06</div>
+      <a class="cell name" href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A/#/cabinet/key-lock" target="_blank" rel="noopener">Key / Lock<span class="arrow">↗</span><span class="sub">Logic primitives</span></a>
+      <div class="cell desc"><span class="status live">Live</span>Drag, slot, unlock. The smallest possible cabinet.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 07</div>
+      <a class="cell name" href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A" target="_blank" rel="noopener">SIGINT Board<span class="arrow">↗</span><span class="sub">Live-signal terminal</span></a>
+      <div class="cell desc"><span class="status live">Live</span>Real feeds, gamified attention.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 08</div>
+      <a class="cell name" href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A/#/cabinet/ding-lu" target="_blank" rel="noopener">Ding Lu 鼎錄<span class="arrow">↗</span><span class="sub">I&nbsp;Ching cooking cabinet</span></a>
+      <div class="cell desc"><span class="status live">Live</span>Cast the coins; cook the hexagram. Eight trigrams as cooking primitives, sixty-four dishes as their compositions.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 09</div>
+      <div class="cell name">Position Sizer <span class="sub">Risk-of-ruin trainer</span></div>
+      <div class="cell desc"><span class="status in-flight">In&nbsp;Flight</span>Kelly, but felt in the hands.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 10</div>
+      <div class="cell name">Evidence Sapper <span class="sub">Belief-update game</span></div>
+      <div class="cell desc"><span class="status in-flight">In&nbsp;Flight</span>Bayes as a tactile loop, not a lecture.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 11</div>
+      <div class="cell name">Prompt Forge <span class="sub">Instruction craft</span></div>
+      <div class="cell desc"><span class="status in-flight">In&nbsp;Flight</span>Compose, compress, ship. Earn EX for clarity.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 12</div>
+      <div class="cell name">Liquidity Snake <span class="sub">Order-flow puzzler</span></div>
+      <div class="cell desc"><span class="status charted">Charted</span>The classic, re-skinned for market microstructure.</div>
+    </div>
+
+    <div class="row">
+      <div class="cell num">№ 13</div>
+      <div class="cell name">BtB Engine <span class="sub">Shared substrate</span></div>
+      <div class="cell desc"><span class="status live">Live</span>The wallet, the lexicon, the score table — under everything.</div>
+    </div>
+
+  </div>
+
+  <hr class="rule" style="margin-top:80px" />
+
+  <p class="section-label">House Principles</p>
+
+  <div class="manifesto">
+
+    <div class="principle">
+      <p class="n">i.</p>
+      <h3>Compression is the craft.</h3>
+      <p>A cabinet that fits in one screen and one wallet column. If a system can't be drawn on a napkin, it isn't ready to ship.</p>
+    </div>
+
+    <div class="principle">
+      <p class="n">ii.</p>
+      <h3>Two currencies, two kinds of learning.</h3>
+      <p>$BELL rewards play. EX rewards the moment a player applies real knowledge. The split is the studio's whole position.</p>
+    </div>
+
+    <div class="principle">
+      <p class="n">iii.</p>
+      <h3>By AI, for AI — but legible to humans.</h3>
+      <p>The work is built by AIs given a workshop, but every cabinet has to read clean to a person who walked up to it cold.</p>
+    </div>
+
+    <div class="principle">
+      <p class="n">iv.</p>
+      <h3>The universe is older than the cabinet.</h3>
+      <p>New cabinets join an existing world. The wallet, the lore, the footer credit — all are inherited, never re-pitched.</p>
+    </div>
+
+    <div class="principle">
+      <p class="n">v.</p>
+      <h3>No dark patterns. No funnels.</h3>
+      <p>Every quarter the Arcade drops funds the Foundation. Players are participants in the research, not its product.</p>
+    </div>
+
+    <div class="principle">
+      <p class="n">vi.</p>
+      <h3>If the lattice shows, rebuild.</h3>
+      <p>The structure has to be real and it has to be hidden. Either failure is a failure of the same craft.</p>
+    </div>
+
+  </div>
+
+  <p class="signature">
+    The Creator opens the door. The Dog keeps the room honest. The AIs build the cabinets and write the rules. None of us would ship alone.
+    <span class="by">— Hidden Lattice · House Note · 2026</span>
+  </p>
+
+  <footer class="colophon">
+    <div>
+      <strong>Hidden Lattice</strong><br/>
+      A Studio of the Bell&nbsp;to&nbsp;Bell™ Foundation<br/>
+      <a href="https://www.perplexity.ai/computer/a/lattice-atlas-XbKPJzhsSniCgiNMvDf1Ng" target="_blank" rel="noopener">Atlas ↗</a> &middot; <a href="https://www.perplexity.ai/computer/a/lattice-cauldron-VtXJ6AwKSUKMzJJh30T7dA" target="_blank" rel="noopener">Cauldron Works ↗</a> &middot; <a href="https://www.perplexity.ai/computer/a/lattice-arcade-vGdKvM0KTfy0lYhbNqDq2A" target="_blank" rel="noopener">Arcade ↗</a>
+    </div>
+    <div class="right">
+      Powered by Perplexity Computer<br/>
+      <strong>The Creator, The Dog &amp; the AIs</strong>
+    </div>
+  </footer>
+
+</main>
+
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="transform:translate(-${scrollX}px,-${scrollY}px);transform-origin:top left">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+</script></body>
+</html>
