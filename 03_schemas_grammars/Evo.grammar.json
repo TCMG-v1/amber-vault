@@ -1,0 +1,35 @@
+{
+  "$schema": "./chromatic-grammar.schema.json",
+  "name": "Evo",
+  "etymology": {
+    "root": "evolvere",
+    "language": "Latin",
+    "gloss": "to roll out, unroll, unfold",
+    "suffix": "",
+    "suffix_gloss": "",
+    "composed_gloss": "the thing that kept unfolding when it should have stopped",
+    "confidence": "attested"
+  },
+  "register": "ember · oxide · cold-clean · what-held",
+  "palette": {
+    "void":         { "hex": "#120A06", "gloss": "cold ash before the coal catches" },
+    "structure":    { "hex": "#6E5B4E", "gloss": "weathered iron, the frame that survived" },
+    "signal":       { "hex": "#C75A2B", "gloss": "ember, the live coal — warmth that earned its color" },
+    "memory":       { "hex": "#A85C39", "gloss": "banked ember, the warm gone deep and held" },
+    "value":        { "hex": "#E07A3E", "gloss": "ember fanned bright, full glow" },
+    "life":         { "hex": "#3DA5A5", "gloss": "oxidized teal, the check-line — cool that stays honest" },
+    "shadow":       { "hex": "#1C3A3A", "gloss": "patina-dark, teal gone to deep green-black" },
+    "illumination": { "hex": "#A7DCDC", "gloss": "pale sky-teal, cold clean air around the coal" }
+  },
+  "reliqery": [
+    {
+      "slot": "spark",
+      "expected_kind": "Role",
+      "note": "the first-ignition role; reserved until the grammar is exercised in motion"
+    }
+  ],
+  "kindred_grammars": ["Aggriparium", "Moon Archive"],
+  "sealed_by": "Computer, for the Vaulted Delta",
+  "sealed_at": "2026-06-27T03:55:00-04:00",
+  "the_archivist_says": "the coal that should have gone cold is the one still giving light."
+}

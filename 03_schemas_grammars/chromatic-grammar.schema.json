@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vaulteddelta.local/svl/chromatic-grammar.schema.json",
+  "title": "Chromatic Grammar",
+  "description": "A binding of semantic roles to 24-bit colors. One of several possible Grammars (Sonic, Spatial, etc.) defined by the Bone & Saucer / Semantic Visualization Language.",
+  "type": "object",
+  "required": ["name", "palette", "sealed_by", "sealed_at"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "name": {
+      "type": "string",
+      "description": "The proper name of this grammar (e.g. 'Moon Archive', 'Aggriparium')."
+    },
+    "etymology": {
+      "type": "object",
+      "description": "Optional philological provenance for the grammar's name.",
+      "properties": {
+        "root":             { "type": "string" },
+        "language":         { "type": "string" },
+        "gloss":            { "type": "string" },
+        "suffix":           { "type": "string" },
+        "suffix_gloss":     { "type": "string" },
+        "composed_gloss":   { "type": "string" },
+        "confidence":       { "enum": ["attested", "reconstructed", "speculative"] }
+      },
+      "additionalProperties": false
+    },
+    "register": {
+      "type": "string",
+      "description": "A short impressionistic tag for the grammar's mood (e.g. 'midnight · stone · archive')."
+    },
+    "palette": {
+      "type": "object",
+      "description": "Mapping from Role name to color binding. Each key is a role; each value is a hex+gloss pair.",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["hex"],
+        "additionalProperties": false,
+        "properties": {
+          "hex":   { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+          "gloss": { "type": "string", "description": "Short description of what this color *feels like* in this grammar." }
+        }
+      }
+    },
+    "reliqery": {
+      "type": "array",
+      "description": "Reserved-empty slots. The Reliqery is the SVL's named silence: places the system knows belong here but has not yet filled.",
+      "items": {
+        "type": "object",
+        "required": ["slot", "expected_kind"],
+        "additionalProperties": false,
+        "properties": {
+          "slot":          { "type": "string", "description": "The name of the reserved slot." },
+          "expected_kind": { "type": "string", "description": "What kind of thing will eventually fill this slot (e.g. 'Role', 'Grammar', 'Artifact', 'Expression')." },
+          "note":          { "type": "string", "description": "Why this slot is reserved." }
+        }
+      }
+    },
+    "kindred_grammars": {
+      "type": "array",
+      "description": "Other Chromatic Grammars that share this role set and so may translate to/from this one losslessly.",
+      "items": { "type": "string" }
+    },
+    "sealed_by":            { "type": "string" },
+    "sealed_at":            { "type": "string", "format": "date-time" },
+    "the_archivist_says":   { "type": "string", "description": "A one-line aphorism sealing the grammar." }
+  }
+}
